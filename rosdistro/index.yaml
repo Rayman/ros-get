@@ -3,7 +3,7 @@
 # see REP 143: http://ros.org/reps/rep-0143.html
 ---
 distributions:
-  kinetic:
+  tuekinetic:
     distribution: [kinetic/distribution.yaml]
     distribution_cache: kinetic-cache.yaml.gz
 type: index

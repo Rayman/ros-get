@@ -13,10 +13,6 @@ release_platforms:
   - xenial
 repositories:
   navigation:
-    doc:
-      type: git
-      url: https://github.com/ros-planning/navigation.git
-      version: kinetic-devel
     release:
       packages:
       - amcl
@@ -44,7 +40,7 @@ repositories:
       test_commits: false
       test_pull_requests: true
       type: git
-      url: https://github.com/ros-planning/navigation.git
+      url: https://github.com/tue-robotics/navigation.git
       version: kinetic-devel
     status: maintained
 type: distribution

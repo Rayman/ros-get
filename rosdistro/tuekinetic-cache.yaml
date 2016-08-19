@@ -5,7 +5,6 @@ distribution_file:
     ubuntu: [wily, xenial]
   repositories:
     navigation:
-      doc: {type: git, url: 'https://github.com/ros-planning/navigation.git', version: kinetic-devel}
       release:
         packages: [amcl, base_local_planner, carrot_planner, clear_costmap_recovery,
           costmap_2d, dwa_local_planner, fake_localization, global_planner, map_server,
@@ -14,12 +13,12 @@ distribution_file:
         tags: {release: 'release/kinetic/{package}/{version}'}
         url: https://github.com/ros-gbp/navigation-release.git
         version: 1.14.0-0
-      source: {test_commits: false, test_pull_requests: true, type: git, url: 'https://github.com/ros-planning/navigation.git',
+      source: {test_commits: false, test_pull_requests: true, type: git, url: 'https://github.com/tue-robotics/navigation.git',
         version: kinetic-devel}
       status: maintained
   type: distribution
   version: 2
-name: kinetic
+name: tuekinetic
 release_package_xmls: {amcl: "<package>\n    <name>amcl</name>\n    <version>1.14.0</version>\n\
     \    <description>\n        <p>\n            amcl is a probabilistic localization\
     \ system for a robot moving in\n            2D. It implements the adaptive (or\
