@@ -5,6 +5,6 @@
 distributions:
   tuekinetic:
     distribution: [kinetic/distribution.yaml]
-    distribution_cache: kinetic-cache.yaml.gz
+    distribution_cache: tuekinetic-cache.yaml.gz
 type: index
 version: 3
