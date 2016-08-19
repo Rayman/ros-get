@@ -1,0 +1,10 @@
+%YAML 1.1
+# ROS index file
+# see REP 143: http://ros.org/reps/rep-0143.html
+---
+distributions:
+  kinetic:
+    distribution: [kinetic/distribution.yaml]
+    distribution_cache: kinetic-cache.yaml.gz
+type: index
+version: 3
