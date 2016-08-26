@@ -43,5 +43,13 @@ repositories:
       url: https://github.com/tue-robotics/navigation.git
       version: kinetic-devel
     status: maintained
+  tue_config:
+    source:
+      url: http://github.com/tue-robotics/tue_config.git
+      version: master
+  rgbd:
+    source:
+      url: http://github.com/tue-robotics/rgbd.git
+      version: master
 type: distribution
 version: 2
