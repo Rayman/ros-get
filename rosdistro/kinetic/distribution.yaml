@@ -13,29 +13,6 @@ release_platforms:
   - xenial
 repositories:
   navigation:
-    release:
-      packages:
-      - amcl
-      - base_local_planner
-      - carrot_planner
-      - clear_costmap_recovery
-      - costmap_2d
-      - dwa_local_planner
-      - fake_localization
-      - global_planner
-      - map_server
-      - move_base
-      - move_slow_and_clear
-      - nav_core
-      - navfn
-      - navigation
-      - robot_pose_ekf
-      - rotate_recovery
-      - voxel_grid
-      tags:
-        release: release/kinetic/{package}/{version}
-      url: https://github.com/ros-gbp/navigation-release.git
-      version: 1.14.0-0
     source:
       test_commits: false
       test_pull_requests: true
@@ -48,12 +25,6 @@ repositories:
       url: http://github.com/tue-robotics/tue_config.git
       version: master
   hmi:
-    release:
-      packages:
-      - hmi
-      - hmi_msgs
-      - hmi_server
-      url: https://github.com/tue-robotics/hmi-release.git
     source:
       url: http://github.com/tue-robotics/hmi.git
       version: master
