@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+from rosdistro import get_cached_distribution, get_index, get_index_url
+from rosdistro.dependency_walker import SourceDependencyWalker
+
+distroname = 'tuekinetic'
+index = get_index(get_index_url())
+distro = get_cached_distribution(index, distroname)
+
+walker = SourceDependencyWalker(distro)
+dependencies = walker.get_recursive_depends('navigation', ['buildtool', 'build', 'run', 'test'],
+											ros_packages_only=True, ignore_pkgs=None, limit_depth=None)
+
+for dep in dependencies:
+	print dep
