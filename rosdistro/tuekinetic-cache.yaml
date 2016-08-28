@@ -4,6 +4,11 @@ distribution_file:
     fedora: ['23', '24']
     ubuntu: [wily, xenial]
   repositories:
+    hmi:
+      release:
+        packages: [hmi, hmi_msgs, hmi_server]
+        url: https://github.com/tue-robotics/hmi-release.git
+      source: {url: 'http://github.com/tue-robotics/hmi.git', version: master}
     navigation:
       release:
         packages: [amcl, base_local_planner, carrot_planner, clear_costmap_recovery,
@@ -14,7 +19,7 @@ distribution_file:
         url: https://github.com/ros-gbp/navigation-release.git
         version: 1.14.0-0
       source: {test_commits: false, test_pull_requests: true, type: git, url: 'https://github.com/tue-robotics/navigation.git',
-        version: kinetic-devel}
+        version: hydro-devel}
       status: maintained
     rgbd:
       source: {url: 'http://github.com/tue-robotics/rgbd.git', version: master}
@@ -23,362 +28,150 @@ distribution_file:
   type: distribution
   version: 2
 name: tuekinetic
-release_package_xmls: {amcl: "<package>\n    <name>amcl</name>\n    <version>1.14.0</version>\n\
-    \    <description>\n        <p>\n            amcl is a probabilistic localization\
-    \ system for a robot moving in\n            2D. It implements the adaptive (or\
-    \ KLD-sampling) Monte Carlo\n            localization approach (as described by\
-    \ Dieter Fox), which uses a\n            particle filter to track the pose of\
-    \ a robot against a known map.\n        </p>\n        <p>\n            This node\
-    \ is derived, with thanks, from Andrew Howard's excellent\n            'amcl'\
-    \ Player driver.\n        </p>\n    </description>\n    <url>http://wiki.ros.org/amcl</url>\n\
-    \    <author>Brian P. Gerkey</author>\n    <author>contradict@gmail.com</author>\n\
-    \    <maintainer email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n   \
-    \ <maintainer email=\"mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n\
-    \    <license>LGPL</license>\n\n    <buildtool_depend>catkin</buildtool_depend>\n\
-    \n    <build_depend>rosbag</build_depend>\n    <build_depend>dynamic_reconfigure</build_depend>\n\
-    \    <build_depend>message_filters</build_depend>\n    <build_depend>nav_msgs</build_depend>\n\
-    \    <build_depend>roscpp</build_depend>\n    <build_depend>rostest</build_depend>\n\
-    \    <build_depend>std_srvs</build_depend>\n    <build_depend>tf</build_depend>\n\
-    \n    <run_depend>rosbag</run_depend>\n    <run_depend>roscpp</run_depend>\n \
-    \   <run_depend>dynamic_reconfigure</run_depend>\n    <run_depend>tf</run_depend>\n\
-    \    <run_depend>nav_msgs</run_depend>\n\n    <test_depend>map_server</test_depend>\n\
-    </package>\n", base_local_planner: "<package>\n    <name>base_local_planner</name>\n\
-    \    <version>1.14.0</version>\n    <description>\n\n        This package provides\
-    \ implementations of the Trajectory Rollout and Dynamic Window approaches to local\
-    \ robot navigation on a plane. Given a plan to follow and a costmap, the controller\
-    \ produces velocity commands to send to a mobile base. This package supports both\
-    \ holonomic and non-holonomic robots, any robot footprint that can be represented\
-    \ as a convex polygon or circle, and exposes its configuration as ROS parameters\
-    \ that can be set in a launch file. This package's ROS wrapper adheres to the\
-    \ BaseLocalPlanner interface specified in the <a href=\"http://wiki.ros.org/nav_core\"\
-    >nav_core</a> package. \n\n    </description>\n    <author>Eitan Marder-Eppstein</author>\n\
-    \    <author>Eric Perko</author>\n    <author>contradict@gmail.com</author>\n\
-    \    <maintainer email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n   \
-    \ <maintainer email=\"mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n\
-    \    <license>BSD</license>\n    <url>http://wiki.ros.org/base_local_planner</url>\n\
-    \n    <buildtool_depend version_gte=\"0.5.68\">catkin</buildtool_depend>\n\n \
-    \   <build_depend>cmake_modules</build_depend>\n    <build_depend>std_msgs</build_depend>\n\
-    \    <build_depend>nav_msgs</build_depend>\n    <build_depend>rosconsole</build_depend>\n\
-    \    <build_depend>roscpp</build_depend>\n    <build_depend>tf</build_depend>\n\
-    \    <build_depend>rospy</build_depend>\n    <build_depend>pluginlib</build_depend>\n\
-    \    <build_depend>costmap_2d</build_depend>\n    <build_depend>voxel_grid</build_depend>\n\
-    \    <build_depend>angles</build_depend>\n    <build_depend>visualization_msgs</build_depend>\n\
-    \    <build_depend>geometry_msgs</build_depend>\n    <build_depend>nav_core</build_depend>\n\
-    \    <build_depend>pcl_conversions</build_depend>\n    <build_depend>pcl_ros</build_depend>\n\
-    \    <build_depend>eigen</build_depend>\n    <build_depend>dynamic_reconfigure</build_depend>\n\
-    \    <build_depend>message_generation</build_depend>\n\n    <run_depend>std_msgs</run_depend>\n\
-    \    <run_depend>nav_msgs</run_depend>\n    <run_depend>rosconsole</run_depend>\n\
-    \    <run_depend>roscpp</run_depend>\n    <run_depend>tf</run_depend>\n    <run_depend>rospy</run_depend>\n\
-    \    <run_depend>pluginlib</run_depend>\n    <run_depend>costmap_2d</run_depend>\n\
-    \    <run_depend>voxel_grid</run_depend>\n    <run_depend>angles</run_depend>\n\
-    \    <run_depend>visualization_msgs</run_depend>\n    <run_depend>geometry_msgs</run_depend>\n\
-    \    <run_depend>nav_core</run_depend>\n    <run_depend>pcl_ros</run_depend>\n\
-    \    <run_depend>eigen</run_depend>\n    <run_depend>dynamic_reconfigure</run_depend>\n\
-    \    <run_depend>message_generation</run_depend>\n\n    <export>\n        <nav_core\
-    \ plugin=\"${prefix}/blp_plugin.xml\" />\n    </export>\n</package>\n", carrot_planner: "<package>\n\
-    \    <name>carrot_planner</name>\n    <version>1.14.0</version>\n    <description>\n\
-    \n        This planner attempts to find a legal place to put a carrot for the\
-    \ robot to follow. It does this by moving back along the vector between the robot\
-    \ and the goal point.\n\n    </description>\n    <author>Eitan Marder-Eppstein</author>\n\
-    \    <author>Sachin Chitta</author>\n    <author>contradict@gmail.com</author>\n\
-    \    <maintainer email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n   \
-    \ <maintainer email=\"mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n\
-    \    <license>BSD</license>\n    <url>http://wiki.ros.org/carrot_planner</url>\n\
-    \n    <buildtool_depend>catkin</buildtool_depend>\n\n    <build_depend>roscpp</build_depend>\n\
-    \    <build_depend>costmap_2d</build_depend>\n    <build_depend>pluginlib</build_depend>\n\
-    \    <build_depend>nav_core</build_depend>\n    <build_depend>base_local_planner</build_depend>\n\
-    \    <build_depend>tf</build_depend>\n    <!--<build_depend>angles</build_depend>-->\n\
-    \    <build_depend>eigen</build_depend>\n\n    <run_depend>roscpp</run_depend>\n\
-    \    <run_depend>costmap_2d</run_depend>\n    <run_depend>pluginlib</run_depend>\n\
-    \    <run_depend>nav_core</run_depend>\n    <run_depend>base_local_planner</run_depend>\n\
-    \    <run_depend>tf</run_depend>\n    <!--<run_depend>angles</run_depend>-->\n\
-    \    <run_depend>eigen</run_depend>\n\n    <export>\n        <nav_core plugin=\"\
-    ${prefix}/bgp_plugin.xml\" />\n    </export>\n\n</package>\n\n\n", clear_costmap_recovery: "<package>\n\
-    \    <name>clear_costmap_recovery</name>\n    <version>1.14.0</version>\n    <description>\n\
-    \n        This package provides a recovery behavior for the navigation stack that\
-    \ attempts to clear space by reverting the costmaps used by the navigation stack\
-    \ to the static map outside of a given area.\n\n    </description>\n    <author>Eitan\
-    \ Marder-Eppstein</author>\n    <author>contradict@gmail.com</author>\n    <maintainer\
-    \ email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n    <maintainer email=\"\
-    mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n    <license>BSD</license>\n\
-    \    <url>http://wiki.ros.org/clear_costmap_recovery</url>\n\n    <buildtool_depend>catkin</buildtool_depend>\n\
-    \n    <build_depend>cmake_modules</build_depend>\n    <build_depend>roscpp</build_depend>\n\
-    \    <build_depend>tf</build_depend>\n    <build_depend>costmap_2d</build_depend>\n\
-    \    <build_depend>nav_core</build_depend>\n    <build_depend>pluginlib</build_depend>\n\
-    \    <build_depend>eigen</build_depend>\n\n    <run_depend>roscpp</run_depend>\n\
-    \    <run_depend>tf</run_depend>\n    <run_depend>costmap_2d</run_depend>\n  \
-    \  <run_depend>nav_core</run_depend>\n    <run_depend>pluginlib</run_depend>\n\
-    \    <run_depend>eigen</run_depend>\n\n    <export>\n        <nav_core plugin=\"\
-    ${prefix}/ccr_plugin.xml\" />\n    </export>\n</package>\n\n\n", costmap_2d: "<package>\n\
-    \    <name>costmap_2d</name>\n    <version>1.14.0</version>\n    <description>\n\
-    \        This package provides an implementation of a 2D costmap that takes in\
-    \ sensor\n        data from the world, builds a 2D or 3D occupancy grid of the\
-    \ data (depending\n        on whether a voxel based implementation is used), and\
-    \ inflates costs in a\n        2D costmap based on the occupancy grid and a user\
-    \ specified inflation radius.\n        This package also provides support for\
-    \ map_server based initialization of a\n        costmap, rolling window based\
-    \ costmaps, and parameter based subscription to\n        and configuration of\
-    \ sensor topics.\n    </description>\n    <author>Eitan Marder-Eppstein</author>\n\
-    \    <author>David V. Lu!!</author>\n    <author>Dave Hershberger</author>\n \
-    \   <author>contradict@gmail.com</author>\n    <maintainer email=\"davidvlu@gmail.com\"\
-    >David V. Lu!!</maintainer>\n    <maintainer email=\"mferguson@fetchrobotics.com\"\
-    >Michael Ferguson</maintainer>\n    <license>BSD</license>\n    <url>http://wiki.ros.org/costmap_2d</url>\n\
-    \n    <buildtool_depend>catkin</buildtool_depend>\n\n    <build_depend>cmake_modules</build_depend>\n\
-    \    <build_depend>dynamic_reconfigure</build_depend>\n    <build_depend>geometry_msgs</build_depend>\n\
-    \    <build_depend>laser_geometry</build_depend>\n    <build_depend>map_msgs</build_depend>\n\
-    \    <build_depend>message_filters</build_depend>\n    <build_depend>message_generation</build_depend>\n\
-    \    <build_depend>nav_msgs</build_depend>\n    <build_depend>pcl_conversions</build_depend>\n\
-    \    <build_depend>pcl_ros</build_depend>\n    <build_depend>pluginlib</build_depend>\n\
-    \    <build_depend>roscpp</build_depend>\n    <build_depend>rostest</build_depend>\n\
-    \    <build_depend>sensor_msgs</build_depend>\n    <build_depend>std_msgs</build_depend>\n\
-    \    <build_depend>tf</build_depend>\n    <build_depend>visualization_msgs</build_depend>\n\
-    \    <build_depend>voxel_grid</build_depend>\n\n    <run_depend>dynamic_reconfigure</run_depend>\n\
-    \    <run_depend>geometry_msgs</run_depend>\n    <run_depend>laser_geometry</run_depend>\n\
-    \    <run_depend>map_msgs</run_depend>\n    <run_depend>message_filters</run_depend>\n\
-    \    <run_depend>message_runtime</run_depend>\n    <run_depend>nav_msgs</run_depend>\n\
-    \    <run_depend>pcl_conversions</run_depend>\n    <run_depend>pcl_ros</run_depend>\n\
-    \    <run_depend>pluginlib</run_depend>\n    <run_depend>rosconsole</run_depend>\n\
-    \    <run_depend>roscpp</run_depend>\n    <run_depend>rostest</run_depend>\n \
-    \   <run_depend>sensor_msgs</run_depend>\n    <run_depend>std_msgs</run_depend>\n\
-    \    <run_depend>tf</run_depend>\n    <run_depend>visualization_msgs</run_depend>\n\
-    \    <run_depend>voxel_grid</run_depend>\n\n    <test_depend>map_server</test_depend>\n\
-    \    <test_depend>rosbag</test_depend>\n\n    <export>\n      <costmap_2d plugin=\"\
-    ${prefix}/costmap_plugins.xml\"/>\n    </export>\n</package>\n", dwa_local_planner: "<package>\n\
-    \    <name>dwa_local_planner</name>\n    <version>1.14.0</version>\n    <description>\n\
-    \n        This package provides an implementation of the Dynamic Window Approach\
-    \ to\n        local robot navigation on a plane. Given a global plan to follow\
-    \ and a\n        costmap, the local planner produces velocity commands to send\
-    \ to a mobile\n        base. This package supports any robot who's footprint can\
-    \ be represented as\n        a convex polygon or cicrle, and exposes its configuration\
-    \ as ROS parameters\n        that can be set in a launch file. The parameters\
-    \ for this planner are also\n        dynamically reconfigurable. This package's\
-    \ ROS wrapper adheres to the\n        BaseLocalPlanner interface specified in\
-    \ the <a href=\"http://wiki.ros.org/nav_core\">nav_core</a> package.\n\n    </description>\n\
-    \    <author>Eitan Marder-Eppstein</author>\n    <author>contradict@gmail.com</author>\n\
-    \    <maintainer email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n   \
-    \ <maintainer email=\"mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n\
-    \    <license>BSD</license>\n    <url>http://wiki.ros.org/dwa_local_planner</url>\n\
-    \n    <buildtool_depend>catkin</buildtool_depend>\n\n    <build_depend>base_local_planner</build_depend>\n\
-    \    <build_depend>cmake_modules</build_depend>\n    <build_depend>costmap_2d</build_depend>\n\
-    \    <build_depend>dynamic_reconfigure</build_depend>\n    <build_depend>eigen</build_depend>\n\
-    \    <build_depend>nav_core</build_depend>\n    <build_depend>nav_msgs</build_depend>\n\
-    \    <build_depend>pluginlib</build_depend>\n    <build_depend>pcl_conversions</build_depend>\n\
-    \    <build_depend>roscpp</build_depend>\n    <build_depend>tf</build_depend>\n\
-    \n    <run_depend>base_local_planner</run_depend>\n    <run_depend>costmap_2d</run_depend>\n\
-    \    <run_depend>dynamic_reconfigure</run_depend>\n    <run_depend>eigen</run_depend>\n\
-    \    <run_depend>nav_core</run_depend>\n    <run_depend>nav_msgs</run_depend>\n\
-    \    <run_depend>pluginlib</run_depend>\n    <run_depend>roscpp</run_depend>\n\
-    \    <run_depend>tf</run_depend>\n\n    <export>\n        <nav_core plugin=\"\
-    ${prefix}/blp_plugin.xml\" />\n    </export>\n\n</package>\n\n\n", fake_localization: "<package>\n\
-    \    <name>fake_localization</name>\n    <version>1.14.0</version>\n    <description>A\
-    \ ROS node that simply forwards odometry information.</description>\n    <author>Ioan\
-    \ A. Sucan</author>\n    <author>contradict@gmail.com</author>\n    <maintainer\
-    \ email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n    <maintainer email=\"\
-    mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n    <license>BSD</license>\n\
-    \    <url>http://wiki.ros.org/fake_localization</url>\n\n    <buildtool_depend>catkin</buildtool_depend>\n\
-    \n    <build_depend>angles</build_depend>\n    <build_depend>roscpp</build_depend>\n\
-    \    <build_depend>rosconsole</build_depend>\n    <build_depend>nav_msgs</build_depend>\n\
-    \    <build_depend>geometry_msgs</build_depend>\n    <build_depend>tf</build_depend>\n\
-    \    <build_depend>message_filters</build_depend>\n    <build_depend>rospy</build_depend>\n\
-    \n    <run_depend>roscpp</run_depend>\n    <run_depend>rosconsole</run_depend>\n\
-    \    <run_depend>nav_msgs</run_depend>\n    <run_depend>geometry_msgs</run_depend>\n\
-    \    <run_depend>tf</run_depend>\n    <run_depend>message_filters</run_depend>\n\
-    \    <run_depend>rospy</run_depend>\n\n</package>\n", global_planner: "<package>\n\
-    \  <name>global_planner</name>\n  <version>1.14.0</version>\n  <description>\n\
-    \     A path planner library and node.\n  </description>\n  <maintainer email=\"\
-    davidvlu@gmail.com\">David V. Lu!!</maintainer>\n  <maintainer email=\"mferguson@fetchrobotics.com\"\
-    >Michael Ferguson</maintainer>\n  <license>BSD</license>\n\n  <author>David Lu!!</author>\n\
-    \  <url>http://wiki.ros.org/global_planner</url>\n\n  <buildtool_depend>catkin</buildtool_depend>\n\
-    \n  <build_depend>angles</build_depend>\n  <build_depend>costmap_2d</build_depend>\n\
-    \  <build_depend>dynamic_reconfigure</build_depend>\n  <build_depend>geometry_msgs</build_depend>\n\
-    \  <build_depend>nav_core</build_depend>\n  <build_depend>nav_msgs</build_depend>\n\
-    \  <build_depend>navfn</build_depend>\n  <build_depend>pluginlib</build_depend>\n\
-    \  <build_depend>roscpp</build_depend>\n  <build_depend>tf</build_depend>\n\n\
-    \  <run_depend>costmap_2d</run_depend>\n  <run_depend>dynamic_reconfigure</run_depend>\n\
-    \  <run_depend>geometry_msgs</run_depend>\n  <run_depend>nav_core</run_depend>\n\
-    \  <run_depend>nav_msgs</run_depend>\n  <run_depend>navfn</run_depend>\n  <run_depend>pluginlib</run_depend>\n\
-    \  <run_depend>roscpp</run_depend>\n  <run_depend>tf</run_depend>\n  <export>\n\
-    \      <nav_core plugin=\"${prefix}/bgp_plugin.xml\" />\n  </export>\n\n</package>\n",
-  map_server: "<package>\n    <name>map_server</name>\n    <version>1.14.0</version>\n\
-    \    <description>\n\n        map_server provides the <tt>map_server</tt> ROS\
-    \ <a href=\"http://www.ros.org/wiki/Nodes\">Node</a>, which offers map data as\
-    \ a ROS <a href=\"http://www.ros.org/wiki/Services\">Service</a>. It also provides\
-    \ the <tt>map_saver</tt> command-line utility, which allows dynamically generated\
-    \ maps to be saved to file.\n\n    </description>\n    <author>Brian Gerkey, Tony\
-    \ Pratkanis</author>\n    <author>contradict@gmail.com</author>\n    <maintainer\
-    \ email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n    <maintainer email=\"\
-    mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n    <url>http://wiki.ros.org/map_server</url>\n\
-    \    <license>BSD</license>\n\n    <buildtool_depend version_gte=\"0.5.68\">catkin</buildtool_depend>\n\
-    \n    <build_depend>nav_msgs</build_depend>\n    <build_depend>roscpp</build_depend>\n\
-    \    <build_depend>rostest</build_depend>\n    <build_depend>sdl-image</build_depend>\n\
-    \    <build_depend>tf</build_depend>\n    <build_depend>yaml-cpp</build_depend>\n\
-    \n    <run_depend>nav_msgs</run_depend>\n    <run_depend>roscpp</run_depend>\n\
-    \    <run_depend>rostest</run_depend>\n    <run_depend>sdl-image</run_depend>\n\
-    \    <run_depend>tf</run_depend>\n    <run_depend>yaml-cpp</run_depend>\n\n  \
-    \  <test_depend>rospy</test_depend>\n</package>\n", move_base: "<package>\n  \
-    \  <name>move_base</name>\n    <version>1.14.0</version>\n    <description>\n\n\
-    \        The move_base package provides an implementation of an action (see the\
-    \ <a href=\"http://www.ros.org/wiki/actionlib\">actionlib</a> package) that, given\
-    \ a goal in the world, will attempt to reach it with a mobile base. The move_base\
-    \ node links together a global and local planner to accomplish its global navigation\
-    \ task. It supports any global planner adhering to the nav_core::BaseGlobalPlanner\
-    \ interface specified in the <a href=\"http://www.ros.org/wiki/nav_core\">nav_core</a>\
-    \ package and any local planner adhering to the nav_core::BaseLocalPlanner interface\
-    \ specified in the <a href=\"http://www.ros.org/wiki/nav_core\">nav_core</a> package.\
-    \ The move_base node also maintains two costmaps, one for the global planner,\
-    \ and one for a local planner (see the <a href=\"http://www.ros.org/wiki/costmap_2d\"\
-    >costmap_2d</a> package) that are used to accomplish navigation tasks.\n\n   \
-    \ </description>\n    <author>Eitan Marder-Eppstein</author>\n    <author>contradict@gmail.com</author>\n\
-    \    <maintainer email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n   \
-    \ <maintainer email=\"mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n\
-    \    <license>BSD</license>\n    <url>http://wiki.ros.org/move_base</url>\n\n\
-    \    <buildtool_depend>catkin</buildtool_depend>\n\n    <build_depend>actionlib</build_depend>\n\
-    \    <build_depend>cmake_modules</build_depend>\n    <build_depend>costmap_2d</build_depend>\n\
-    \    <build_depend>dynamic_reconfigure</build_depend>\n    <build_depend>geometry_msgs</build_depend>\n\
-    \    <build_depend>message_generation</build_depend>\n    <build_depend>move_base_msgs</build_depend>\n\
-    \    <build_depend>nav_core</build_depend>\n    <build_depend>nav_msgs</build_depend>\n\
-    \    <build_depend>pluginlib</build_depend>\n    <build_depend>roscpp</build_depend>\n\
-    \    <build_depend>rospy</build_depend>\n    <build_depend>std_msgs</build_depend>\n\
-    \    <build_depend>std_srvs</build_depend>\n    <build_depend>tf</build_depend>\n\
-    \    <build_depend>visualization_msgs</build_depend>\n\n    <!--These deps aren't\
-    \ strictly needed, but given the default parameters require them to work, we'll\
-    \ enforce that they build -->\n    <build_depend>base_local_planner</build_depend>\n\
-    \    <build_depend>clear_costmap_recovery</build_depend>\n    <build_depend>navfn</build_depend>\n\
-    \    <build_depend>rotate_recovery</build_depend>\n    <run_depend>base_local_planner</run_depend>\n\
-    \    <run_depend>clear_costmap_recovery</run_depend>\n    <run_depend>navfn</run_depend>\n\
-    \    <run_depend>rotate_recovery</run_depend>\n\n<!--  This is commented out until\
-    \ rotate_recovery is ported to layered costmaps. <build_depend>rotate_recovery</build_depend>\
-    \ -->\n\n    <run_depend>actionlib</run_depend>\n    <run_depend>costmap_2d</run_depend>\n\
-    \    <run_depend>dynamic_reconfigure</run_depend>\n    <run_depend>geometry_msgs</run_depend>\n\
-    \    <run_depend>message_runtime</run_depend>\n    <run_depend>move_base_msgs</run_depend>\n\
-    \    <run_depend>nav_core</run_depend>\n    <run_depend>nav_msgs</run_depend>\n\
-    \    <run_depend>pluginlib</run_depend>\n    <run_depend>roscpp</run_depend>\n\
-    \    <run_depend>rospy</run_depend>\n    <run_depend>std_msgs</run_depend>\n \
-    \   <run_depend>std_srvs</run_depend>\n    <run_depend>tf</run_depend>\n    <run_depend>visualization_msgs</run_depend>\n\
-    \n</package>\n", move_slow_and_clear: "<package>\n    <name>move_slow_and_clear</name>\n\
-    \    <version>1.14.0</version>\n    <description>\n\n        move_slow_and_clear\n\
-    \n    </description>\n    <author>Eitan Marder-Eppstein</author>\n    <author>contradict@gmail.com</author>\n\
-    \    <maintainer email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n   \
-    \ <maintainer email=\"mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n\
-    \    <license>BSD</license>\n    <url>http://wiki.ros.org/move_slow_and_clear</url>\n\
-    \n    <buildtool_depend>catkin</buildtool_depend>\n\n    <build_depend>cmake_modules</build_depend>\n\
-    \    <build_depend>roscpp</build_depend>\n    <build_depend>nav_core</build_depend>\n\
-    \    <build_depend>costmap_2d</build_depend>\n    <build_depend>geometry_msgs</build_depend>\n\
-    \    <build_depend>pluginlib</build_depend>\n    <build_depend>pluginlib</build_depend>\n\
-    \n    <run_depend>roscpp</run_depend>\n    <run_depend>nav_core</run_depend>\n\
-    \    <run_depend>costmap_2d</run_depend>\n    <run_depend>geometry_msgs</run_depend>\n\
-    \    <run_depend>pluginlib</run_depend>\n    <run_depend>pluginlib</run_depend>\n\
-    \n    <export>\n        <nav_core plugin=\"${prefix}/recovery_plugin.xml\" />\n\
-    \    </export>\n\n</package>\n\n\n", nav_core: "<package>\n    <name>nav_core</name>\n\
-    \    <version>1.14.0</version>\n    <description>\n\n        This package provides\
-    \ common interfaces for navigation specific robot actions. Currently, this package\
-    \ provides the BaseGlobalPlanner, BaseLocalPlanner, and RecoveryBehavior interfaces,\
-    \ which can be used to build actions that can easily swap their planner, local\
-    \ controller, or recovery behavior for new versions adhering to the same interface.\n\
-    \n    </description>\n    <author>Eitan Marder-Eppstein</author>\n    <author>contradict@gmail.com</author>\n\
-    \    <maintainer email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n   \
-    \ <maintainer email=\"mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n\
-    \    <license>BSD</license>\n    <url>http://wiki.ros.org/nav_core</url>\n\n \
-    \   <buildtool_depend>catkin</buildtool_depend>\n\n    <build_depend>std_msgs</build_depend>\n\
-    \    <build_depend>geometry_msgs</build_depend>\n    <build_depend>costmap_2d</build_depend>\n\
-    \    <build_depend>tf</build_depend>\n\n    <run_depend>std_msgs</run_depend>\n\
-    \    <run_depend>geometry_msgs</run_depend>\n    <run_depend>costmap_2d</run_depend>\n\
-    \    <run_depend>tf</run_depend>\n</package>\n\n\n", navfn: "<package>\n    <name>navfn</name>\n\
-    \    <version>1.14.0</version>\n    <description>\n\n        navfn provides a\
-    \ fast interpolated navigation function that can be used to create plans for\n\
-    \        a mobile base. The planner assumes a circular robot and operates on a\
-    \ costmap to find a\n        minimum cost plan from a start point to an end point\
-    \ in a grid. The navigation function is\n        computed with Dijkstra's algorithm,\
-    \ but support for an A* heuristic may also be added in the\n        near future.\
-    \ navfn also provides a ROS wrapper for the navfn planner that adheres to the\n\
-    \        nav_core::BaseGlobalPlanner interface specified in <a href=\"http://wiki.ros.org/nav_core\"\
-    >nav_core</a>.\n\n    </description>\n    <author>Kurt Konolige</author>\n   \
-    \ <author>Eitan Marder-Eppstein</author>\n    <author>contradict@gmail.com</author>\n\
-    \    <maintainer email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n   \
-    \ <maintainer email=\"mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n\
-    \    <license>BSD</license>\n    <url>http://wiki.ros.org/navfn</url>\n\n    <buildtool_depend\
-    \ version_gte=\"0.5.68\">catkin</buildtool_depend>\n\n    <build_depend>cmake_modules</build_depend>\n\
-    \    <build_depend>costmap_2d</build_depend>\n    <build_depend>geometry_msgs</build_depend>\n\
-    \    <build_depend>nav_core</build_depend>\n    <build_depend>nav_msgs</build_depend>\n\
-    \    <build_depend>netpbm</build_depend> <!-- This is a test dependency -->\n\
-    \    <build_depend>pcl_conversions</build_depend>\n    <build_depend>pcl_ros</build_depend>\n\
-    \    <build_depend>pluginlib</build_depend>\n    <build_depend>rosconsole</build_depend>\n\
-    \    <build_depend>roscpp</build_depend>\n    <build_depend>tf</build_depend>\n\
-    \    <build_depend>visualization_msgs</build_depend>\n\n    <run_depend>costmap_2d</run_depend>\n\
-    \    <run_depend>geometry_msgs</run_depend>\n    <run_depend>nav_core</run_depend>\n\
-    \    <run_depend>nav_msgs</run_depend>\n    <run_depend>pcl_conversions</run_depend>\n\
-    \    <run_depend>pcl_ros</run_depend>\n    <run_depend>pluginlib</run_depend>\n\
-    \    <run_depend>rosconsole</run_depend>\n    <run_depend>roscpp</run_depend>\n\
-    \    <run_depend>tf</run_depend>\n    <run_depend>visualization_msgs</run_depend>\n\
-    \n    <export>\n        <nav_core plugin=\"${prefix}/bgp_plugin.xml\" />\n   \
-    \ </export>\n</package>\n", navigation: "<package>\n    <name>navigation</name>\n\
-    \    <version>1.14.0</version>\n    <description>\n        A 2D navigation stack\
-    \ that takes in information from odometry, sensor\n        streams, and a goal\
-    \ pose and outputs safe velocity commands that are sent\n        to a mobile base.\n\
-    \    </description>\n    <maintainer email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n\
-    \    <maintainer email=\"mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n\
-    \    <author>contradict@gmail.com</author>\n    <author>Eitan Marder-Eppstein</author>\n\
-    \    <license>BSD,LGPL,LGPL (amcl)</license>  \n    <url>http://wiki.ros.org/navigation</url>\n\
-    \n    <buildtool_depend>catkin</buildtool_depend>\n\n    <run_depend>amcl</run_depend>\n\
-    \    <run_depend>carrot_planner</run_depend>\n    <run_depend>dwa_local_planner</run_depend>\n\
-    \    <run_depend>move_base</run_depend>\n    <run_depend>nav_core</run_depend>\n\
-    \    <run_depend>robot_pose_ekf</run_depend>\n    <run_depend>base_local_planner</run_depend>\n\
-    \    <run_depend>clear_costmap_recovery</run_depend>\n    <run_depend>fake_localization</run_depend>\n\
-    \    <run_depend>global_planner</run_depend>\n    <run_depend>move_base_msgs</run_depend>\n\
-    \    <run_depend>navfn</run_depend>\n    <run_depend>rotate_recovery</run_depend>\n\
-    \    <run_depend>costmap_2d</run_depend>\n    <run_depend>map_server</run_depend>\n\
-    \    <run_depend>move_slow_and_clear</run_depend>\n    <run_depend>voxel_grid</run_depend>\n\
-    \n    <export>\n        <metapackage/>\n    </export>\n</package>\n", robot_pose_ekf: "<package>\n\
-    \    <name>robot_pose_ekf</name>\n    <version>1.14.0</version>\n    <description>\n\
-    \n        The Robot Pose EKF package is used to estimate the 3D pose of a robot,\
-    \ based on (partial) pose measurements coming from different sources. It uses\
-    \ an extended Kalman filter with a 6D model (3D position and 3D orientation) to\
-    \ combine measurements from wheel odometry, IMU sensor and visual odometry. The\
-    \ basic idea is to offer loosely coupled integration with different sensors, where\
-    \ sensor signals are received as ROS messages.\n\n    </description>\n    <author>Wim\
-    \ Meeussen</author>\n    <author>contradict@gmail.com</author>\n    <maintainer\
-    \ email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n    <maintainer email=\"\
-    mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n    <license>BSD</license>\n\
-    \    <url>http://wiki.ros.org/robot_pose_ekf</url>\n\n    <buildtool_depend version_gte=\"\
-    0.5.68\">catkin</buildtool_depend>\n\n    <build_depend>roscpp</build_depend>\n\
-    \    <build_depend>rostest</build_depend>\n    <build_depend>bfl</build_depend>\n\
-    \    <build_depend>std_msgs</build_depend>\n    <build_depend>geometry_msgs</build_depend>\n\
-    \    <build_depend>sensor_msgs</build_depend>\n    <build_depend>nav_msgs</build_depend>\n\
-    \    <build_depend>tf</build_depend>\n\n    <run_depend>roscpp</run_depend>\n\
-    \    <run_depend>rostest</run_depend>\n    <run_depend>bfl</run_depend>\n    <run_depend>std_msgs</run_depend>\n\
-    \    <run_depend>geometry_msgs</run_depend>\n    <run_depend>sensor_msgs</run_depend>\n\
-    \    <run_depend>nav_msgs</run_depend>\n    <run_depend>tf</run_depend>\n\n  \
-    \  <test_depend>rosbag</test_depend>\n</package>\n", rotate_recovery: "<package>\n\
-    \    <name>rotate_recovery</name>\n    <version>1.14.0</version>\n    <description>\n\
-    \n        This package provides a recovery behavior for the navigation stack that\
-    \ attempts to clear space by performing a 360 degree rotation of the robot.\n\n\
-    \    </description>\n    <author>Eitan Marder-Eppstein</author>\n    <author>contradict@gmail.com</author>\n\
-    \    <maintainer email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n   \
-    \ <maintainer email=\"mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n\
-    \    <license>BSD</license>\n    <url>http://wiki.ros.org/rotate_recovery</url>\n\
-    \n    <buildtool_depend>catkin</buildtool_depend>\n\n    <build_depend>cmake_modules</build_depend>\n\
-    \    <build_depend>roscpp</build_depend>\n    <build_depend>tf</build_depend>\n\
-    \    <build_depend>costmap_2d</build_depend>\n    <build_depend>nav_core</build_depend>\n\
-    \    <build_depend>pluginlib</build_depend>\n    <build_depend>eigen</build_depend>\n\
-    \    <build_depend>base_local_planner</build_depend>\n\n    <run_depend>roscpp</run_depend>\n\
-    \    <run_depend>tf</run_depend>\n    <run_depend>costmap_2d</run_depend>\n  \
-    \  <run_depend>nav_core</run_depend>\n    <run_depend>pluginlib</run_depend>\n\
-    \    <run_depend>eigen</run_depend>\n\n\n    <export>\n        <nav_core plugin=\"\
-    ${prefix}/rotate_plugin.xml\" />\n    </export>\n\n</package>\n", voxel_grid: "<package>\n\
-    \    <name>voxel_grid</name>\n    <version>1.14.0</version>\n    <description>\n\
-    \n        voxel_grid provides an implementation of an efficient 3D voxel grid.\
-    \ The occupancy grid can support 3 different representations for the state of\
-    \ a cell: marked, free, or unknown. Due to the underlying implementation relying\
-    \ on bitwise and and or integer operations, the voxel grid only supports 16 different\
-    \ levels per voxel column. However, this limitation yields raytracing and cell\
-    \ marking performance in the grid comparable to standard 2D structures making\
-    \ it quite fast compared to most 3D structures.\n\n    </description>\n    <author>Eitan\
-    \ Marder-Eppstein, Eric Berger</author>\n    <author>contradict@gmail.com</author>\n\
-    \    <maintainer email=\"davidvlu@gmail.com\">David V. Lu!!</maintainer>\n   \
-    \ <maintainer email=\"mferguson@fetchrobotics.com\">Michael Ferguson</maintainer>\n\
-    \    <license>BSD</license>\n    <url>http://wiki.ros.org/voxel_grid</url>\n\n\
-    \    <buildtool_depend version_gte=\"0.5.68\">catkin</buildtool_depend>\n\n  \
-    \  <build_depend>roscpp</build_depend>\n\n    <run_depend>roscpp</run_depend>\n\
-    </package>\n"}
+release_package_xmls: {amcl: '<?xml version="1.0" encoding="utf-8"?><package><name>amcl</name><version>1.14.0</version><description><p>amcl
+    is a probabilistic localization system for a robot moving in 2D. It implements
+    the adaptive (or KLD-sampling) Monte Carlo localization approach (as described
+    by Dieter Fox), which uses a particle filter to track the pose of a robot against
+    a known map.</p><p>This node is derived, with thanks, from Andrew Howard''s excellent
+    ''amcl'' Player driver.</p></description><url>http://wiki.ros.org/amcl</url><author>Brian
+    P. Gerkey</author><author>contradict@gmail.com</author><maintainer email="davidvlu@gmail.com">David
+    V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael Ferguson</maintainer><license>LGPL</license><buildtool_depend>catkin</buildtool_depend><build_depend>rosbag</build_depend><build_depend>dynamic_reconfigure</build_depend><build_depend>message_filters</build_depend><build_depend>nav_msgs</build_depend><build_depend>roscpp</build_depend><build_depend>rostest</build_depend><build_depend>std_srvs</build_depend><build_depend>tf</build_depend><run_depend>rosbag</run_depend><run_depend>roscpp</run_depend><run_depend>dynamic_reconfigure</run_depend><run_depend>tf</run_depend><run_depend>nav_msgs</run_depend><test_depend>map_server</test_depend></package>',
+  base_local_planner: '<?xml version="1.0" encoding="utf-8"?><package><name>base_local_planner</name><version>1.14.0</version><description>This
+    package provides implementations of the Trajectory Rollout and Dynamic Window
+    approaches to local robot navigation on a plane. Given a plan to follow and a
+    costmap, the controller produces velocity commands to send to a mobile base. This
+    package supports both holonomic and non-holonomic robots, any robot footprint
+    that can be represented as a convex polygon or circle, and exposes its configuration
+    as ROS parameters that can be set in a launch file. This package''s ROS wrapper
+    adheres to the BaseLocalPlanner interface specified in the<a href="http://wiki.ros.org/nav_core">nav_core</a>package.</description><author>Eitan
+    Marder-Eppstein</author><author>Eric Perko</author><author>contradict@gmail.com</author><maintainer
+    email="davidvlu@gmail.com">David V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael
+    Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/base_local_planner</url><buildtool_depend
+    version_gte="0.5.68">catkin</buildtool_depend><build_depend>cmake_modules</build_depend><build_depend>std_msgs</build_depend><build_depend>nav_msgs</build_depend><build_depend>rosconsole</build_depend><build_depend>roscpp</build_depend><build_depend>tf</build_depend><build_depend>rospy</build_depend><build_depend>pluginlib</build_depend><build_depend>costmap_2d</build_depend><build_depend>voxel_grid</build_depend><build_depend>angles</build_depend><build_depend>visualization_msgs</build_depend><build_depend>geometry_msgs</build_depend><build_depend>nav_core</build_depend><build_depend>pcl_conversions</build_depend><build_depend>pcl_ros</build_depend><build_depend>eigen</build_depend><build_depend>dynamic_reconfigure</build_depend><build_depend>message_generation</build_depend><run_depend>std_msgs</run_depend><run_depend>nav_msgs</run_depend><run_depend>rosconsole</run_depend><run_depend>roscpp</run_depend><run_depend>tf</run_depend><run_depend>rospy</run_depend><run_depend>pluginlib</run_depend><run_depend>costmap_2d</run_depend><run_depend>voxel_grid</run_depend><run_depend>angles</run_depend><run_depend>visualization_msgs</run_depend><run_depend>geometry_msgs</run_depend><run_depend>nav_core</run_depend><run_depend>pcl_ros</run_depend><run_depend>eigen</run_depend><run_depend>dynamic_reconfigure</run_depend><run_depend>message_generation</run_depend><export><nav_core
+    plugin="${prefix}/blp_plugin.xml"/></export></package>', carrot_planner: '<?xml
+    version="1.0" encoding="utf-8"?><package><name>carrot_planner</name><version>1.14.0</version><description>This
+    planner attempts to find a legal place to put a carrot for the robot to follow.
+    It does this by moving back along the vector between the robot and the goal point.</description><author>Eitan
+    Marder-Eppstein</author><author>Sachin Chitta</author><author>contradict@gmail.com</author><maintainer
+    email="davidvlu@gmail.com">David V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael
+    Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/carrot_planner</url><buildtool_depend>catkin</buildtool_depend><build_depend>roscpp</build_depend><build_depend>costmap_2d</build_depend><build_depend>pluginlib</build_depend><build_depend>nav_core</build_depend><build_depend>base_local_planner</build_depend><build_depend>tf</build_depend><build_depend>eigen</build_depend><run_depend>roscpp</run_depend><run_depend>costmap_2d</run_depend><run_depend>pluginlib</run_depend><run_depend>nav_core</run_depend><run_depend>base_local_planner</run_depend><run_depend>tf</run_depend><run_depend>eigen</run_depend><export><nav_core
+    plugin="${prefix}/bgp_plugin.xml"/></export></package>', clear_costmap_recovery: '<?xml
+    version="1.0" encoding="utf-8"?><package><name>clear_costmap_recovery</name><version>1.14.0</version><description>This
+    package provides a recovery behavior for the navigation stack that attempts to
+    clear space by reverting the costmaps used by the navigation stack to the static
+    map outside of a given area.</description><author>Eitan Marder-Eppstein</author><author>contradict@gmail.com</author><maintainer
+    email="davidvlu@gmail.com">David V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael
+    Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/clear_costmap_recovery</url><buildtool_depend>catkin</buildtool_depend><build_depend>cmake_modules</build_depend><build_depend>roscpp</build_depend><build_depend>tf</build_depend><build_depend>costmap_2d</build_depend><build_depend>nav_core</build_depend><build_depend>pluginlib</build_depend><build_depend>eigen</build_depend><run_depend>roscpp</run_depend><run_depend>tf</run_depend><run_depend>costmap_2d</run_depend><run_depend>nav_core</run_depend><run_depend>pluginlib</run_depend><run_depend>eigen</run_depend><export><nav_core
+    plugin="${prefix}/ccr_plugin.xml"/></export></package>', costmap_2d: '<?xml version="1.0"
+    encoding="utf-8"?><package><name>costmap_2d</name><version>1.14.0</version><description>This
+    package provides an implementation of a 2D costmap that takes in sensor data from
+    the world, builds a 2D or 3D occupancy grid of the data (depending on whether
+    a voxel based implementation is used), and inflates costs in a 2D costmap based
+    on the occupancy grid and a user specified inflation radius. This package also
+    provides support for map_server based initialization of a costmap, rolling window
+    based costmaps, and parameter based subscription to and configuration of sensor
+    topics.</description><author>Eitan Marder-Eppstein</author><author>David V. Lu!!</author><author>Dave
+    Hershberger</author><author>contradict@gmail.com</author><maintainer email="davidvlu@gmail.com">David
+    V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/costmap_2d</url><buildtool_depend>catkin</buildtool_depend><build_depend>cmake_modules</build_depend><build_depend>dynamic_reconfigure</build_depend><build_depend>geometry_msgs</build_depend><build_depend>laser_geometry</build_depend><build_depend>map_msgs</build_depend><build_depend>message_filters</build_depend><build_depend>message_generation</build_depend><build_depend>nav_msgs</build_depend><build_depend>pcl_conversions</build_depend><build_depend>pcl_ros</build_depend><build_depend>pluginlib</build_depend><build_depend>roscpp</build_depend><build_depend>rostest</build_depend><build_depend>sensor_msgs</build_depend><build_depend>std_msgs</build_depend><build_depend>tf</build_depend><build_depend>visualization_msgs</build_depend><build_depend>voxel_grid</build_depend><run_depend>dynamic_reconfigure</run_depend><run_depend>geometry_msgs</run_depend><run_depend>laser_geometry</run_depend><run_depend>map_msgs</run_depend><run_depend>message_filters</run_depend><run_depend>message_runtime</run_depend><run_depend>nav_msgs</run_depend><run_depend>pcl_conversions</run_depend><run_depend>pcl_ros</run_depend><run_depend>pluginlib</run_depend><run_depend>rosconsole</run_depend><run_depend>roscpp</run_depend><run_depend>rostest</run_depend><run_depend>sensor_msgs</run_depend><run_depend>std_msgs</run_depend><run_depend>tf</run_depend><run_depend>visualization_msgs</run_depend><run_depend>voxel_grid</run_depend><test_depend>map_server</test_depend><test_depend>rosbag</test_depend><export><costmap_2d
+    plugin="${prefix}/costmap_plugins.xml"/></export></package>', dwa_local_planner: '<?xml
+    version="1.0" encoding="utf-8"?><package><name>dwa_local_planner</name><version>1.14.0</version><description>This
+    package provides an implementation of the Dynamic Window Approach to local robot
+    navigation on a plane. Given a global plan to follow and a costmap, the local
+    planner produces velocity commands to send to a mobile base. This package supports
+    any robot who''s footprint can be represented as a convex polygon or cicrle, and
+    exposes its configuration as ROS parameters that can be set in a launch file.
+    The parameters for this planner are also dynamically reconfigurable. This package''s
+    ROS wrapper adheres to the BaseLocalPlanner interface specified in the<a href="http://wiki.ros.org/nav_core">nav_core</a>package.</description><author>Eitan
+    Marder-Eppstein</author><author>contradict@gmail.com</author><maintainer email="davidvlu@gmail.com">David
+    V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/dwa_local_planner</url><buildtool_depend>catkin</buildtool_depend><build_depend>base_local_planner</build_depend><build_depend>cmake_modules</build_depend><build_depend>costmap_2d</build_depend><build_depend>dynamic_reconfigure</build_depend><build_depend>eigen</build_depend><build_depend>nav_core</build_depend><build_depend>nav_msgs</build_depend><build_depend>pluginlib</build_depend><build_depend>pcl_conversions</build_depend><build_depend>roscpp</build_depend><build_depend>tf</build_depend><run_depend>base_local_planner</run_depend><run_depend>costmap_2d</run_depend><run_depend>dynamic_reconfigure</run_depend><run_depend>eigen</run_depend><run_depend>nav_core</run_depend><run_depend>nav_msgs</run_depend><run_depend>pluginlib</run_depend><run_depend>roscpp</run_depend><run_depend>tf</run_depend><export><nav_core
+    plugin="${prefix}/blp_plugin.xml"/></export></package>', fake_localization: '<?xml
+    version="1.0" encoding="utf-8"?><package><name>fake_localization</name><version>1.14.0</version><description>A
+    ROS node that simply forwards odometry information.</description><author>Ioan
+    A. Sucan</author><author>contradict@gmail.com</author><maintainer email="davidvlu@gmail.com">David
+    V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/fake_localization</url><buildtool_depend>catkin</buildtool_depend><build_depend>angles</build_depend><build_depend>roscpp</build_depend><build_depend>rosconsole</build_depend><build_depend>nav_msgs</build_depend><build_depend>geometry_msgs</build_depend><build_depend>tf</build_depend><build_depend>message_filters</build_depend><build_depend>rospy</build_depend><run_depend>roscpp</run_depend><run_depend>rosconsole</run_depend><run_depend>nav_msgs</run_depend><run_depend>geometry_msgs</run_depend><run_depend>tf</run_depend><run_depend>message_filters</run_depend><run_depend>rospy</run_depend></package>',
+  global_planner: '<?xml version="1.0" encoding="utf-8"?><package><name>global_planner</name><version>1.14.0</version><description>A
+    path planner library and node.</description><maintainer email="davidvlu@gmail.com">David
+    V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael Ferguson</maintainer><license>BSD</license><author>David
+    Lu!!</author><url>http://wiki.ros.org/global_planner</url><buildtool_depend>catkin</buildtool_depend><build_depend>angles</build_depend><build_depend>costmap_2d</build_depend><build_depend>dynamic_reconfigure</build_depend><build_depend>geometry_msgs</build_depend><build_depend>nav_core</build_depend><build_depend>nav_msgs</build_depend><build_depend>navfn</build_depend><build_depend>pluginlib</build_depend><build_depend>roscpp</build_depend><build_depend>tf</build_depend><run_depend>costmap_2d</run_depend><run_depend>dynamic_reconfigure</run_depend><run_depend>geometry_msgs</run_depend><run_depend>nav_core</run_depend><run_depend>nav_msgs</run_depend><run_depend>navfn</run_depend><run_depend>pluginlib</run_depend><run_depend>roscpp</run_depend><run_depend>tf</run_depend><export><nav_core
+    plugin="${prefix}/bgp_plugin.xml"/></export></package>', map_server: '<?xml version="1.0"
+    encoding="utf-8"?><package><name>map_server</name><version>1.14.0</version><description>map_server
+    provides the<tt>map_server</tt>ROS<a href="http://www.ros.org/wiki/Nodes">Node</a>,
+    which offers map data as a ROS<a href="http://www.ros.org/wiki/Services">Service</a>.
+    It also provides the<tt>map_saver</tt>command-line utility, which allows dynamically
+    generated maps to be saved to file.</description><author>Brian Gerkey, Tony Pratkanis</author><author>contradict@gmail.com</author><maintainer
+    email="davidvlu@gmail.com">David V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael
+    Ferguson</maintainer><url>http://wiki.ros.org/map_server</url><license>BSD</license><buildtool_depend
+    version_gte="0.5.68">catkin</buildtool_depend><build_depend>nav_msgs</build_depend><build_depend>roscpp</build_depend><build_depend>rostest</build_depend><build_depend>sdl-image</build_depend><build_depend>tf</build_depend><build_depend>yaml-cpp</build_depend><run_depend>nav_msgs</run_depend><run_depend>roscpp</run_depend><run_depend>rostest</run_depend><run_depend>sdl-image</run_depend><run_depend>tf</run_depend><run_depend>yaml-cpp</run_depend><test_depend>rospy</test_depend></package>',
+  move_base: '<?xml version="1.0" encoding="utf-8"?><package><name>move_base</name><version>1.14.0</version><description>The
+    move_base package provides an implementation of an action (see the<a href="http://www.ros.org/wiki/actionlib">actionlib</a>package)
+    that, given a goal in the world, will attempt to reach it with a mobile base.
+    The move_base node links together a global and local planner to accomplish its
+    global navigation task. It supports any global planner adhering to the nav_core::BaseGlobalPlanner
+    interface specified in the<a href="http://www.ros.org/wiki/nav_core">nav_core</a>package
+    and any local planner adhering to the nav_core::BaseLocalPlanner interface specified
+    in the<a href="http://www.ros.org/wiki/nav_core">nav_core</a>package. The move_base
+    node also maintains two costmaps, one for the global planner, and one for a local
+    planner (see the<a href="http://www.ros.org/wiki/costmap_2d">costmap_2d</a>package)
+    that are used to accomplish navigation tasks.</description><author>Eitan Marder-Eppstein</author><author>contradict@gmail.com</author><maintainer
+    email="davidvlu@gmail.com">David V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael
+    Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/move_base</url><buildtool_depend>catkin</buildtool_depend><build_depend>actionlib</build_depend><build_depend>cmake_modules</build_depend><build_depend>costmap_2d</build_depend><build_depend>dynamic_reconfigure</build_depend><build_depend>geometry_msgs</build_depend><build_depend>message_generation</build_depend><build_depend>move_base_msgs</build_depend><build_depend>nav_core</build_depend><build_depend>nav_msgs</build_depend><build_depend>pluginlib</build_depend><build_depend>roscpp</build_depend><build_depend>rospy</build_depend><build_depend>std_msgs</build_depend><build_depend>std_srvs</build_depend><build_depend>tf</build_depend><build_depend>visualization_msgs</build_depend><build_depend>base_local_planner</build_depend><build_depend>clear_costmap_recovery</build_depend><build_depend>navfn</build_depend><build_depend>rotate_recovery</build_depend><run_depend>base_local_planner</run_depend><run_depend>clear_costmap_recovery</run_depend><run_depend>navfn</run_depend><run_depend>rotate_recovery</run_depend><run_depend>actionlib</run_depend><run_depend>costmap_2d</run_depend><run_depend>dynamic_reconfigure</run_depend><run_depend>geometry_msgs</run_depend><run_depend>message_runtime</run_depend><run_depend>move_base_msgs</run_depend><run_depend>nav_core</run_depend><run_depend>nav_msgs</run_depend><run_depend>pluginlib</run_depend><run_depend>roscpp</run_depend><run_depend>rospy</run_depend><run_depend>std_msgs</run_depend><run_depend>std_srvs</run_depend><run_depend>tf</run_depend><run_depend>visualization_msgs</run_depend></package>',
+  move_slow_and_clear: '<?xml version="1.0" encoding="utf-8"?><package><name>move_slow_and_clear</name><version>1.14.0</version><description>move_slow_and_clear</description><author>Eitan
+    Marder-Eppstein</author><author>contradict@gmail.com</author><maintainer email="davidvlu@gmail.com">David
+    V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/move_slow_and_clear</url><buildtool_depend>catkin</buildtool_depend><build_depend>cmake_modules</build_depend><build_depend>roscpp</build_depend><build_depend>nav_core</build_depend><build_depend>costmap_2d</build_depend><build_depend>geometry_msgs</build_depend><build_depend>pluginlib</build_depend><build_depend>pluginlib</build_depend><run_depend>roscpp</run_depend><run_depend>nav_core</run_depend><run_depend>costmap_2d</run_depend><run_depend>geometry_msgs</run_depend><run_depend>pluginlib</run_depend><run_depend>pluginlib</run_depend><export><nav_core
+    plugin="${prefix}/recovery_plugin.xml"/></export></package>', nav_core: '<?xml
+    version="1.0" encoding="utf-8"?><package><name>nav_core</name><version>1.14.0</version><description>This
+    package provides common interfaces for navigation specific robot actions. Currently,
+    this package provides the BaseGlobalPlanner, BaseLocalPlanner, and RecoveryBehavior
+    interfaces, which can be used to build actions that can easily swap their planner,
+    local controller, or recovery behavior for new versions adhering to the same interface.</description><author>Eitan
+    Marder-Eppstein</author><author>contradict@gmail.com</author><maintainer email="davidvlu@gmail.com">David
+    V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/nav_core</url><buildtool_depend>catkin</buildtool_depend><build_depend>std_msgs</build_depend><build_depend>geometry_msgs</build_depend><build_depend>costmap_2d</build_depend><build_depend>tf</build_depend><run_depend>std_msgs</run_depend><run_depend>geometry_msgs</run_depend><run_depend>costmap_2d</run_depend><run_depend>tf</run_depend></package>',
+  navfn: '<?xml version="1.0" encoding="utf-8"?><package><name>navfn</name><version>1.14.0</version><description>navfn
+    provides a fast interpolated navigation function that can be used to create plans
+    for a mobile base. The planner assumes a circular robot and operates on a costmap
+    to find a minimum cost plan from a start point to an end point in a grid. The
+    navigation function is computed with Dijkstra''s algorithm, but support for an
+    A* heuristic may also be added in the near future. navfn also provides a ROS wrapper
+    for the navfn planner that adheres to the nav_core::BaseGlobalPlanner interface
+    specified in<a href="http://wiki.ros.org/nav_core">nav_core</a>.</description><author>Kurt
+    Konolige</author><author>Eitan Marder-Eppstein</author><author>contradict@gmail.com</author><maintainer
+    email="davidvlu@gmail.com">David V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael
+    Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/navfn</url><buildtool_depend
+    version_gte="0.5.68">catkin</buildtool_depend><build_depend>cmake_modules</build_depend><build_depend>costmap_2d</build_depend><build_depend>geometry_msgs</build_depend><build_depend>nav_core</build_depend><build_depend>nav_msgs</build_depend><build_depend>netpbm</build_depend><build_depend>pcl_conversions</build_depend><build_depend>pcl_ros</build_depend><build_depend>pluginlib</build_depend><build_depend>rosconsole</build_depend><build_depend>roscpp</build_depend><build_depend>tf</build_depend><build_depend>visualization_msgs</build_depend><run_depend>costmap_2d</run_depend><run_depend>geometry_msgs</run_depend><run_depend>nav_core</run_depend><run_depend>nav_msgs</run_depend><run_depend>pcl_conversions</run_depend><run_depend>pcl_ros</run_depend><run_depend>pluginlib</run_depend><run_depend>rosconsole</run_depend><run_depend>roscpp</run_depend><run_depend>tf</run_depend><run_depend>visualization_msgs</run_depend><export><nav_core
+    plugin="${prefix}/bgp_plugin.xml"/></export></package>', navigation: '<?xml version="1.0"
+    encoding="utf-8"?><package><name>navigation</name><version>1.14.0</version><description>A
+    2D navigation stack that takes in information from odometry, sensor streams, and
+    a goal pose and outputs safe velocity commands that are sent to a mobile base.</description><maintainer
+    email="davidvlu@gmail.com">David V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael
+    Ferguson</maintainer><author>contradict@gmail.com</author><author>Eitan Marder-Eppstein</author><license>BSD,LGPL,LGPL
+    (amcl)</license><url>http://wiki.ros.org/navigation</url><buildtool_depend>catkin</buildtool_depend><run_depend>amcl</run_depend><run_depend>carrot_planner</run_depend><run_depend>dwa_local_planner</run_depend><run_depend>move_base</run_depend><run_depend>nav_core</run_depend><run_depend>robot_pose_ekf</run_depend><run_depend>base_local_planner</run_depend><run_depend>clear_costmap_recovery</run_depend><run_depend>fake_localization</run_depend><run_depend>global_planner</run_depend><run_depend>move_base_msgs</run_depend><run_depend>navfn</run_depend><run_depend>rotate_recovery</run_depend><run_depend>costmap_2d</run_depend><run_depend>map_server</run_depend><run_depend>move_slow_and_clear</run_depend><run_depend>voxel_grid</run_depend><export><metapackage/></export></package>',
+  robot_pose_ekf: '<?xml version="1.0" encoding="utf-8"?><package><name>robot_pose_ekf</name><version>1.14.0</version><description>The
+    Robot Pose EKF package is used to estimate the 3D pose of a robot, based on (partial)
+    pose measurements coming from different sources. It uses an extended Kalman filter
+    with a 6D model (3D position and 3D orientation) to combine measurements from
+    wheel odometry, IMU sensor and visual odometry. The basic idea is to offer loosely
+    coupled integration with different sensors, where sensor signals are received
+    as ROS messages.</description><author>Wim Meeussen</author><author>contradict@gmail.com</author><maintainer
+    email="davidvlu@gmail.com">David V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael
+    Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/robot_pose_ekf</url><buildtool_depend
+    version_gte="0.5.68">catkin</buildtool_depend><build_depend>roscpp</build_depend><build_depend>rostest</build_depend><build_depend>bfl</build_depend><build_depend>std_msgs</build_depend><build_depend>geometry_msgs</build_depend><build_depend>sensor_msgs</build_depend><build_depend>nav_msgs</build_depend><build_depend>tf</build_depend><run_depend>roscpp</run_depend><run_depend>rostest</run_depend><run_depend>bfl</run_depend><run_depend>std_msgs</run_depend><run_depend>geometry_msgs</run_depend><run_depend>sensor_msgs</run_depend><run_depend>nav_msgs</run_depend><run_depend>tf</run_depend><test_depend>rosbag</test_depend></package>',
+  rotate_recovery: '<?xml version="1.0" encoding="utf-8"?><package><name>rotate_recovery</name><version>1.14.0</version><description>This
+    package provides a recovery behavior for the navigation stack that attempts to
+    clear space by performing a 360 degree rotation of the robot.</description><author>Eitan
+    Marder-Eppstein</author><author>contradict@gmail.com</author><maintainer email="davidvlu@gmail.com">David
+    V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/rotate_recovery</url><buildtool_depend>catkin</buildtool_depend><build_depend>cmake_modules</build_depend><build_depend>roscpp</build_depend><build_depend>tf</build_depend><build_depend>costmap_2d</build_depend><build_depend>nav_core</build_depend><build_depend>pluginlib</build_depend><build_depend>eigen</build_depend><build_depend>base_local_planner</build_depend><run_depend>roscpp</run_depend><run_depend>tf</run_depend><run_depend>costmap_2d</run_depend><run_depend>nav_core</run_depend><run_depend>pluginlib</run_depend><run_depend>eigen</run_depend><export><nav_core
+    plugin="${prefix}/rotate_plugin.xml"/></export></package>', voxel_grid: '<?xml
+    version="1.0" encoding="utf-8"?><package><name>voxel_grid</name><version>1.14.0</version><description>voxel_grid
+    provides an implementation of an efficient 3D voxel grid. The occupancy grid can
+    support 3 different representations for the state of a cell: marked, free, or
+    unknown. Due to the underlying implementation relying on bitwise and and or integer
+    operations, the voxel grid only supports 16 different levels per voxel column.
+    However, this limitation yields raytracing and cell marking performance in the
+    grid comparable to standard 2D structures making it quite fast compared to most
+    3D structures.</description><author>Eitan Marder-Eppstein, Eric Berger</author><author>contradict@gmail.com</author><maintainer
+    email="davidvlu@gmail.com">David V. Lu!!</maintainer><maintainer email="mferguson@fetchrobotics.com">Michael
+    Ferguson</maintainer><license>BSD</license><url>http://wiki.ros.org/voxel_grid</url><buildtool_depend
+    version_gte="0.5.68">catkin</buildtool_depend><build_depend>roscpp</build_depend><run_depend>roscpp</run_depend></package>'}
+source_repo_package_xmls: {}
 type: cache
 version: 2

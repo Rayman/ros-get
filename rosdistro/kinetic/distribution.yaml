@@ -41,11 +41,21 @@ repositories:
       test_pull_requests: true
       type: git
       url: https://github.com/tue-robotics/navigation.git
-      version: kinetic-devel
+      version: hydro-devel
     status: maintained
   tue_config:
     source:
       url: http://github.com/tue-robotics/tue_config.git
+      version: master
+  hmi:
+    release:
+      packages:
+      - hmi
+      - hmi_msgs
+      - hmi_server
+      url: https://github.com/tue-robotics/hmi-release.git
+    source:
+      url: http://github.com/tue-robotics/hmi.git
       version: master
   rgbd:
     source:
