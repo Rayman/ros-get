@@ -1,15 +1,63 @@
 #!/usr/bin/env python
+import os
+from argparse import ArgumentParser
 
 from rosdistro import get_cached_distribution, get_index, get_index_url
 from rosdistro.dependency_walker import SourceDependencyWalker
+from rosinstall_generator.generator import generate_rosinstall_for_repos
 
-distroname = 'tuekinetic'
-index = get_index(get_index_url())
-distro = get_cached_distribution(index, distroname)
 
-walker = SourceDependencyWalker(distro)
-dependencies = walker.get_recursive_depends('navigation', ['buildtool', 'build', 'run', 'test'],
-											ros_packages_only=True, ignore_pkgs=None, limit_depth=None)
+def install(pkgs):
+    # TODO: get distro from environment
+    distroname = 'tuekinetic'
+    workspace = os.getenv('TUE_WORKSPACE', None)
 
-for dep in dependencies:
-	print dep
+    index = get_index(get_index_url())
+    distro = get_cached_distribution(index, distroname)
+
+    walker = SourceDependencyWalker(distro)
+    packages = set()
+
+    for package in pkgs:
+        packages |= walker.get_recursive_depends(package, ['buildtool', 'build', 'run', 'test'],
+                                                 ros_packages_only=True, ignore_pkgs=packages)
+
+    repos = {}
+    for package in packages:
+        repository_name = distro.source_packages[package].repository_name
+        repository = distro.repositories[repository_name]
+
+        # TODO: check duplicates
+        repos[repository_name] = repository
+
+    print generate_rosinstall_for_repos(repos, version_tag=False, tar=False)
+
+
+def not_implemented(args):
+    raise NotImplementedError()
+
+
+if __name__ == '__main__':
+    parser = ArgumentParser()
+    subparsers = parser.add_subparsers()
+
+    subparser = subparsers.add_parser('install', help='install packages')
+    subparser.set_defaults(func=install)
+    subparser.add_argument('pkgs', nargs='+', metavar='pkg')
+
+    subparser = subparsers.add_parser('update', help='update list of available packages')
+    subparser.set_defaults(func=not_implemented)
+
+    subparser = subparsers.add_parser('upgrade', help='upgrade the workspace by installing/upgrading packages')
+    subparser.set_defaults(func=not_implemented)
+
+    subparser = subparsers.add_parser('remove', help='remove packages')
+    subparser.set_defaults(func=not_implemented)
+
+    subparser = subparsers.add_parser('autoremove', help='remove automatically all unused packages')
+    subparser.set_defaults(func=not_implemented)
+
+    args = parser.parse_args()
+    func = args.func
+    del args.func
+    exit(func(**vars(args)))
