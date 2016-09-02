@@ -33,6 +33,13 @@ astra_launch: {debian: ros-kinetic-astra-launch, fedora: ros-kinetic-astra-launc
   ubuntu: ros-kinetic-astra-launch}
 ati_ft_sensor: {debian: ros-kinetic-ati-ft-sensor, fedora: ros-kinetic-ati-ft-sensor,
   ubuntu: ros-kinetic-ati-ft-sensor}
+audio_capture: {debian: ros-kinetic-audio-capture, fedora: ros-kinetic-audio-capture,
+  ubuntu: ros-kinetic-audio-capture}
+audio_common: {debian: ros-kinetic-audio-common, fedora: ros-kinetic-audio-common,
+  ubuntu: ros-kinetic-audio-common}
+audio_common_msgs: {debian: ros-kinetic-audio-common-msgs, fedora: ros-kinetic-audio-common-msgs,
+  ubuntu: ros-kinetic-audio-common-msgs}
+audio_play: {debian: ros-kinetic-audio-play, fedora: ros-kinetic-audio-play, ubuntu: ros-kinetic-audio-play}
 auv_msgs: {debian: ros-kinetic-auv-msgs, fedora: ros-kinetic-auv-msgs, ubuntu: ros-kinetic-auv-msgs}
 axcli: {debian: ros-kinetic-axcli, fedora: ros-kinetic-axcli, ubuntu: ros-kinetic-axcli}
 barrett_hand: {debian: ros-kinetic-barrett-hand, fedora: ros-kinetic-barrett-hand,
@@ -80,6 +87,7 @@ carrot_planner: {debian: ros-kinetic-carrot-planner, fedora: ros-kinetic-carrot-
 cartesian_msgs: {debian: ros-kinetic-cartesian-msgs, fedora: ros-kinetic-cartesian-msgs,
   ubuntu: ros-kinetic-cartesian-msgs}
 catkin: {debian: ros-kinetic-catkin, fedora: ros-kinetic-catkin, ubuntu: ros-kinetic-catkin}
+catkin_pip: {debian: ros-kinetic-catkin-pip, fedora: ros-kinetic-catkin-pip, ubuntu: ros-kinetic-catkin-pip}
 cl_tf: {debian: ros-kinetic-cl-tf, fedora: ros-kinetic-cl-tf, ubuntu: ros-kinetic-cl-tf}
 cl_tf2: {debian: ros-kinetic-cl-tf2, fedora: ros-kinetic-cl-tf2, ubuntu: ros-kinetic-cl-tf2}
 cl_transforms: {debian: ros-kinetic-cl-transforms, fedora: ros-kinetic-cl-transforms,
@@ -141,6 +149,8 @@ create_driver: {debian: ros-kinetic-create-driver, fedora: ros-kinetic-create-dr
   ubuntu: ros-kinetic-create-driver}
 create_node: {debian: ros-kinetic-create-node, fedora: ros-kinetic-create-node, ubuntu: ros-kinetic-create-node}
 cv_bridge: {debian: ros-kinetic-cv-bridge, fedora: ros-kinetic-cv-bridge, ubuntu: ros-kinetic-cv-bridge}
+default_cfg_fkie: {debian: ros-kinetic-default-cfg-fkie, fedora: ros-kinetic-default-cfg-fkie,
+  ubuntu: ros-kinetic-default-cfg-fkie}
 depth_image_proc: {debian: ros-kinetic-depth-image-proc, fedora: ros-kinetic-depth-image-proc,
   ubuntu: ros-kinetic-depth-image-proc}
 depthimage_to_laserscan: {debian: ros-kinetic-depthimage-to-laserscan, fedora: ros-kinetic-depthimage-to-laserscan,
@@ -305,6 +315,8 @@ global_planner: {debian: ros-kinetic-global-planner, fedora: ros-kinetic-global-
   ubuntu: ros-kinetic-global-planner}
 gmapping: {debian: ros-kinetic-gmapping, fedora: ros-kinetic-gmapping, ubuntu: ros-kinetic-gmapping}
 graph_msgs: {debian: ros-kinetic-graph-msgs, fedora: ros-kinetic-graph-msgs, ubuntu: ros-kinetic-graph-msgs}
+grasping_msgs: {debian: ros-kinetic-grasping-msgs, fedora: ros-kinetic-grasping-msgs,
+  ubuntu: ros-kinetic-grasping-msgs}
 grid_map: {debian: ros-kinetic-grid-map, fedora: ros-kinetic-grid-map, ubuntu: ros-kinetic-grid-map}
 grid_map_core: {debian: ros-kinetic-grid-map-core, fedora: ros-kinetic-grid-map-core,
   ubuntu: ros-kinetic-grid-map-core}
@@ -319,6 +331,8 @@ grid_map_msgs: {debian: ros-kinetic-grid-map-msgs, fedora: ros-kinetic-grid-map-
   ubuntu: ros-kinetic-grid-map-msgs}
 grid_map_ros: {debian: ros-kinetic-grid-map-ros, fedora: ros-kinetic-grid-map-ros,
   ubuntu: ros-kinetic-grid-map-ros}
+grid_map_rviz_plugin: {debian: ros-kinetic-grid-map-rviz-plugin, fedora: ros-kinetic-grid-map-rviz-plugin,
+  ubuntu: ros-kinetic-grid-map-rviz-plugin}
 grid_map_visualization: {debian: ros-kinetic-grid-map-visualization, fedora: ros-kinetic-grid-map-visualization,
   ubuntu: ros-kinetic-grid-map-visualization}
 gripper_action_controller: {debian: ros-kinetic-gripper-action-controller, fedora: ros-kinetic-gripper-action-controller,
@@ -573,6 +587,10 @@ marti_sensor_msgs: {debian: ros-kinetic-marti-sensor-msgs, fedora: ros-kinetic-m
   ubuntu: ros-kinetic-marti-sensor-msgs}
 marti_visualization_msgs: {debian: ros-kinetic-marti-visualization-msgs, fedora: ros-kinetic-marti-visualization-msgs,
   ubuntu: ros-kinetic-marti-visualization-msgs}
+master_discovery_fkie: {debian: ros-kinetic-master-discovery-fkie, fedora: ros-kinetic-master-discovery-fkie,
+  ubuntu: ros-kinetic-master-discovery-fkie}
+master_sync_fkie: {debian: ros-kinetic-master-sync-fkie, fedora: ros-kinetic-master-sync-fkie,
+  ubuntu: ros-kinetic-master-sync-fkie}
 mavlink: {debian: ros-kinetic-mavlink, fedora: ros-kinetic-mavlink, ubuntu: ros-kinetic-mavlink}
 mavros: {debian: ros-kinetic-mavros, fedora: ros-kinetic-mavros, ubuntu: ros-kinetic-mavros}
 mavros_extras: {debian: ros-kinetic-mavros-extras, fedora: ros-kinetic-mavros-extras,
@@ -607,7 +625,17 @@ move_base_msgs: {debian: ros-kinetic-move-base-msgs, fedora: ros-kinetic-move-ba
 move_slow_and_clear: {debian: ros-kinetic-move-slow-and-clear, fedora: ros-kinetic-move-slow-and-clear,
   ubuntu: ros-kinetic-move-slow-and-clear}
 moveit_msgs: {debian: ros-kinetic-moveit-msgs, fedora: ros-kinetic-moveit-msgs, ubuntu: ros-kinetic-moveit-msgs}
+moveit_python: {debian: ros-kinetic-moveit-python, fedora: ros-kinetic-moveit-python,
+  ubuntu: ros-kinetic-moveit-python}
+moveit_resources: {debian: ros-kinetic-moveit-resources, fedora: ros-kinetic-moveit-resources,
+  ubuntu: ros-kinetic-moveit-resources}
 mrpt_bridge: {debian: ros-kinetic-mrpt-bridge, fedora: ros-kinetic-mrpt-bridge, ubuntu: ros-kinetic-mrpt-bridge}
+mrpt_ekf_slam_2d: {debian: ros-kinetic-mrpt-ekf-slam-2d, fedora: ros-kinetic-mrpt-ekf-slam-2d,
+  ubuntu: ros-kinetic-mrpt-ekf-slam-2d}
+mrpt_ekf_slam_3d: {debian: ros-kinetic-mrpt-ekf-slam-3d, fedora: ros-kinetic-mrpt-ekf-slam-3d,
+  ubuntu: ros-kinetic-mrpt-ekf-slam-3d}
+mrpt_icp_slam_2d: {debian: ros-kinetic-mrpt-icp-slam-2d, fedora: ros-kinetic-mrpt-icp-slam-2d,
+  ubuntu: ros-kinetic-mrpt-icp-slam-2d}
 mrpt_local_obstacles: {debian: ros-kinetic-mrpt-local-obstacles, fedora: ros-kinetic-mrpt-local-obstacles,
   ubuntu: ros-kinetic-mrpt-local-obstacles}
 mrpt_localization: {debian: ros-kinetic-mrpt-localization, fedora: ros-kinetic-mrpt-localization,
@@ -617,12 +645,30 @@ mrpt_msgs: {debian: ros-kinetic-mrpt-msgs, fedora: ros-kinetic-mrpt-msgs, ubuntu
 mrpt_navigation: {debian: ros-kinetic-mrpt-navigation, fedora: ros-kinetic-mrpt-navigation,
   ubuntu: ros-kinetic-mrpt-navigation}
 mrpt_rawlog: {debian: ros-kinetic-mrpt-rawlog, fedora: ros-kinetic-mrpt-rawlog, ubuntu: ros-kinetic-mrpt-rawlog}
+mrpt_rbpf_slam: {debian: ros-kinetic-mrpt-rbpf-slam, fedora: ros-kinetic-mrpt-rbpf-slam,
+  ubuntu: ros-kinetic-mrpt-rbpf-slam}
 mrpt_reactivenav2d: {debian: ros-kinetic-mrpt-reactivenav2d, fedora: ros-kinetic-mrpt-reactivenav2d,
   ubuntu: ros-kinetic-mrpt-reactivenav2d}
+mrpt_slam: {debian: ros-kinetic-mrpt-slam, fedora: ros-kinetic-mrpt-slam, ubuntu: ros-kinetic-mrpt-slam}
 mrpt_tutorials: {debian: ros-kinetic-mrpt-tutorials, fedora: ros-kinetic-mrpt-tutorials,
   ubuntu: ros-kinetic-mrpt-tutorials}
+multimaster_fkie: {debian: ros-kinetic-multimaster-fkie, fedora: ros-kinetic-multimaster-fkie,
+  ubuntu: ros-kinetic-multimaster-fkie}
+multimaster_msgs_fkie: {debian: ros-kinetic-multimaster-msgs-fkie, fedora: ros-kinetic-multimaster-msgs-fkie,
+  ubuntu: ros-kinetic-multimaster-msgs-fkie}
 multires_image: {debian: ros-kinetic-multires-image, fedora: ros-kinetic-multires-image,
   ubuntu: ros-kinetic-multires-image}
+multisense: {debian: ros-kinetic-multisense, fedora: ros-kinetic-multisense, ubuntu: ros-kinetic-multisense}
+multisense_bringup: {debian: ros-kinetic-multisense-bringup, fedora: ros-kinetic-multisense-bringup,
+  ubuntu: ros-kinetic-multisense-bringup}
+multisense_cal_check: {debian: ros-kinetic-multisense-cal-check, fedora: ros-kinetic-multisense-cal-check,
+  ubuntu: ros-kinetic-multisense-cal-check}
+multisense_description: {debian: ros-kinetic-multisense-description, fedora: ros-kinetic-multisense-description,
+  ubuntu: ros-kinetic-multisense-description}
+multisense_lib: {debian: ros-kinetic-multisense-lib, fedora: ros-kinetic-multisense-lib,
+  ubuntu: ros-kinetic-multisense-lib}
+multisense_ros: {debian: ros-kinetic-multisense-ros, fedora: ros-kinetic-multisense-ros,
+  ubuntu: ros-kinetic-multisense-ros}
 nao_apps: {debian: ros-kinetic-nao-apps, fedora: ros-kinetic-nao-apps, ubuntu: ros-kinetic-nao-apps}
 nao_bringup: {debian: ros-kinetic-nao-bringup, fedora: ros-kinetic-nao-bringup, ubuntu: ros-kinetic-nao-bringup}
 nao_description: {debian: ros-kinetic-nao-description, fedora: ros-kinetic-nao-description,
@@ -652,6 +698,8 @@ nav_pcontroller: {debian: ros-kinetic-nav-pcontroller, fedora: ros-kinetic-nav-p
 navfn: {debian: ros-kinetic-navfn, fedora: ros-kinetic-navfn, ubuntu: ros-kinetic-navfn}
 navigation: {debian: ros-kinetic-navigation, fedora: ros-kinetic-navigation, ubuntu: ros-kinetic-navigation}
 nerian_sp1: {debian: ros-kinetic-nerian-sp1, fedora: ros-kinetic-nerian-sp1, ubuntu: ros-kinetic-nerian-sp1}
+node_manager_fkie: {debian: ros-kinetic-node-manager-fkie, fedora: ros-kinetic-node-manager-fkie,
+  ubuntu: ros-kinetic-node-manager-fkie}
 nodelet: {debian: ros-kinetic-nodelet, fedora: ros-kinetic-nodelet, ubuntu: ros-kinetic-nodelet}
 nodelet_core: {debian: ros-kinetic-nodelet-core, fedora: ros-kinetic-nodelet-core,
   ubuntu: ros-kinetic-nodelet-core}
@@ -684,6 +732,7 @@ octomap_rviz_plugins: {debian: ros-kinetic-octomap-rviz-plugins, fedora: ros-kin
   ubuntu: ros-kinetic-octomap-rviz-plugins}
 octovis: {debian: ros-kinetic-octovis, fedora: ros-kinetic-octovis, ubuntu: ros-kinetic-octovis}
 ompl: {debian: ros-kinetic-ompl, fedora: ros-kinetic-ompl, ubuntu: ros-kinetic-ompl}
+open_karto: {debian: ros-kinetic-open-karto, fedora: ros-kinetic-open-karto, ubuntu: ros-kinetic-open-karto}
 opencv3: {debian: ros-kinetic-opencv3, fedora: ros-kinetic-opencv3, ubuntu: ros-kinetic-opencv3}
 opencv_apps: {debian: ros-kinetic-opencv-apps, fedora: ros-kinetic-opencv-apps, ubuntu: ros-kinetic-opencv-apps}
 opencv_candidate: {debian: ros-kinetic-opencv-candidate, fedora: ros-kinetic-opencv-candidate,
@@ -753,10 +802,12 @@ pr2_description: {debian: ros-kinetic-pr2-description, fedora: ros-kinetic-pr2-d
 pr2_machine: {debian: ros-kinetic-pr2-machine, fedora: ros-kinetic-pr2-machine, ubuntu: ros-kinetic-pr2-machine}
 pr2_msgs: {debian: ros-kinetic-pr2-msgs, fedora: ros-kinetic-pr2-msgs, ubuntu: ros-kinetic-pr2-msgs}
 ps3joy: {debian: ros-kinetic-ps3joy, fedora: ros-kinetic-ps3joy, ubuntu: ros-kinetic-ps3joy}
+pyros_test: {debian: ros-kinetic-pyros-test, fedora: ros-kinetic-pyros-test, ubuntu: ros-kinetic-pyros-test}
 python_orocos_kdl: {debian: ros-kinetic-python-orocos-kdl, fedora: ros-kinetic-python-orocos-kdl,
   ubuntu: ros-kinetic-python-orocos-kdl}
 python_qt_binding: {debian: ros-kinetic-python-qt-binding, fedora: ros-kinetic-python-qt-binding,
   ubuntu: ros-kinetic-python-qt-binding}
+pyzmp: {debian: ros-kinetic-pyzmp, fedora: ros-kinetic-pyzmp, ubuntu: ros-kinetic-pyzmp}
 qt_build: {debian: ros-kinetic-qt-build, fedora: ros-kinetic-qt-build, ubuntu: ros-kinetic-qt-build}
 qt_create: {debian: ros-kinetic-qt-create, fedora: ros-kinetic-qt-create, ubuntu: ros-kinetic-qt-create}
 qt_dotgraph: {debian: ros-kinetic-qt-dotgraph, fedora: ros-kinetic-qt-dotgraph, ubuntu: ros-kinetic-qt-dotgraph}
@@ -815,6 +866,12 @@ resource_retriever: {debian: ros-kinetic-resource-retriever, fedora: ros-kinetic
   ubuntu: ros-kinetic-resource-retriever}
 rgbd_launch: {debian: ros-kinetic-rgbd-launch, fedora: ros-kinetic-rgbd-launch, ubuntu: ros-kinetic-rgbd-launch}
 robot: {debian: ros-kinetic-robot, fedora: ros-kinetic-robot, ubuntu: ros-kinetic-robot}
+robot_controllers: {debian: ros-kinetic-robot-controllers, fedora: ros-kinetic-robot-controllers,
+  ubuntu: ros-kinetic-robot-controllers}
+robot_controllers_interface: {debian: ros-kinetic-robot-controllers-interface, fedora: ros-kinetic-robot-controllers-interface,
+  ubuntu: ros-kinetic-robot-controllers-interface}
+robot_controllers_msgs: {debian: ros-kinetic-robot-controllers-msgs, fedora: ros-kinetic-robot-controllers-msgs,
+  ubuntu: ros-kinetic-robot-controllers-msgs}
 robot_localization: {debian: ros-kinetic-robot-localization, fedora: ros-kinetic-robot-localization,
   ubuntu: ros-kinetic-robot-localization}
 robot_model: {debian: ros-kinetic-robot-model, fedora: ros-kinetic-robot-model, ubuntu: ros-kinetic-robot-model}
@@ -980,6 +1037,7 @@ rospack: {debian: ros-kinetic-rospack, fedora: ros-kinetic-rospack, ubuntu: ros-
 rosparam: {debian: ros-kinetic-rosparam, fedora: ros-kinetic-rosparam, ubuntu: ros-kinetic-rosparam}
 rosparam_shortcuts: {debian: ros-kinetic-rosparam-shortcuts, fedora: ros-kinetic-rosparam-shortcuts,
   ubuntu: ros-kinetic-rosparam-shortcuts}
+rospilot: {debian: ros-kinetic-rospilot, fedora: ros-kinetic-rospilot, ubuntu: ros-kinetic-rospilot}
 rospy: {debian: ros-kinetic-rospy, fedora: ros-kinetic-rospy, ubuntu: ros-kinetic-rospy}
 rospy_message_converter: {debian: ros-kinetic-rospy-message-converter, fedora: ros-kinetic-rospy-message-converter,
   ubuntu: ros-kinetic-rospy-message-converter}
@@ -1100,9 +1158,12 @@ serial: {debian: ros-kinetic-serial, fedora: ros-kinetic-serial, ubuntu: ros-kin
 settlerlib: {debian: ros-kinetic-settlerlib, fedora: ros-kinetic-settlerlib, ubuntu: ros-kinetic-settlerlib}
 shape_msgs: {debian: ros-kinetic-shape-msgs, fedora: ros-kinetic-shape-msgs, ubuntu: ros-kinetic-shape-msgs}
 sick_tim: {debian: ros-kinetic-sick-tim, fedora: ros-kinetic-sick-tim, ubuntu: ros-kinetic-sick-tim}
+simple_grasping: {debian: ros-kinetic-simple-grasping, fedora: ros-kinetic-simple-grasping,
+  ubuntu: ros-kinetic-simple-grasping}
 simulators: {debian: ros-kinetic-simulators, fedora: ros-kinetic-simulators, ubuntu: ros-kinetic-simulators}
 slam_gmapping: {debian: ros-kinetic-slam-gmapping, fedora: ros-kinetic-slam-gmapping,
   ubuntu: ros-kinetic-slam-gmapping}
+slam_karto: {debian: ros-kinetic-slam-karto, fedora: ros-kinetic-slam-karto, ubuntu: ros-kinetic-slam-karto}
 slime_ros: {debian: ros-kinetic-slime-ros, fedora: ros-kinetic-slime-ros, ubuntu: ros-kinetic-slime-ros}
 slime_wrapper: {debian: ros-kinetic-slime-wrapper, fedora: ros-kinetic-slime-wrapper,
   ubuntu: ros-kinetic-slime-wrapper}
@@ -1111,8 +1172,13 @@ smach_msgs: {debian: ros-kinetic-smach-msgs, fedora: ros-kinetic-smach-msgs, ubu
 smach_ros: {debian: ros-kinetic-smach-ros, fedora: ros-kinetic-smach-ros, ubuntu: ros-kinetic-smach-ros}
 smclib: {debian: ros-kinetic-smclib, fedora: ros-kinetic-smclib, ubuntu: ros-kinetic-smclib}
 sophus: {debian: ros-kinetic-sophus, fedora: ros-kinetic-sophus, ubuntu: ros-kinetic-sophus}
+sophus_ros_conversions: {debian: ros-kinetic-sophus-ros-conversions, fedora: ros-kinetic-sophus-ros-conversions,
+  ubuntu: ros-kinetic-sophus-ros-conversions}
+sound_play: {debian: ros-kinetic-sound-play, fedora: ros-kinetic-sound-play, ubuntu: ros-kinetic-sound-play}
 spacenav_node: {debian: ros-kinetic-spacenav-node, fedora: ros-kinetic-spacenav-node,
   ubuntu: ros-kinetic-spacenav-node}
+sparse_bundle_adjustment: {debian: ros-kinetic-sparse-bundle-adjustment, fedora: ros-kinetic-sparse-bundle-adjustment,
+  ubuntu: ros-kinetic-sparse-bundle-adjustment}
 speech_recognition_msgs: {debian: ros-kinetic-speech-recognition-msgs, fedora: ros-kinetic-speech-recognition-msgs,
   ubuntu: ros-kinetic-speech-recognition-msgs}
 srdfdom: {debian: ros-kinetic-srdfdom, fedora: ros-kinetic-srdfdom, ubuntu: ros-kinetic-srdfdom}
@@ -1150,6 +1216,8 @@ summit_x_robot_control: {debian: ros-kinetic-summit-x-robot-control, fedora: ros
   ubuntu: ros-kinetic-summit-x-robot-control}
 summit_x_sim: {debian: ros-kinetic-summit-x-sim, fedora: ros-kinetic-summit-x-sim,
   ubuntu: ros-kinetic-summit-x-sim}
+summit_x_sim_bringup: {debian: ros-kinetic-summit-x-sim-bringup, fedora: ros-kinetic-summit-x-sim-bringup,
+  ubuntu: ros-kinetic-summit-x-sim-bringup}
 summit_xl_common: {debian: ros-kinetic-summit-xl-common, fedora: ros-kinetic-summit-xl-common,
   ubuntu: ros-kinetic-summit-xl-common}
 summit_xl_control: {debian: ros-kinetic-summit-xl-control, fedora: ros-kinetic-summit-xl-control,
@@ -1205,6 +1273,8 @@ teleop_tools: {debian: ros-kinetic-teleop-tools, fedora: ros-kinetic-teleop-tool
   ubuntu: ros-kinetic-teleop-tools}
 teleop_tools_msgs: {debian: ros-kinetic-teleop-tools-msgs, fedora: ros-kinetic-teleop-tools-msgs,
   ubuntu: ros-kinetic-teleop-tools-msgs}
+teleop_twist_joy: {debian: ros-kinetic-teleop-twist-joy, fedora: ros-kinetic-teleop-twist-joy,
+  ubuntu: ros-kinetic-teleop-twist-joy}
 teleop_twist_keyboard: {debian: ros-kinetic-teleop-twist-keyboard, fedora: ros-kinetic-teleop-twist-keyboard,
   ubuntu: ros-kinetic-teleop-twist-keyboard}
 test_diagnostic_aggregator: {debian: ros-kinetic-test-diagnostic-aggregator, fedora: ros-kinetic-test-diagnostic-aggregator,
