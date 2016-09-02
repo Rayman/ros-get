@@ -5,12 +5,13 @@ import errno
 import logging
 import os
 from argparse import Namespace
+from rosdep2.main import rosdep_main
 
 from rosdistro import get_index, get_index_url, get_cached_distribution
 from rosdistro.dependency_walker import SourceDependencyWalker
 from rosinstall_generator.generator import generate_rosinstall_for_repos
-from vcstool.commands.import_ import generate_jobs, get_repos_in_rosinstall_format, execute_jobs, output_repositories, \
-    output_results
+from vcstool.commands.import_ import (generate_jobs, get_repos_in_rosinstall_format, output_repositories, execute_jobs,
+                                      output_results)
 
 logger = logging.getLogger(__name__)
 
@@ -38,8 +39,8 @@ def add_pkgs_to_installed_list(pkgs):
 
 
 def install_dependencies(path):
-    # TODO:
-    raise NotImplementedError()
+    args = ['install', '--from-paths', path, '--ignore-src', '--as-root', 'pip:false', '-v']
+    rosdep_main(args)
 
 
 def install(pkgs):
