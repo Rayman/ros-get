@@ -1,0 +1,3 @@
+#!/bin/bash
+
+vcs custom "$TUE_WORKSPACE/src" --args status -s
