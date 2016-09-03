@@ -39,7 +39,7 @@ def add_pkgs_to_installed_list(pkgs):
 
 
 def install_dependencies(path):
-    args = ['install', '--from-paths', path, '--ignore-src', '--as-root', 'pip:false', '-v']
+    args = ['install', '--from-paths', path, '--ignore-src', '--as-root', 'pip:false']
     rosdep_main(args)
 
 

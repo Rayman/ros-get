@@ -9,7 +9,7 @@ logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
 
 
-def not_implemented(args):
+def not_implemented():
     raise NotImplementedError()
 
 
