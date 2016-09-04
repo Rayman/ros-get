@@ -9,9 +9,9 @@ from yaml import load, dump
 
 def parse_ros_source(type, url, subdir=None, **kwargs):
     if kwargs:
-        print('\tunexpected', kwargs)
+        raise ValueError('unexpected kwargs')
 
-    print('\tsource:', type, url, kwargs)
+    print('\tsource:', type, url)
 
     if type == 'git':
         return {
@@ -32,14 +32,14 @@ def parse_ros_source(type, url, subdir=None, **kwargs):
 
 def parse_ros_system(type, name, **kwargs):
     if kwargs:
-        print('\tunexpected', kwargs)
+        raise ValueError('Unexpected kwargs')
 
-    print('\tsystem:', name, kwargs)
+    print('\tsystem:', name)
 
 
 def parse_ros_target(type, source, **kwargs):
     if kwargs:
-        print('\tunexpected', kwargs)
+        raise ValueError('Unexpected kwargs')
 
     if source['type'] == 'system':
         return parse_ros_system(**source)
@@ -48,12 +48,12 @@ def parse_ros_target(type, source, **kwargs):
             source['subdir'] = source.pop('sub-dir')
         return parse_ros_source(**source)
     else:
-        print('\tunknown source type', source)
+        raise ValueError('Unknown source type')
 
 
 def parse_system_target(type, name, **kwargs):
     if kwargs:
-        print('\tunexpected', kwargs)
+        raise ValueError('Unexpected kwargs')
 
     print('\tsystem:', name)
 
@@ -71,7 +71,7 @@ def parse_target_source(target):
         elif target['type'] == 'ros-rosbuild':
             print('\trosbuild target')
         else:
-            print('\tunknown target type')
+            raise ValueError('unknown target type')
     else:
         print('\tmultiple targets found')
 
@@ -110,12 +110,11 @@ if __name__ == '__main__':
                 url = url[:-4]
 
             _, _, last = url.rpartition('/')
-            print('switching basename', basename, last)
             basename = last
 
             if basename in repositories:
-                print('\tduplicate?', output)
-                # TODO: duplicate handling
+                if repositories[basename]['source'] != output['source']:
+                    raise ValueError('different source found for package' % basename)
             else:
                 repositories[basename] = output
 
@@ -128,7 +127,6 @@ if __name__ == '__main__':
 
     d = dump({'repositories': repositories}, default_flow_style=False)
     distro = template.format(repositories=d)
-
 
     # write distro file
     distro_file = os.path.join(os.path.dirname(tue_get.__file__), '..', '..', 'rosdistro', 'kinetic',
