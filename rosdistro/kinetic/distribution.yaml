@@ -12,25 +12,546 @@ release_platforms:
   - wily
   - xenial
 repositories:
-  navigation:
+  action_server:
     source:
-      test_commits: false
-      test_pull_requests: true
       type: git
-      url: https://github.com/tue-robotics/navigation.git
-      version: hydro-devel
-    status: maintained
-  tue_config:
+      url: https://github.com/tue-robotics/action_server.git
+      version: master
+  amigo_bringup:
     source:
-      url: http://github.com/tue-robotics/tue_config.git
+      type: git
+      url: https://github.com/tue-robotics/amigo_bringup
+      version: master
+  amigo_description:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/amigo_description
+      version: master
+  amigo_ed_tutorials:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/amigo_ed_tutorials.git
+      version: master
+  amigo_force_controller:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/amigo_force_controller.git
+      version: master
+  amigo_hardware:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/amigo_hardware.git
+      version: master
+  amigo_head_ref:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/amigo_head_ref
+      version: master
+  amigo_launch_files:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/amigo_launch_files
+      version: master
+  amigo_moveit_config:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/amigo_moveit_config.git
+      version: master
+  amigo_msgs:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/amigo_msgs
+      version: master
+  amigo_parameters:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/amigo_parameters.git
+      version: master
+  amigo_ref_interpolator:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/amigo_ref_interpolator
+      version: master
+  amigo_whole_body_controller:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/amigo_whole_body_controller.git
+      version: master
+  ann2:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ann2
+      version: master
+  ar_marker_detector:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ar_marker_detector.git
+      version: master
+  armadillo_matrix:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/armadillo_matrix
+      version: master
+  battery_manager:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/battery_manager.git
+      version: master
+  blackboard:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/blackboard.git
+      version: master
+  cb_base_navigation:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/cb_base_navigation.git
+      version: master
+  cb_planner_msgs_srvs:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/cb_planner_msgs_srvs
+      version: master
+  code_profiler:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/code_profiler.git
+      version: master
+  dashboard:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/dashboard.git
+      version: master
+  dml:
+    source:
+      type: git
+      url: https://github.com/svddries/dml.git
+      version: master
+  dragonfly_speech_recognition:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/dragonfly_speech_recognition.git
+      version: master
+  ed:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed.git
+      version: master
+  ed_cloud:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_cloud.git
+      version: master
+  ed_gui_server:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_gui_server.git
+      version: master
+  ed_localization:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_localization.git
+      version: master
+  ed_navigation:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_navigation.git
+      version: master
+  ed_object_models:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_object_models.git
+      version: master
+  ed_perception_models:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_perception_models.git
+      version: master
+  ed_robocup:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_robocup.git
+      version: master
+  ed_rviz_plugins:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_rviz_plugins.git
+      version: master
+  ed_sensor_integration:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_sensor_integration.git
+      version: master
+  ed_simulator:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_simulator.git
+      version: master
+  ed_tutorials:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_tutorials.git
+      version: master
+  ed_wbc:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_wbc.git
+      version: master
+  emergency_speakup:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/emergency_speakup.git
+      version: master
+  executive_smach:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/executive_smach.git
+      version: indigo-devel
+  fast_simulator:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/fast_simulator.git
+      version: master
+  fast_simulator2:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/fast_simulator2.git
+      version: master
+  fast_simulator_data:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/fast_simulator_data
+      version: master
+  geolib2:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/geolib2.git
+      version: master
+  head_ref:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/head_ref.git
+      version: master
+  head_ref_ed_client:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/head_ref_ed_client.git
       version: master
   hmi:
     source:
-      url: http://github.com/tue-robotics/hmi.git
+      type: git
+      url: https://github.com/tue-robotics/hmi.git
+      version: master
+  kinect_driver:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/kinect_driver.git
+      version: master
+  lcsr_tf_tools:
+    source:
+      type: git
+      url: https://github.com/jhu-lcsr/lcsr_tf_tools.git
+      version: master
+  multirobot_communication:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/multirobot_communication.git
+      version: master
+  navigation_gui:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/navigation_gui.git
+      version: master
+  nl_robot_console:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/nl_robot_console
+      version: master
+  node_alive:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/node_alive.git
+      version: master
+  openface_ros:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/openface_ros.git
+      version: master
+  pein_msgs:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/pein_msgs
+      version: master
+  pein_srvs:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/pein_srvs
+      version: master
+  pi_trees:
+    source:
+      type: git
+      url: https://github.com/LoyVanBeek/pi_trees
+      version: master
+  picaso_4d_systems:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/picaso_4d_systems.git
+      version: master
+  qr_detector_zbar:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/qr_detector_zbar.git
+      version: master
+  r5cop_demo:
+    source:
+      type: git
+      url: https://github.com/r5cop/r5cop_demo.git
+      version: master
+  rgb_lights_manager:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/rgb_lights_manager.git
       version: master
   rgbd:
     source:
-      url: http://github.com/tue-robotics/rgbd.git
+      type: git
+      url: https://github.com/tue-robotics/rgbd.git
       version: master
+  robot-api:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/robot-api.git
+      version: master
+  robot_launch_files:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/robot_launch_files.git
+      version: master
+  robot_skills:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/robot_skills.git
+      version: master
+  robot_smach_states:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/robot_smach_states.git
+      version: master
+  rosbridge_suite:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/rosbridge_suite.git
+      version: master
+  rtt_ros_control:
+    source:
+      type: git
+      url: https://github.com/Timple/rtt_ros_control.git
+      version: master
+  rviz_plugins:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/rviz_plugins.git
+      version: master
+  scan_tools:
+    source:
+      type: git
+      url: https://github.com/ccny-ros-pkg/scan_tools.git
+      version: indigo
+  scl_filters:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/scl_filters.git
+      version: master
+  sergio_bringup:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/sergio_bringup
+      version: master
+  sergio_description:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/sergio_description.git
+      version: master
+  sergio_hardware:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/sergio_hardware.git
+      version: master
+  sergio_launch_files:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/sergio_launch_files
+      version: master
+  sergio_parameters:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/sergio_parameters.git
+      version: master
+  sergio_torso_calibration:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/sergio_torso_calibration.git
+      version: master
+  soem:
+    source:
+      type: git
+      url: https://github.com/smits/soem.git
+      version: master
+  stem_tracker:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/stem_tracker
+      version: master
+  swi_prolog:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/swi_prolog.git
+      version: master
+  teleop:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/teleop
+      version: master
+  tf_checker:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tf_checker
+      version: master
+  tf_server:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tf_server.git
+      version: master
+  torso_server:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/torso_server.git
+      version: master
+  tue_calibration:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_calibration
+      version: master
+  tue_carrot_planner:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_carrot_planner.git
+      version: master
+  tue_config:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_config.git
+      version: master
+  tue_control:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_control.git
+      version: master
+  tue_control_rtt:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_control_rtt.git
+      version: master
+  tue_control_rtt_msgs:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_control_rtt_msgs.git
+      version: master
+  tue_costmap_msgs:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_costmap_msgs
+      version: master
+  tue_ethercat_drivers:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_ethercat_drivers.git
+      version: master
+  tue_filesystem:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_filesystem.git
+      version: master
+  tue_manipulation:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_manipulation.git
+      version: master
+  tue_manipulation_msgs:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_manipulation_msgs.git
+      version: master
+  tue_maps:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_maps.git
+      version: master
+  tue_mobile_ui:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_mobile_ui.git
+      version: master
+  tue_move_base_msgs:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_move_base_msgs
+      version: master
+  tue_msgs:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_msgs.git
+      version: master
+  tue_recorder:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_recorder
+      version: master
+  tue_robocup:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_robocup.git
+      version: master
+  tue_serialization:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_serialization.git
+      version: master
+  tue_teleop_keyboard:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_teleop_keyboard
+      version: master
+  tue_teleop_spacenav:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_teleop_spacenav
+      version: master
+  ultrasonic_sensors:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ultrasonic_sensors.git
+      version: master
+  virtual_cam:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/virtual_cam
+      version: master
+  vocabulary_tree:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/vocabulary_tree
+      version: master
+  whole_body_planner:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/whole_body_planner.git
+      version: master
+  wit_ros:
+    source:
+      type: git
+      url: https://github.com/LoyVanBeek/wit_ros.git
+      version: master
+
 type: distribution
 version: 2
