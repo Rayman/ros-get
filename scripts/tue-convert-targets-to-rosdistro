@@ -1,0 +1,133 @@
+#!/usr/bin/env python
+from __future__ import print_function
+
+import os
+
+import tue_get
+from yaml import load, dump
+
+
+def parse_ros_source(type, url, subdir=None, **kwargs):
+    if kwargs:
+        print('\tunexpected', kwargs)
+
+    print('\tsource:', type, url, kwargs)
+
+    if type == 'git':
+        return {
+            'source': {
+                'type': type,
+                'url': url,
+                'version': 'master',
+            }
+        }
+    else:
+        return {
+            'source': {
+                'type': type,
+                'url': url,
+            }
+        }
+
+
+def parse_ros_system(type, name, **kwargs):
+    if kwargs:
+        print('\tunexpected', kwargs)
+
+    print('\tsystem:', name, kwargs)
+
+
+def parse_ros_target(type, source, **kwargs):
+    if kwargs:
+        print('\tunexpected', kwargs)
+
+    if source['type'] == 'system':
+        return parse_ros_system(**source)
+    elif source['type'] == 'git' or source['type'] == 'svn':
+        if 'sub-dir' in source:
+            source['subdir'] = source.pop('sub-dir')
+        return parse_ros_source(**source)
+    else:
+        print('\tunknown source type', source)
+
+
+def parse_system_target(type, name, **kwargs):
+    if kwargs:
+        print('\tunexpected', kwargs)
+
+    print('\tsystem:', name)
+
+
+def parse_target_source(target):
+    if len(target) == 1:
+        target = target[0]
+
+        if target['type'] == 'ros':
+            return target['type'], parse_ros_target(**target)
+        elif target['type'] == 'system':
+            return target['type'], parse_system_target(**target)
+        elif target['type'] == 'target':
+            print('\tmetatarget', target)
+        elif target['type'] == 'ros-rosbuild':
+            print('\trosbuild target')
+        else:
+            print('\tunknown target type')
+    else:
+        print('\tmultiple targets found')
+
+    return None, None
+
+
+def parse_target(path):
+    try:
+        with open(os.path.join(path, 'install.yaml')) as f:
+            target = load(f)
+            return parse_target_source(target)
+
+    except IOError:
+        print('\tno target found')
+        return None, None
+
+
+if __name__ == '__main__':
+    data_path = os.path.join(os.path.dirname(tue_get.__file__), '..', '..', 'data', 'tue-env')
+    target_path = os.path.join(data_path, 'installer', 'targets')
+
+    targets = (os.path.join(target_path, o) for o in os.listdir(target_path))
+    targets = (t for t in targets if os.path.isdir(t))
+
+    repositories = {}
+    for target in targets:
+        basename = os.path.basename(target)
+        print('parsing', basename)
+        t, output = parse_target(target)
+
+        if output:
+            assert basename.startswith('ros-')
+
+            url = output['source']['url']
+            if url.endswith('.git'):
+                url = url[:-4]
+
+            _, _, last = url.rpartition('/')
+            print('switching basename', basename, last)
+            basename = last
+
+            if basename in repositories:
+                print('\tduplicate?', output)
+                # TODO: duplicate handling
+            else:
+                repositories[basename] = output
+
+    with open(os.path.join(os.path.dirname(tue_get.__file__), '..', '..', 'data', 'distro.template')) as f:
+        template = f.read()
+
+    d = dump({'repositories': repositories}, default_flow_style=False)
+    distro = (template.format(repositories=d))
+
+    distro_file = os.path.join(os.path.dirname(tue_get.__file__), '..', '..', 'rosdistro', 'kinetic',
+                               'distribution.yaml')
+    with open(distro_file, 'w') as f:
+        f.write(distro)
+
+    print('Done!')
