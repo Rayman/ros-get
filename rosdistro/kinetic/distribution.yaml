@@ -162,6 +162,11 @@ repositories:
       type: git
       url: https://github.com/tue-robotics/ed_object_models.git
       version: master
+  ed_perception:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/ed_perception.git
+      version: master
   ed_perception_models:
     source:
       type: git
@@ -226,6 +231,11 @@ repositories:
     source:
       type: git
       url: https://github.com/tue-robotics/geolib2.git
+      version: master
+  gripper_detector:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/gripper_detector.git
       version: master
   head_ref:
     source:
@@ -342,6 +352,11 @@ repositories:
       type: git
       url: https://github.com/tue-robotics/rosbridge_suite.git
       version: master
+  rtt_control_components:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/rtt_control_components.git
+      version: master
   rtt_ros_control:
     source:
       type: git
@@ -411,6 +426,11 @@ repositories:
     source:
       type: git
       url: https://github.com/tue-robotics/teleop
+      version: master
+  text_to_speech:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/text_to_speech
       version: master
   tf_checker:
     source:
@@ -501,6 +521,11 @@ repositories:
     source:
       type: git
       url: https://github.com/tue-robotics/tue_msgs.git
+      version: master
+  tue_reasoner_core:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/tue_reasoner_core
       version: master
   tue_recorder:
     source:
