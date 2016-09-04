@@ -23,10 +23,10 @@ def parse_ros_source(type, url, subdir=None, **kwargs):
         }
     else:
         return {
-            'source': {
-                'type': type,
-                'url': url,
-            }
+            # 'source': {
+            #     'type': type,
+            #     'url': url,
+            # }
         }
 
 
@@ -119,12 +119,18 @@ if __name__ == '__main__':
             else:
                 repositories[basename] = output
 
+    # patch distro file
+    repositories['executive_smach']['source']['version'] = 'indigo-devel'
+    repositories['scan_tools']['source']['version'] = 'indigo'
+
     with open(os.path.join(os.path.dirname(tue_get.__file__), '..', '..', 'data', 'distro.template')) as f:
         template = f.read()
 
     d = dump({'repositories': repositories}, default_flow_style=False)
-    distro = (template.format(repositories=d))
+    distro = template.format(repositories=d)
 
+
+    # write distro file
     distro_file = os.path.join(os.path.dirname(tue_get.__file__), '..', '..', 'rosdistro', 'kinetic',
                                'distribution.yaml')
     with open(distro_file, 'w') as f:
