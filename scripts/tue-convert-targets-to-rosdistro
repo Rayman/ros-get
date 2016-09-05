@@ -78,15 +78,58 @@ def parse_target_source(target):
     return None, None
 
 
+def parse_tue_install_ros(command, type, url, subdir=None, version='master', *args):
+    if args:
+        raise ValueError('Unexpected args')
+
+    if type == 'git':
+        return 'target', {
+            'source': {
+                'type': type,
+                'url': url,
+                'version': version,
+            }
+        }
+    else:
+        return 'target', {
+            # 'source': {
+            #     'type': type,
+            #     'url': url,
+            # }
+        }
+
+
+def parse_target_bash(f):
+    lines = f.splitlines()
+    if len(lines) == 1:
+        line = lines[0]
+        if line.startswith('tue-install-ros'):
+            return parse_tue_install_ros(*line.split(' '))
+        else:
+            print('\tunknown setup.bash')
+    else:
+        print('\tunknown setup.bash found')
+    return None, None
+
+
 def parse_target(path):
     try:
         with open(os.path.join(path, 'install.yaml')) as f:
             target = load(f)
-            return parse_target_source(target)
-
+            ret = parse_target_source(target)
+            if os.path.isfile(os.path.join(path, 'install.bash')):
+                print('\twarn: also install.bash found')
+            return ret
     except IOError:
-        print('\tno target found')
-        return None, None
+        pass
+    try:
+        with open(os.path.join(path, 'install.bash')) as f:
+            return parse_target_bash(f.read())
+    except IOError:
+        pass
+
+    print('\tno target found')
+    return None, None
 
 
 if __name__ == '__main__':
@@ -121,6 +164,7 @@ if __name__ == '__main__':
     # patch distro file
     repositories['executive_smach']['source']['version'] = 'indigo-devel'
     repositories['scan_tools']['source']['version'] = 'indigo'
+    repositories['navigation_layers']['source']['version'] = 'indigo'
 
     with open(os.path.join(os.path.dirname(tue_get.__file__), '..', '..', 'data', 'distro.template')) as f:
         template = f.read()
