@@ -87,6 +87,11 @@ repositories:
       type: git
       url: https://github.com/tue-robotics/ar_marker_detector.git
       version: master
+  arm_navigation_msgs:
+    source:
+      type: git
+      url: https://github.com/PR2/arm_navigation_msgs.git
+      version: hydro-devel
   armadillo_matrix:
     source:
       type: git
@@ -267,11 +272,21 @@ repositories:
       type: git
       url: https://github.com/tue-robotics/multirobot_communication.git
       version: master
+  navigation:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/navigation.git
+      version: hydro-devel
   navigation_gui:
     source:
       type: git
       url: https://github.com/tue-robotics/navigation_gui.git
       version: master
+  navigation_layers:
+    source:
+      type: git
+      url: https://github.com/DLu/navigation_layers.git
+      version: indigo
   nl_robot_console:
     source:
       type: git
@@ -361,6 +376,16 @@ repositories:
     source:
       type: git
       url: https://github.com/Timple/rtt_ros_control.git
+      version: master
+  rtt_soem:
+    source:
+      type: git
+      url: https://github.com/orocos/rtt_soem
+      version: master
+  rtt_tue_msgs:
+    source:
+      type: git
+      url: https://github.com/tue-robotics/rtt_tue_msgs
       version: master
   rviz_plugins:
     source:
