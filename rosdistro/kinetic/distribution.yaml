@@ -532,6 +532,10 @@ repositories:
       type: git
       url: https://github.com/tue-robotics/tue_maps.git
       version: master
+  tue_metapackages:
+    type: git
+    url: https://github.com/Rayman/tue_metapackages.git
+    version: master
   tue_mobile_ui:
     source:
       type: git
