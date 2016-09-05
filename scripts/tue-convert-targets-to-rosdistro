@@ -165,6 +165,7 @@ if __name__ == '__main__':
     repositories['executive_smach']['source']['version'] = 'indigo-devel'
     repositories['scan_tools']['source']['version'] = 'indigo'
     repositories['navigation_layers']['source']['version'] = 'indigo'
+    repositories['navigation']['source']['version'] = 'hydro-devel'
 
     with open(os.path.join(os.path.dirname(tue_get.__file__), '..', '..', 'data', 'distro.template')) as f:
         template = f.read()
