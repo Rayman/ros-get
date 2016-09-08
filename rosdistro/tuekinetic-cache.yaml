@@ -108,10 +108,7 @@ distribution_file:
     tue_manipulation: {source: {type: git, url: 'https://github.com/tue-robotics/tue_manipulation.git', version: master}}
     tue_manipulation_msgs: {source: {type: git, url: 'https://github.com/tue-robotics/tue_manipulation_msgs.git', version: master}}
     tue_maps: {source: {type: git, url: 'https://github.com/tue-robotics/tue_maps.git', version: master}}
-    tue_metapackages:
-      type: git
-      url: https://github.com/Rayman/tue_metapackages.git
-      version: master
+    tue_metapackages: {source: {type: git, url: 'https://github.com/Rayman/tue_metapackages.git', version: master}}
     tue_mobile_ui: {source: {type: git, url: 'https://github.com/tue-robotics/tue_mobile_ui.git', version: master}}
     tue_move_base_msgs: {source: {type: git, url: 'https://github.com/tue-robotics/tue_move_base_msgs', version: master}}
     tue_msgs: {source: {type: git, url: 'https://github.com/tue-robotics/tue_msgs.git', version: master}}
@@ -482,6 +479,10 @@ source_repo_package_xmls:
   tue_maps:
     _ref: 3131910febfce553bb29f5f45605089fe63ad179
     tue_maps: ['', '<?xml version="1.0" encoding="utf-8"?><package><name>tue_maps</name><version>0.0.0</version><description>No description available</description><maintainer email="todo@tue.nl">todo</maintainer><license>TODO</license><buildtool_depend>catkin</buildtool_depend></package>']
+  tue_metapackages:
+    _ref: 33c3a42ffc3070ed68210f489f55f2f99ddeb185
+    tue_dev: [tue_dev, '<?xml version="1.0" encoding="utf-8"?><package format="2"><name>tue_dev</name><version>0.0.0</version><description>The tue_metapackages package</description><maintainer email="rayman747@hotmail.com">Ramon Wijnands</maintainer><license>BSD</license><author email="rayman747@hotmail.com">Ramon Wijnands</author><buildtool_depend>catkin</buildtool_depend><exec_depend>fast_simulator</exec_depend><exec_depend>fast_simulator_data</exec_depend><exec_depend>fast_simulator</exec_depend><exec_depend>fast_simulator_data</exec_depend><exec_depend>tue_middleware</exec_depend><exec_depend>tue_mobile_ui</exec_depend><exec_depend>rviz</exec_depend><exec_depend>viz</exec_depend><exec_depend>spot</exec_depend><exec_depend>tue_robocup_at_home</exec_depend><exec_depend>dashboard</exec_depend><exec_depend>amigo_user</exec_depend><exec_depend>sergio_user</exec_depend><exec_depend>sublime3</exec_depend><exec_depend>terminator</exec_depend><exec_depend>vim</exec_depend><exec_depend>chrome</exec_depend><exec_depend>gitsu</exec_depend><export><metapackage/></export></package>']
+    tue_metapackages: [tue_metapackages, '<?xml version="1.0" encoding="utf-8"?><package format="2"><name>tue_metapackages</name><version>0.0.0</version><description>The tue_metapackages package</description><maintainer email="rayman747@hotmail.com">Ramon Wijnands</maintainer><license>BSD</license><author email="rayman747@hotmail.com">Ramon Wijnands</author><buildtool_depend>catkin</buildtool_depend><exec_depend>tue_dev</exec_depend><export><metapackage/></export></package>']
   tue_mobile_ui:
     _ref: 44832595fbaf4ec8be102b0de2e79871e30fb1ea
     tue_mobile_ui: ['', '<?xml version="1.0" encoding="utf-8"?><package><name>tue_mobile_ui</name><version>0.0.0</version><description>The tue_mobile_ui package</description><maintainer email="rayman747@hotmail.com">Ramon Wijnands</maintainer><author email="rayman747@hotmail.com">Ramon Wijnands</author><author email="reinzor@gmail.com">Rein Appeldoorn</author><license>BSD</license><buildtool_depend>catkin</buildtool_depend><run_depend>rosbridge_suite</run_depend></package>']

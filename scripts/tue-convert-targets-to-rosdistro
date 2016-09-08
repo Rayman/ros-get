@@ -167,9 +167,11 @@ if __name__ == '__main__':
     repositories['navigation_layers']['source']['version'] = 'indigo'
     repositories['navigation']['source']['version'] = 'hydro-devel'
     repositories['tue_metapackages'] = {
-        'type': 'git',
-        'url': 'https://github.com/Rayman/tue_metapackages.git',
-        'version': 'master',
+        'source': {
+            'type': 'git',
+            'url': 'https://github.com/Rayman/tue_metapackages.git',
+            'version': 'master',
+        }
     }
 
     with open(os.path.join(os.path.dirname(tue_get.__file__), '..', '..', 'data', 'distro.template')) as f:
