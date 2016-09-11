@@ -4,6 +4,7 @@ from __future__ import print_function
 import os
 
 import tue_get
+from tue_get import is_rosdep
 from yaml import load, dump
 
 
@@ -147,6 +148,9 @@ if __name__ == '__main__':
 
         if output:
             assert basename.startswith('ros-')
+
+            if is_rosdep(basename[4:]):
+                print('\tdetected forked package')
 
             url = output['source']['url']
             if url.endswith('.git'):

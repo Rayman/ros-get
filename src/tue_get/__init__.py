@@ -5,7 +5,9 @@ import errno
 import logging
 import os
 from argparse import Namespace
+from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
 from rosdep2.main import rosdep_main
+from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
 
 from rosdistro import get_index, get_index_url, get_cached_distribution
 from rosdistro.dependency_walker import SourceDependencyWalker
@@ -94,3 +96,30 @@ def install(pkgs):
 
     # install dependencies
     install_dependencies(target_path)
+
+
+cached_view = None
+
+
+def is_rosdep(key):
+    global cached_view
+    if not cached_view:
+        lookup = RosdepLookup.create_from_rospkg()
+        lookup.verbose = False
+
+        installer_context = create_default_installer_context(verbose=False)
+
+        installer, installer_keys, default_key, \
+        os_name, os_version = get_default_installer(installer_context=installer_context,
+                                                    verbose=False)
+
+        view = lookup.get_rosdep_view(DEFAULT_VIEW_KEY, verbose=False)
+        cached_view = view
+    else:
+        view = cached_view
+
+    try:
+        d = view.lookup(key)
+        return True
+    except KeyError as e:
+        return False
