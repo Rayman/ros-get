@@ -367,11 +367,6 @@ repositories:
       type: git
       url: https://github.com/tue-robotics/rosbridge_suite.git
       version: master
-  rtt_control_components:
-    source:
-      type: git
-      url: https://github.com/tue-robotics/rtt_control_components.git
-      version: master
   rtt_ros_control:
     source:
       type: git
