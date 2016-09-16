@@ -1,19 +1,15 @@
 #!/usr/bin/env python
 
-from rosdep2.sources_list import SourcesListLoader
-from rosdep2.lookup import RosdepLookup
-from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
-from rosdistro import get_index, get_index_url, get_cached_distribution
-from yaml import load, dump
 import os
-import tue_get
 from collections import OrderedDict
-import yaml
 
+import tue_get
+import yaml
+from rosdistro import get_index, get_index_url, get_cached_distribution
+from yaml import dump
 
 data_path = os.path.join(os.path.dirname(tue_get.__file__), '..', '..', 'data', 'tue-env')
 target_path = os.path.join(data_path, 'installer', 'targets')
-
 
 distroname = 'tuekinetic'
 index = get_index(get_index_url())
@@ -24,6 +20,7 @@ class UnsortableList(list):
     def sort(self, *args, **kwargs):
         pass
 
+
 class UnsortableOrderedDict(OrderedDict):
     def items(self, *args, **kwargs):
         return UnsortableList(OrderedDict.items(self, *args, **kwargs))
@@ -32,14 +29,27 @@ class UnsortableOrderedDict(OrderedDict):
 yaml.add_representer(UnsortableOrderedDict, yaml.representer.SafeRepresenter.represent_dict)
 
 for package in distro.source_packages.values():
+    print 'generating targets for', package.name
     repository = distro.repositories[package.repository_name]
 
     data = UnsortableOrderedDict({'type': 'ros'})
-    data['source'] = UnsortableOrderedDict(repository.get_data()['source'])
+    source = UnsortableOrderedDict(repository.get_data()['source'])
+
+    # reorder keys
+    source['url'] = source.pop('url')
+
+    data['source'] = source
     del data['source']['version']
 
-    if package.name != package.repository_name:
-        data['source']['sub-dir'] = 'omg'
+    # look for other packages in the same repo
+    for other_package in distro.source_packages.values():
+        if package == other_package:
+            # skip yourself
+            continue
+        if repository == distro.repositories[other_package.repository_name]:
+            print '\tmultiple packages found in this repo'
+            data['source']['sub-dir'] = package.name
+            break
 
     data = [data]
 
