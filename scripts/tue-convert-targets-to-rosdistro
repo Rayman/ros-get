@@ -4,7 +4,7 @@ from __future__ import print_function
 import os
 
 import tue_get
-from tue_get import is_rosdep
+from tue_get import get_rosdep
 from yaml import load, dump
 
 
@@ -35,7 +35,10 @@ def parse_ros_system(type, name, **kwargs):
     if kwargs:
         raise ValueError('Unexpected kwargs')
 
-    print('\tsystem:', name)
+    return {
+        'rosname': name
+    }
+    # print('\trossystem:', name)
 
 
 def parse_ros_target(type, source, **kwargs):
@@ -56,7 +59,9 @@ def parse_system_target(type, name, **kwargs):
     if kwargs:
         raise ValueError('Unexpected kwargs')
 
-    print('\tsystem:', name)
+    return {
+        'systemname': name
+    }
 
 
 def parse_target_source(target):
@@ -84,7 +89,7 @@ def parse_tue_install_ros(command, type, url, subdir=None, version='master', *ar
         raise ValueError('Unexpected args')
 
     if type == 'git':
-        return 'target', {
+        return 'ros', {
             'source': {
                 'type': type,
                 'url': url,
@@ -92,7 +97,7 @@ def parse_tue_install_ros(command, type, url, subdir=None, version='master', *ar
             }
         }
     else:
-        return 'target', {
+        return 'ros', {
             # 'source': {
             #     'type': type,
             #     'url': url,
@@ -141,15 +146,27 @@ if __name__ == '__main__':
     targets = (t for t in targets if os.path.isdir(t))
 
     repositories = {}
+    rosdep = {}
+
     for target in targets:
         basename = os.path.basename(target)
         print('parsing', basename)
         t, output = parse_target(target)
 
-        if output:
+        if not t:
+            pass
+        elif t == 'ros':
+            if 'rosname' in output:
+                print('\trosdep', output['rosname'])
+                continue
+
+            if not output:
+                print('\tskipping empty response')
+                continue
+
             assert basename.startswith('ros-')
 
-            if is_rosdep(basename[4:]):
+            if get_rosdep(basename[4:]):
                 print('\tdetected forked package')
 
             url = output['source']['url']
@@ -164,6 +181,32 @@ if __name__ == '__main__':
                     raise ValueError('different source found for package' % basename)
             else:
                 repositories[basename] = output
+        elif t == 'system':
+            if basename.startswith('ros-'):
+                basename = basename[4:]
+
+            dep = get_rosdep(basename)
+            if dep:
+                rule_installer, rule = dep
+
+                if rule_installer == 'apt':
+                    if isinstance(rule, dict):
+                        rule = rule['packages']
+
+                    if isinstance(rule, list):
+                        if rule[0] == output['systemname']:
+                            print('\tsystemdep ok')
+                        else:
+                            print('\twrong systemdep', output['systemname'], rule_installer, rule)
+                    else:
+                        print('\twrong systemdep', output['systemname'], rule_installer, rule)
+                else:
+                    print('\twrong systemdep', output['systemname'], rule_installer, rule)
+            else:
+                rosdep[basename] = 'apt'
+                print('\tno systemdep found', basename)
+        else:
+            raise ValueError()
 
     # patch distro file
     repositories['executive_smach']['source']['version'] = 'indigo-devel'
@@ -190,4 +233,5 @@ if __name__ == '__main__':
     with open(distro_file, 'w') as f:
         f.write(distro)
 
+    print('new rosdeps:', rosdep)
     print('Done!')

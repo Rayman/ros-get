@@ -101,17 +101,17 @@ def install(pkgs):
 cached_view = None
 
 
-def is_rosdep(key):
+def get_rosdep(key):
+    installer_context = create_default_installer_context(verbose=False)
+
+    installer, installer_keys, default_key, \
+    os_name, os_version = get_default_installer(installer_context=installer_context,
+                                                verbose=False)
+
     global cached_view
     if not cached_view:
         lookup = RosdepLookup.create_from_rospkg()
         lookup.verbose = False
-
-        installer_context = create_default_installer_context(verbose=False)
-
-        installer, installer_keys, default_key, \
-        os_name, os_version = get_default_installer(installer_context=installer_context,
-                                                    verbose=False)
 
         view = lookup.get_rosdep_view(DEFAULT_VIEW_KEY, verbose=False)
         cached_view = view
@@ -120,6 +120,7 @@ def is_rosdep(key):
 
     try:
         d = view.lookup(key)
-        return True
+        rule_installer, rule = d.get_rule_for_platform(os_name, os_version, installer_keys, default_key)
+        return rule_installer, rule
     except KeyError as e:
         return False
