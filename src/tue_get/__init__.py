@@ -60,13 +60,15 @@ def install(pkgs):
     index = get_index(get_index_url())
     distro = get_cached_distribution(index, distroname)
 
-    walker = SourceDependencyWalker(distro)
-    packages = set()
+    # which repo should this package be in?
+    package = pkgs[0]
+    repository_name = distro.source_packages[package].repository_name
+    repository = distro.repositories[repository_name]
 
-    for package in pkgs:
-        packages |= walker.get_recursive_depends(package, ['buildtool', 'build', 'run', 'test'],
-                                                 ros_packages_only=True, ignore_pkgs=packages)
-        packages.add(package)
+
+    print(pkgs, repository.name)
+
+    return
 
     print('The following packages will be installed:')
     for package in packages:
