@@ -5,6 +5,8 @@ import errno
 import logging
 import os
 from argparse import Namespace
+from catkin_pkg.packages import find_packages_allowing_duplicates
+from collections import deque
 from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
 from rosdep2.main import rosdep_main
 from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
@@ -61,14 +63,52 @@ def install(pkgs):
     distro = get_cached_distribution(index, distroname)
 
     # which repo should this package be in?
-    package = pkgs[0]
-    repository_name = distro.source_packages[package].repository_name
-    repository = distro.repositories[repository_name]
+
+    pkgs_queue = deque(pkgs)
+
+    while pkgs_queue:
+        pkg = pkgs_queue.popleft()
+
+        repository_name = distro.source_packages[pkg].repository_name
+        repository = distro.repositories[repository_name]
+
+        # generate rosinstall file
+        config = generate_rosinstall_for_repos({repository_name: repository}, version_tag=False, tar=False)
+
+        # convert it to the vcs format
+        config = get_repos_in_rosinstall_format(config)
+
+        # update the repos
+        jobs = generate_jobs(config, Namespace(path=target_path))
+        print('updating the following repositories:')
+        output_repositories([job['client'] for job in jobs])
+
+        print("let's start")
+        results = execute_jobs(jobs, show_progress=True, number_of_workers=10)
+        output_results(results)
+
+        # which packages did we download?
+        updated_pkgs = find_packages_allowing_duplicates(os.path.join(target_path, repository_name))
+
+        for name, updated_pkg in updated_pkgs.items():
+            deps = {
+                updated_pkg.buildtool_depends,
+                updated_pkg.build_depends,
+                updated_pkg.run_depends,
+                updated_pkg.test_depends
+            }
+
+            print(deps)
+
+
+    # import ipdb; ipdb.set_trace()
+
+    return
 
 
     print(pkgs, repository.name)
 
-    return
+    import ipdb; ipdb.set_trace()
 
     print('The following packages will be installed:')
     for package in packages:
