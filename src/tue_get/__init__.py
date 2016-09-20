@@ -5,14 +5,13 @@ import errno
 import logging
 import os
 from argparse import Namespace
-from catkin_pkg.packages import find_packages_allowing_duplicates
 from collections import deque
 from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
 from rosdep2.main import rosdep_main
 from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
 
+from catkin_pkg.packages import find_packages_allowing_duplicates
 from rosdistro import get_index, get_index_url, get_cached_distribution
-from rosdistro.dependency_walker import SourceDependencyWalker
 from rosinstall_generator.generator import generate_rosinstall_for_repos
 from vcstool.commands.import_ import (generate_jobs, get_repos_in_rosinstall_format, output_repositories, execute_jobs,
                                       output_results)
@@ -65,9 +64,17 @@ def install(pkgs):
     # which repo should this package be in?
 
     pkgs_queue = deque(pkgs)
+    pkgs_done = set()
 
     while pkgs_queue:
+        print('%d more packages in the queue' % len(pkgs_queue))
+
         pkg = pkgs_queue.popleft()
+
+        if pkg not in distro.source_packages:
+            print('skipping', pkg)
+            pkgs_done.add(pkg)
+            continue
 
         repository_name = distro.source_packages[pkg].repository_name
         repository = distro.repositories[repository_name]
@@ -91,50 +98,28 @@ def install(pkgs):
         updated_pkgs = find_packages_allowing_duplicates(os.path.join(target_path, repository_name))
 
         for name, updated_pkg in updated_pkgs.items():
-            deps = {
-                updated_pkg.buildtool_depends,
-                updated_pkg.build_depends,
-                updated_pkg.run_depends,
+            print('updated:', name)
+
+            # set this package as done
+            pkgs_done.add(name)
+            if name in pkgs_queue:
+                pkgs_queue.remove(name)
+
+            # add deps of this package in the queue
+            deps = set(
+                updated_pkg.buildtool_depends +
+                updated_pkg.build_depends +
+                updated_pkg.run_depends +
                 updated_pkg.test_depends
-            }
+            )
+            deps = {dep.name for dep in deps}
 
-            print(deps)
-
+            for dep in deps:
+                if dep not in pkgs_queue and dep not in pkgs_done:
+                    pkgs_queue.append(dep)
 
     # import ipdb; ipdb.set_trace()
-
     return
-
-
-    print(pkgs, repository.name)
-
-    import ipdb; ipdb.set_trace()
-
-    print('The following packages will be installed:')
-    for package in packages:
-        print(' ', package)
-
-    # now let's figure out which repos these dependencies belong
-    repos = {}
-    for package in packages:
-        repository_name = distro.source_packages[package].repository_name
-        repository = distro.repositories[repository_name]
-
-        # TODO: check duplicates
-        repos[repository_name] = repository
-
-    # generate a rosinstall file
-    config = generate_rosinstall_for_repos(repos, version_tag=False, tar=False)
-
-    # convert it to the vcs format
-    config = get_repos_in_rosinstall_format(config)
-
-    jobs = generate_jobs(config, Namespace(path=target_path))
-    print('updating the following repositories:')
-    output_repositories([job['client'] for job in jobs])
-
-    results = execute_jobs(jobs, show_progress=True, number_of_workers=10)
-    output_results(results)
 
     # install dependencies
     install_dependencies(target_path)
