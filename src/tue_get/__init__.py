@@ -4,6 +4,7 @@ from __future__ import print_function
 import errno
 import logging
 import os
+from collections import OrderedDict
 from argparse import Namespace
 from collections import deque
 from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
@@ -63,24 +64,21 @@ def install(pkgs):
 
     # which repo should this package be in?
 
-    pkgs_queue = deque(pkgs)
-    pkgs_done = set()
+    repo_names = (distro.source_packages[pkg].repository_name for pkg in pkgs)
+    # make unique
+    repo_names = OrderedDict.fromkeys(repo_names).keys()
+    repos_queue = deque(repo_names)
+    repos_done = set()
 
-    while pkgs_queue:
-        print('%d more packages in the queue' % len(pkgs_queue))
+    while repos_queue:
+        print('%d more repositories in the queue:' % len(repos_queue), repos_queue)
 
-        pkg = pkgs_queue.popleft()
-
-        if pkg not in distro.source_packages:
-            print('skipping', pkg)
-            pkgs_done.add(pkg)
-            continue
-
-        repository_name = distro.source_packages[pkg].repository_name
-        repository = distro.repositories[repository_name]
+        repo = repos_queue.popleft()
+        repos_done.add(repo)
+        repository = distro.repositories[repo]
 
         # generate rosinstall file
-        config = generate_rosinstall_for_repos({repository_name: repository}, version_tag=False, tar=False)
+        config = generate_rosinstall_for_repos({repo: repository}, version_tag=False, tar=False)
 
         # convert it to the vcs format
         config = get_repos_in_rosinstall_format(config)
@@ -95,28 +93,31 @@ def install(pkgs):
         output_results(results)
 
         # which packages did we download?
-        updated_pkgs = find_packages_allowing_duplicates(os.path.join(target_path, repository_name))
+        updated_pkgs = find_packages_allowing_duplicates(os.path.join(target_path, repo))
 
+        deps = set()
         for name, updated_pkg in updated_pkgs.items():
             print('updated:', name)
 
-            # set this package as done
-            pkgs_done.add(name)
-            if name in pkgs_queue:
-                pkgs_queue.remove(name)
-
             # add deps of this package in the queue
-            deps = set(
+            deps |= set(
                 updated_pkg.buildtool_depends +
                 updated_pkg.build_depends +
                 updated_pkg.run_depends +
                 updated_pkg.test_depends
             )
-            deps = {dep.name for dep in deps}
 
-            for dep in deps:
-                if dep not in pkgs_queue and dep not in pkgs_done:
-                    pkgs_queue.append(dep)
+        # make deps unique
+        deps = OrderedDict.fromkeys(dep.name for dep in deps).keys()
+
+        for dep in deps:
+            if dep not in distro.source_packages:
+                print('skipping', dep)
+                continue
+            repository_name = distro.source_packages[dep].repository_name
+            if repository_name not in repos_queue and repository_name not in repos_done:
+                print('queue:', repository_name)
+                repos_queue.append(repository_name)
 
     # import ipdb; ipdb.set_trace()
     return
@@ -132,8 +133,8 @@ def get_rosdep(key):
     installer_context = create_default_installer_context(verbose=False)
 
     installer, installer_keys, default_key, \
-    os_name, os_version = get_default_installer(installer_context=installer_context,
-                                                verbose=False)
+        os_name, os_version = get_default_installer(installer_context=installer_context,
+                                                    verbose=False)
 
     global cached_view
     if not cached_view:
