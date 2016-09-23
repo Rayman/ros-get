@@ -1,3 +1,0 @@
-[submodule "data/tue-env"]
-	path = data/tue-env
-	url = https://github.com/tue-robotics/tue-env.git
