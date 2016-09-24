@@ -42,6 +42,28 @@ def add_pkgs_to_installed_list(pkgs):
         open(os.path.join(installed_dir, pkg), 'a').close()
 
 
+def update_folder(target_path, folder_mapping):
+    # generate rosinstall file
+    config = generate_rosinstall_for_repos(folder_mapping, version_tag=False, tar=False)
+
+    # convert it to the vcs format
+    config = get_repos_in_rosinstall_format(config)
+
+    # update the repos
+    jobs = generate_jobs(config, Namespace(path=target_path))
+
+    print('updating the following repositories:')
+    output_repositories([job['client'] for job in jobs])
+
+    print("let's start")
+    results = execute_jobs(jobs, show_progress=True, number_of_workers=10)
+    output_results(results)
+
+    # which packages did we download?
+    return {folder: find_packages_allowing_duplicates(os.path.join(target_path, folder)) for folder in
+            folder_mapping.keys()}
+
+
 def install_dependencies(path):
     args = ['install', '--from-paths', path, '--ignore-src', '--as-root', 'pip:false']
     rosdep_main(args)
@@ -76,23 +98,7 @@ def install(pkgs):
         repos_done.add(repo)
         repository = distro.repositories[repo]
 
-        # generate rosinstall file
-        config = generate_rosinstall_for_repos({repo: repository}, version_tag=False, tar=False)
-
-        # convert it to the vcs format
-        config = get_repos_in_rosinstall_format(config)
-
-        # update the repos
-        jobs = generate_jobs(config, Namespace(path=target_path))
-        print('updating the following repositories:')
-        output_repositories([job['client'] for job in jobs])
-
-        print("let's start")
-        results = execute_jobs(jobs, show_progress=True, number_of_workers=10)
-        output_results(results)
-
-        # which packages did we download?
-        updated_pkgs = find_packages_allowing_duplicates(os.path.join(target_path, repo))
+        updated_pkgs = update_folder(target_path, {repo: repository})[repo]
 
         deps = set()
         for name, updated_pkg in updated_pkgs.items():
