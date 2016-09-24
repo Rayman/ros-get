@@ -42,6 +42,13 @@ def add_pkgs_to_installed_list(pkgs):
         open(os.path.join(installed_dir, pkg), 'a').close()
 
 
+def get_pkgs_from_installed_list():
+    workspace = get_workspace()
+    installed_dir = os.path.join(workspace, '.env', 'installed')
+
+    return os.listdir(installed_dir)
+
+
 def update_folder(target_path, folder_mapping):
     # generate rosinstall file
     config = generate_rosinstall_for_repos(folder_mapping, version_tag=False, tar=False)
@@ -64,6 +71,12 @@ def update_folder(target_path, folder_mapping):
             folder_mapping.keys()}
 
 
+def get_rosdistro(distroname):
+    index = get_index(get_index_url())
+    distro = get_cached_distribution(index, distroname)
+    return distro
+
+
 def install_dependencies(path):
     args = ['install', '--from-paths', path, '--ignore-src', '--as-root', 'pip:false']
     rosdep_main(args)
@@ -73,18 +86,13 @@ def install(pkgs):
     distroname = get_distro()
     workspace = get_workspace()
     target_path = os.path.join(workspace, 'src')
-
-    # TODO: check if the packages extist
+    distro = get_rosdistro(distroname)
 
     add_pkgs_to_installed_list(pkgs)
 
-    # let's figure out the dependent packages
-
-    index = get_index(get_index_url())
-    distro = get_cached_distribution(index, distroname)
+    # TODO: check if the packages extist
 
     # which repo should this package be in?
-
     repo_names = (distro.source_packages[pkg].repository_name for pkg in pkgs)
     # make unique
     repo_names = OrderedDict.fromkeys(repo_names).keys()
@@ -128,6 +136,37 @@ def install(pkgs):
     install_dependencies(target_path)
 
 
+def update():
+    distroname = get_distro()
+    workspace = get_workspace()
+    target_path = os.path.join(workspace, 'src')
+    distro = get_rosdistro(distroname)
+
+    pkgs = get_pkgs_from_installed_list()
+    repos = os.listdir(target_path)
+
+    # create a dict to remember which repos have been updated
+    repos = dict.fromkeys(repos)
+
+    pkgs_queue = deque(pkgs)
+    pkgs_done = set()
+
+    while pkgs_queue:
+        # which repos are these packages in?
+        repo_names = (distro.source_packages[pkg].repository_name for pkg in pkgs)
+
+        # make unique
+        repo_names = OrderedDict.fromkeys(repo_names).keys()
+
+        # get all corresponding repositories
+        repositories = (distro.repositories[repo] for repo in repo_names)
+
+        print(list(repositories))
+        return
+
+        # updated_pkgs = update_folder(target_path, {repo: repository})[repo]        return
+
+
 def get_workspace():
     workspace = os.getenv('TUE_WORKSPACE', None)
     return workspace
@@ -146,8 +185,8 @@ def get_rosdep(key):
     installer_context = create_default_installer_context(verbose=False)
 
     installer, installer_keys, default_key, \
-        os_name, os_version = get_default_installer(installer_context=installer_context,
-                                                    verbose=False)
+    os_name, os_version = get_default_installer(installer_context=installer_context,
+                                                verbose=False)
 
     global cached_view
     if not cached_view:

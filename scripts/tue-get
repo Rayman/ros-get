@@ -3,7 +3,8 @@ from __future__ import print_function
 
 import logging
 from argparse import ArgumentParser
-from tue_get import install
+
+from tue_get import install, update
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
@@ -22,7 +23,7 @@ if __name__ == '__main__':
     subparser.add_argument('pkgs', nargs='+', metavar='pkg')
 
     subparser = subparsers.add_parser('update', help='update list of available packages')
-    subparser.set_defaults(func=not_implemented)
+    subparser.set_defaults(func=update)
 
     subparser = subparsers.add_parser('upgrade', help='upgrade the workspace by installing/upgrading packages')
     subparser.set_defaults(func=not_implemented)
