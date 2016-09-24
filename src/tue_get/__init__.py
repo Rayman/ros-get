@@ -4,8 +4,8 @@ from __future__ import print_function
 import errno
 import logging
 import os
-from collections import OrderedDict
 from argparse import Namespace
+from collections import OrderedDict
 from collections import deque
 from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
 from rosdep2.main import rosdep_main
@@ -31,7 +31,7 @@ def mkdir_p(path):
 
 
 def add_pkgs_to_installed_list(pkgs):
-    workspace = os.getenv('TUE_WORKSPACE', None)
+    workspace = get_workspace()
     installed_dir = os.path.join(workspace, '.env', 'installed')
 
     mkdir_p(installed_dir)
@@ -48,9 +48,8 @@ def install_dependencies(path):
 
 
 def install(pkgs):
-    # TODO: get distro from environment
-    distroname = 'tuekinetic'
-    workspace = os.getenv('TUE_WORKSPACE', None)
+    distroname = get_distro()
+    workspace = get_workspace()
     target_path = os.path.join(workspace, 'src')
 
     # TODO: check if the packages extist
@@ -119,11 +118,19 @@ def install(pkgs):
                 print('queue:', repository_name)
                 repos_queue.append(repository_name)
 
-    # import ipdb; ipdb.set_trace()
-    return
-
     # install dependencies
     install_dependencies(target_path)
+
+
+def get_workspace():
+    workspace = os.getenv('TUE_WORKSPACE', None)
+    return workspace
+
+
+def get_distro():
+    # TODO: get distro from environment
+    distroname = 'tuekinetic'
+    return distroname
 
 
 cached_view = None
