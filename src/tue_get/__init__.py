@@ -143,28 +143,60 @@ def update():
     distro = get_rosdistro(distroname)
 
     pkgs = get_pkgs_from_installed_list()
-    repos = os.listdir(target_path)
 
     # create a dict to remember which repos have been updated
-    repos = dict.fromkeys(repos)
 
-    pkgs_queue = deque(pkgs)
-    pkgs_done = set()
+    pkgs_queue = list(pkgs)
+    pkgs_manifests = dict()
+    repos_done = set()
 
     while pkgs_queue:
+        # pop all packages from the queue
+        packages = pkgs_queue
+        pkgs_queue = list()
+
         # which repos are these packages in?
-        repo_names = (distro.source_packages[pkg].repository_name for pkg in pkgs)
+        repo_names = (distro.source_packages[package].repository_name for package in packages)
 
         # make unique
         repo_names = OrderedDict.fromkeys(repo_names).keys()
 
-        # get all corresponding repositories
-        repositories = (distro.repositories[repo] for repo in repo_names)
+        # update the repos on disk
+        folder_mapping = {repo: distro.repositories[repo] for repo in repo_names}
+        updated_mapping = update_folder(target_path, folder_mapping)
 
-        print(list(repositories))
-        return
+        # potentially we updated more packages than we thought
+        repos_done.update(repo_names)
+        for repo, updated_packages in updated_mapping.items():
+            for package in updated_packages:
+                print('updated', package.name)
 
-        # updated_pkgs = update_folder(target_path, {repo: repository})[repo]        return
+            pkgs_manifests.update({package.name: package for package in updated_packages})
+
+        # get the dependencies of the packages we wanted to update
+        deps = set()
+        for package in packages:
+            manifest = pkgs_manifests[package]
+
+            # add deps of this package in the queue
+            deps |= set(
+                manifest.buildtool_depends +
+                manifest.build_depends +
+                manifest.run_depends +
+                manifest.test_depends
+            )
+
+        # make deps unique
+        deps = OrderedDict.fromkeys(dep.name for dep in deps).keys()
+
+        for dep in deps:
+            if dep not in distro.source_packages:
+                # print('skipping', dep)
+                continue
+            repository_name = distro.source_packages[dep].repository_name
+            if repository_name not in repos_done:
+                print('queue: %s (%s)' % (dep, repository_name))
+                pkgs_queue.append(dep)
 
 
 def get_workspace():
