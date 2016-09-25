@@ -199,6 +199,9 @@ def update(verbose):
                 logger.debug('queue: %s (%s)', dep, repository_name)
                 pkgs_queue.append(dep)
 
+    # install dependencies
+    install_dependencies(target_path)
+
 
 def get_workspace():
     workspace = os.getenv('TUE_WORKSPACE', None)
