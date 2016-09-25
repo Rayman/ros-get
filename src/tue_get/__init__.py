@@ -112,6 +112,11 @@ def update(verbose):
         packages = pkgs_queue
         pkgs_queue = list()
 
+        # check for unknown packages
+        unknown_packages = (package for package in packages if package not in distro.source_packages)
+        packages = (package for package in packages if package in distro.source_packages)
+        logger.error('Unknown packages: %s', ','.join(unknown_packages))
+
         # which repos are these packages in?
         repo_names = (distro.source_packages[package].repository_name for package in packages)
 
@@ -158,5 +163,3 @@ def update(verbose):
 
     # install dependencies
     install_dependencies(target_path)
-
-
