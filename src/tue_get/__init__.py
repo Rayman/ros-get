@@ -11,7 +11,7 @@ from rosdep2 import RosdepLookup, create_default_installer_context, get_default_
 from rosdep2.main import rosdep_main
 from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
 
-from catkin_pkg.packages import find_packages_allowing_duplicates
+from catkin_pkg.packages import find_packages
 from rosdistro import get_index, get_index_url, get_cached_distribution
 from rosinstall_generator.generator import generate_rosinstall_for_repos
 from vcstool.commands.import_ import (generate_jobs, get_repos_in_rosinstall_format, output_repositories, execute_jobs,
@@ -67,7 +67,7 @@ def update_folder(target_path, folder_mapping):
     output_results(results)
 
     # which packages did we download?
-    return {folder: find_packages_allowing_duplicates(os.path.join(target_path, folder)) for folder in
+    return {folder: find_packages(os.path.join(target_path, folder)).values() for folder in
             folder_mapping.keys()}
 
 
