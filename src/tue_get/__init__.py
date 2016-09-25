@@ -114,7 +114,7 @@ def update(verbose):
 
         # check for unknown packages
         unknown_packages = (package for package in packages if package not in distro.source_packages)
-        packages = (package for package in packages if package in distro.source_packages)
+        packages = [package for package in packages if package in distro.source_packages]
         logger.error('Unknown packages: %s', ','.join(unknown_packages))
 
         # which repos are these packages in?
@@ -154,7 +154,7 @@ def update(verbose):
 
         for dep in deps:
             if dep not in distro.source_packages:
-                # print('skipping', dep)
+                logger.debug('skipping %s', dep)
                 continue
             repository_name = distro.source_packages[dep].repository_name
             if repository_name not in repos_done:
