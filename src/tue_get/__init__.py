@@ -49,7 +49,7 @@ def get_pkgs_from_installed_list():
     return os.listdir(installed_dir)
 
 
-def update_folder(target_path, folder_mapping):
+def update_folder(target_path, folder_mapping, verbose):
     # generate rosinstall file
     config = generate_rosinstall_for_repos(folder_mapping, version_tag=False, tar=False)
 
@@ -59,10 +59,10 @@ def update_folder(target_path, folder_mapping):
     # update the repos
     jobs = generate_jobs(config, Namespace(path=target_path))
 
-    print('updating the following repositories:')
-    output_repositories([job['client'] for job in jobs])
+    print('updating %d repositories' % len(jobs))
+    if verbose:
+        output_repositories([job['client'] for job in jobs])
 
-    print("let's start")
     results = execute_jobs(jobs, show_progress=True, number_of_workers=5)
     output_results(results)
 
@@ -82,7 +82,7 @@ def install_dependencies(path):
     rosdep_main(args)
 
 
-def install(pkgs):
+def install(pkgs, verbose):
     distroname = get_distro()
     workspace = get_workspace()
     target_path = os.path.join(workspace, 'src')
@@ -106,7 +106,7 @@ def install(pkgs):
         repos_done.add(repo)
         repository = distro.repositories[repo]
 
-        updated_pkgs = update_folder(target_path, {repo: repository})[repo]
+        updated_pkgs = update_folder(target_path, {repo: repository}, verbose)[repo]
 
         deps = set()
         for name, updated_pkg in updated_pkgs.items():
@@ -136,7 +136,7 @@ def install(pkgs):
     install_dependencies(target_path)
 
 
-def update():
+def update(verbose):
     distroname = get_distro()
     workspace = get_workspace()
     target_path = os.path.join(workspace, 'src')
@@ -163,13 +163,14 @@ def update():
 
         # update the repos on disk
         folder_mapping = {repo: distro.repositories[repo] for repo in repo_names}
-        updated_mapping = update_folder(target_path, folder_mapping)
+        updated_mapping = update_folder(target_path, folder_mapping, verbose)
 
         # potentially we updated more packages than we thought
         repos_done.update(repo_names)
         for repo, updated_packages in updated_mapping.items():
             for package in updated_packages:
-                print('updated', package.name)
+                if verbose:
+                    print('updated', package.name)
 
             pkgs_manifests.update({package.name: package for package in updated_packages})
 
@@ -195,7 +196,7 @@ def update():
                 continue
             repository_name = distro.source_packages[dep].repository_name
             if repository_name not in repos_done:
-                print('queue: %s (%s)' % (dep, repository_name))
+                logger.debug('queue: %s (%s)', dep, repository_name)
                 pkgs_queue.append(dep)
 
 
