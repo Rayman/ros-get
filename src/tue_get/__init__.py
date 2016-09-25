@@ -63,7 +63,7 @@ def update_folder(target_path, folder_mapping):
     output_repositories([job['client'] for job in jobs])
 
     print("let's start")
-    results = execute_jobs(jobs, show_progress=True, number_of_workers=10)
+    results = execute_jobs(jobs, show_progress=True, number_of_workers=5)
     output_results(results)
 
     # which packages did we download?

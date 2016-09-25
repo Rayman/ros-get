@@ -13,7 +13,7 @@ logging.config.dictConfig({
         'colored': {
             '()': 'colorlog.ColoredFormatter',
             'format':
-                "%(log_color)s[%(levelname)s] %(name)s:%(message)s",
+                "%(log_color)s[%(levelname)s] %(name)s: %(message)s",
         }
     },
     'handlers': {
@@ -22,9 +22,15 @@ logging.config.dictConfig({
             'formatter': 'colored',
         },
     },
+    'loggers': {
+        'vcstool.executor': {
+            'level': 'INFO',
+        }
+
+    },
     'root': {
         'handlers': ['stream'],
-        'level': logging.DEBUG
+        'level': 'DEBUG',
     },
 })
 
