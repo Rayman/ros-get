@@ -46,7 +46,7 @@ def update_folder(target_path, folder_mapping, verbose):
     output_results(results)
 
     # which packages did we download?
-    return {folder: find_packages(os.path.join(target_path, folder)).values() for folder in
+    return {folder: find_packages(os.path.join(target_path, folder)) for folder in
             folder_mapping.keys()}
 
 

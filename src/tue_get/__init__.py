@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 workspace = os.getenv('TUE_WORKSPACE', None)
 installed_dir = os.path.join(workspace, '.env', 'installed')
 target_path = os.path.join(workspace, 'src')
+link_dir = os.path.join(workspace, 'src_link')
 
 # TODO: get distro from environment
 distro = get_rosdistro('tuekinetic')
@@ -72,6 +73,9 @@ def recursive_update(pkgs_queue, repos_done, verbose):
     # create a dict to remember which repos have been updated
     pkgs_manifests = dict()
 
+    # remember visited packages, to symlink later
+    pkgs_done = list()
+
     while pkgs_queue:
         # pop all packages from the queue
         packages = pkgs_queue
@@ -92,20 +96,22 @@ def recursive_update(pkgs_queue, repos_done, verbose):
         # update the repos on disk
         folder_mapping = {repo: distro.repositories[repo] for repo in repo_names}
         updated_mapping = update_folder(target_path, folder_mapping, verbose)
+        # import ipdb; ipdb.set_trace()
 
         # potentially we updated more packages than we thought
         repos_done.update(repo_names)
         for repo, updated_packages in updated_mapping.items():
-            for package in updated_packages:
+            for folder, package in updated_packages.items():
+                path = os.path.join(repo, folder)
                 if verbose:
-                    print('updated', package.name)
-
-            pkgs_manifests.update({package.name: package for package in updated_packages})
+                    print('updated', package.name, '(', path, ')')
+            pkgs_manifests.update({package: os.path.join(repo, folder) for folder, package in updated_packages.items()})
 
         # get the dependencies of the packages we wanted to update
         deps = set()
         for package in packages:
-            manifest = pkgs_manifests[package]
+            manifest = next(manifest for manifest in pkgs_manifests if manifest.name == package)
+            # manifest = pkgs_manifests[package]
 
             # add deps of this package in the queue
             deps |= set(
@@ -114,6 +120,8 @@ def recursive_update(pkgs_queue, repos_done, verbose):
                 manifest.run_depends +
                 manifest.test_depends
             )
+
+        pkgs_done.extend(packages)
 
         # make deps unique
         deps = OrderedDict.fromkeys(dep.name for dep in deps).keys()
@@ -126,6 +134,27 @@ def recursive_update(pkgs_queue, repos_done, verbose):
             if repository_name not in repos_done:
                 logger.debug('queue: %s (%s)', dep, repository_name)
                 pkgs_queue.append(dep)
+
+    mkdir_p(link_dir)
+    for package in pkgs_done:
+        manifest = next(manifest for manifest in pkgs_manifests if manifest.name == package)
+        folder = pkgs_manifests[manifest]
+
+        print('linking', package, '==>', folder)
+
+        source = os.path.join(target_path, folder)
+        link_name = os.path.join(link_dir, package)
+
+        try:
+            os.symlink(source, link_name)
+        except OSError as e:
+            if e.errno == errno.EEXIST:
+                if os.readlink(link_name) == source:
+                    print('\tOK')
+                else:
+                    print('\tE: File exists')
+            else:
+                raise
 
     # install dependencies
     install_dependencies(target_path)
