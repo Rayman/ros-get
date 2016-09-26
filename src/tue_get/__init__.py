@@ -4,7 +4,6 @@ from __future__ import print_function
 import logging
 import os
 from collections import OrderedDict
-from collections import deque
 
 from tue_get.utils import mkdir_p, update_folder, install_dependencies, get_rosdistro, get_rosdep
 
@@ -42,70 +41,33 @@ def get_pkgs_from_installed_list():
 
 
 def install(pkgs, verbose):
-    workspace = get_workspace()
-    target_path = os.path.join(workspace, 'src')
-    distro = get_rosdistro(get_distro())
-
     add_pkgs_to_installed_list(pkgs)
 
-    # TODO: check if the packages extist
+    workspace = get_workspace()
+    target_path = os.path.join(workspace, 'src')
 
-    # which repo should this package be in?
-    repo_names = (distro.source_packages[pkg].repository_name for pkg in pkgs)
-    # make unique
-    repo_names = OrderedDict.fromkeys(repo_names).keys()
-    repos_queue = deque(repo_names)
-    repos_done = set()
+    pkgs_queue = list(pkgs)
+    repos_done = set(os.listdir(target_path))
 
-    while repos_queue:
-        print('%d more repositories in the queue:' % len(repos_queue), repos_queue)
-
-        repo = repos_queue.popleft()
-        repos_done.add(repo)
-        repository = distro.repositories[repo]
-
-        updated_pkgs = update_folder(target_path, {repo: repository}, verbose)[repo]
-
-        deps = set()
-        for name, updated_pkg in updated_pkgs.items():
-            print('updated:', name)
-
-            # add deps of this package in the queue
-            deps |= set(
-                updated_pkg.buildtool_depends +
-                updated_pkg.build_depends +
-                updated_pkg.run_depends +
-                updated_pkg.test_depends
-            )
-
-        # make deps unique
-        deps = OrderedDict.fromkeys(dep.name for dep in deps).keys()
-
-        for dep in deps:
-            if dep not in distro.source_packages:
-                print('skipping', dep)
-                continue
-            repository_name = distro.source_packages[dep].repository_name
-            if repository_name not in repos_queue and repository_name not in repos_done:
-                print('queue:', repository_name)
-                repos_queue.append(repository_name)
-
-    # install dependencies
-    install_dependencies(target_path)
+    recursive_update(pkgs_queue, repos_done, verbose)
 
 
 def update(verbose):
+    pkgs = get_pkgs_from_installed_list()
+
+    pkgs_queue = list(pkgs)
+    repos_done = set()
+
+    recursive_update(pkgs_queue, repos_done, verbose)
+
+
+def recursive_update(pkgs_queue, repos_done, verbose):
     workspace = get_workspace()
     target_path = os.path.join(workspace, 'src')
     distro = get_rosdistro(get_distro())
 
-    pkgs = get_pkgs_from_installed_list()
-
     # create a dict to remember which repos have been updated
-
-    pkgs_queue = list(pkgs)
     pkgs_manifests = dict()
-    repos_done = set()
 
     while pkgs_queue:
         # pop all packages from the queue
@@ -113,9 +75,10 @@ def update(verbose):
         pkgs_queue = list()
 
         # check for unknown packages
-        unknown_packages = (package for package in packages if package not in distro.source_packages)
+        unknown_packages = [package for package in packages if package not in distro.source_packages]
         packages = [package for package in packages if package in distro.source_packages]
-        logger.error('Unknown packages: %s', ','.join(unknown_packages))
+        if unknown_packages:
+            logger.error('Unknown packages: %s', ','.join(unknown_packages))
 
         # which repos are these packages in?
         repo_names = (distro.source_packages[package].repository_name for package in packages)
