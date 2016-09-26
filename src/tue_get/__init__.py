@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
+import errno
 import logging
 import os
 from collections import OrderedDict
@@ -40,6 +41,22 @@ def get_pkgs_from_installed_list():
     return os.listdir(installed_dir)
 
 
+def remove_pkgs_from_installed_list(pkgs):
+    workspace = get_workspace()
+    installed_dir = os.path.join(workspace, '.env', 'installed')
+
+    for pkg in pkgs:
+        try:
+            os.remove(os.path.join(installed_dir, pkg))
+        except OSError as e:
+            if e.errno == errno.ENOENT:
+                print('E: Unable to locate package', pkg)
+            else:
+                raise
+        else:
+            print('Removing', pkg)
+
+
 def install(pkgs, verbose):
     add_pkgs_to_installed_list(pkgs)
 
@@ -59,6 +76,10 @@ def update(verbose):
     repos_done = set()
 
     recursive_update(pkgs_queue, repos_done, verbose)
+
+
+def remove(pkgs, verbose):
+    remove_pkgs_from_installed_list(pkgs)
 
 
 def recursive_update(pkgs_queue, repos_done, verbose):
@@ -126,3 +147,7 @@ def recursive_update(pkgs_queue, repos_done, verbose):
 
     # install dependencies
     install_dependencies(target_path)
+
+
+def upgrade(verbose):
+    pass

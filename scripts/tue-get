@@ -4,7 +4,7 @@ from __future__ import print_function
 import logging.config
 from argparse import ArgumentParser
 
-from tue_get import install, update
+from tue_get import install, update, upgrade, remove
 
 logging.config.dictConfig({
     'version': 1,
@@ -53,10 +53,11 @@ if __name__ == '__main__':
     subparser.set_defaults(func=update)
 
     subparser = subparsers.add_parser('upgrade', help='upgrade the workspace by installing/upgrading packages')
-    subparser.set_defaults(func=not_implemented)
+    subparser.set_defaults(func=upgrade)
 
     subparser = subparsers.add_parser('remove', help='remove packages')
-    subparser.set_defaults(func=not_implemented)
+    subparser.set_defaults(func=remove)
+    subparser.add_argument('pkgs', nargs='+', metavar='pkg')
 
     subparser = subparsers.add_parser('autoremove', help='remove automatically all unused packages')
     subparser.set_defaults(func=not_implemented)
