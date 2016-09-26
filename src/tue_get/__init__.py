@@ -10,22 +10,17 @@ from tue_get.utils import mkdir_p, update_folder, install_dependencies, get_rosd
 
 logger = logging.getLogger(__name__)
 
+# global variables
 
-def get_workspace():
-    workspace = os.getenv('TUE_WORKSPACE', None)
-    return workspace
+workspace = os.getenv('TUE_WORKSPACE', None)
+installed_dir = os.path.join(workspace, '.env', 'installed')
+target_path = os.path.join(workspace, 'src')
 
-
-def get_distro():
-    # TODO: get distro from environment
-    distroname = 'tuekinetic'
-    return distroname
+# TODO: get distro from environment
+distro = get_rosdistro('tuekinetic')
 
 
 def add_pkgs_to_installed_list(pkgs):
-    workspace = get_workspace()
-    installed_dir = os.path.join(workspace, '.env', 'installed')
-
     mkdir_p(installed_dir)
 
     # touch the file
@@ -35,16 +30,10 @@ def add_pkgs_to_installed_list(pkgs):
 
 
 def get_pkgs_from_installed_list():
-    workspace = get_workspace()
-    installed_dir = os.path.join(workspace, '.env', 'installed')
-
     return os.listdir(installed_dir)
 
 
 def remove_pkgs_from_installed_list(pkgs):
-    workspace = get_workspace()
-    installed_dir = os.path.join(workspace, '.env', 'installed')
-
     for pkg in pkgs:
         try:
             os.remove(os.path.join(installed_dir, pkg))
@@ -59,9 +48,6 @@ def remove_pkgs_from_installed_list(pkgs):
 
 def install(pkgs, verbose):
     add_pkgs_to_installed_list(pkgs)
-
-    workspace = get_workspace()
-    target_path = os.path.join(workspace, 'src')
 
     pkgs_queue = list(pkgs)
     repos_done = set(os.listdir(target_path))
@@ -83,10 +69,6 @@ def remove(pkgs, verbose):
 
 
 def recursive_update(pkgs_queue, repos_done, verbose):
-    workspace = get_workspace()
-    target_path = os.path.join(workspace, 'src')
-    distro = get_rosdistro(get_distro())
-
     # create a dict to remember which repos have been updated
     pkgs_manifests = dict()
 
