@@ -12,13 +12,22 @@ logger = logging.getLogger(__name__)
 
 # global variables
 
-workspace = os.getenv('TUE_WORKSPACE', None)
-installed_dir = os.path.join(workspace, '.env', 'installed')
-target_path = os.path.join(workspace, 'src')
-link_dir = os.path.join(workspace, 'src_link')
-
 # TODO: get distro from environment
 distro = get_rosdistro('tuekinetic')
+
+workspace = os.path.join(os.path.normpath(os.getenv('TUE_WORKSPACE', None)), '')
+installed_dir = os.path.join(workspace, '.env', 'installed', '')
+target_path = os.path.join(workspace, 'src', '')
+link_dir = os.path.join('..', 'src_link', '')
+
+
+def log_workspace():
+    logger.debug('Workspace config:')
+    logger.debug('\tworkspace: %s', workspace)
+    logger.debug('\tinstalled_dir: %s', installed_dir)
+    logger.debug('\ttarget_path: %s', target_path)
+    logger.debug('\tlink_dir: %s', link_dir)
+
 
 
 def add_pkgs_to_installed_list(pkgs):
@@ -70,6 +79,8 @@ def remove(pkgs, verbose):
 
 
 def recursive_update(pkgs_queue, repos_done, verbose):
+    log_workspace()
+
     # create a dict to remember which repos have been updated
     pkgs_manifests = dict()
 
