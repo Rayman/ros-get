@@ -51,7 +51,7 @@ def update_folder(target_path, folder_mapping, verbose):
 
 
 def install_dependencies(path):
-    args = ['install', '--from-paths', path, '--ignore-src', '--as-root', 'pip:false']
+    args = ['install', '--from-paths', path, '--ignore-src', '--as-root', 'pip:false', '--default-yes']
     rosdep_main(args)
 
 
