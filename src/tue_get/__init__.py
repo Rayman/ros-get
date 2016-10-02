@@ -29,7 +29,6 @@ def log_workspace():
     logger.debug('\tlink_dir: %s', link_dir)
 
 
-
 def add_pkgs_to_installed_list(pkgs):
     mkdir_p(installed_dir)
 
@@ -139,7 +138,10 @@ def recursive_update(pkgs_queue, repos_done, verbose):
 
         for dep in deps:
             if dep not in distro.source_packages:
-                logger.debug('skipping %s', dep)
+                if get_rosdep(dep):
+                    logger.debug('skipping rosdep: %s', dep)
+                else:
+                    logger.warn('unknown dependency: %s', dep)
                 continue
             repository_name = distro.source_packages[dep].repository_name
             if repository_name not in repos_done:
