@@ -4,7 +4,7 @@ from __future__ import print_function
 import logging.config
 from argparse import ArgumentParser
 
-from ros_get import install, update, upgrade, remove
+from ros_get.commands import install, update, upgrade, remove
 
 logging.config.dictConfig({
     'version': 1,
