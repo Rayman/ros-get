@@ -4,7 +4,7 @@ ros-env is a collection of simple tools for working with ROS source packages.
 ### Installation
 ```sh
 source <(wget -O- https://raw.githubusercontent.com/Rayman/ros-get/master/install)
-echo "test -f ~/.tue/setup.bash && . ~/.tue/setup.bash" >> ~/.bashrc
+echo -e "\n#ros-get\ntest -f ~/.ros/ros-get/setup.bash && . ~/.ros/ros-get/setup.bash" >> ~/.bashrc
 ```
 
 ### Usage
