@@ -6,7 +6,7 @@ import logging
 import os
 from collections import OrderedDict
 
-from tue_get.utils import mkdir_p, update_folder, install_dependencies, get_rosdistro, get_rosdep
+from ros_get.utils import mkdir_p, update_folder, install_dependencies, get_rosdistro, get_rosdep
 
 logger = logging.getLogger(__name__)
 
