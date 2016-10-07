@@ -3,7 +3,7 @@ ros-env is a collection of simple tools for working with ROS source packages.
 
 ### Installation
 ```sh
-git clone https://github.com/Rayman/ros-env.git ~/.tue
+source <(wget -O- https://raw.githubusercontent.com/Rayman/ros-get/master/install)
 echo "test -f ~/.tue/setup.bash && . ~/.tue/setup.bash" >> ~/.bashrc
 ```
 
