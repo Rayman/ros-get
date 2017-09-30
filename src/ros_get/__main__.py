@@ -5,7 +5,7 @@ import logging.config
 from argparse import ArgumentParser
 
 from ros_get.commands import install, update, upgrade, remove
-from ros_get.workspace import create, switch
+from ros_get.workspace import create, switch, locate
 
 logging.config.dictConfig({
     'version': 1,
@@ -76,6 +76,9 @@ def main():
     subparser = subparsers.add_parser('ws-switch', help='switch to a workspace')
     subparser.set_defaults(func=switch)
     subparser.add_argument('name')
+
+    subparser = subparsers.add_parser('ws-locate', help='prints the path to the current workspace')
+    subparser.set_defaults(func=locate)
 
     args = parser.parse_args()
 

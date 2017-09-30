@@ -88,5 +88,9 @@ def switch(name, verbose):
     mkdir_p(ws_dir)
 
     logging.getLogger('ros_get.utils').setLevel(logging.ERROR)
-    symlink_force(dir, ws_file)
+    symlink_force(os.path.join('workspaces', name), ws_file)
     print('OK')
+
+
+def locate(verbose):
+    print(os.path.realpath(ws_file))
