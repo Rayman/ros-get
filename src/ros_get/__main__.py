@@ -67,7 +67,7 @@ def main():
     subparser = subparsers.add_parser('ws-create', help='create a new workspace')
     subparser.set_defaults(func=create)
     subparser.add_argument('dir')
-    subparser.add_argument('--extend', '-e', dest='extend_path', type=str,
+    subparser.add_argument('extend_path', metavar='extend',
                            help='Explicitly extend the result-space of another catkin workspace, '
                                 'overriding the value of $CMAKE_PREFIX_PATH.')
 
