@@ -3,9 +3,7 @@ from __future__ import print_function
 
 import logging
 
-
 logger = logging.getLogger(__name__)
-
 
 
 def install(pkgs, verbose):
