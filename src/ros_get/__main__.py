@@ -5,7 +5,7 @@ import logging.config
 from argparse import ArgumentParser
 
 from ros_get.commands import install, update, upgrade, remove
-from ros_get.workspace import create
+from ros_get.workspace import create, switch
 
 logging.config.dictConfig({
     'version': 1,
@@ -70,6 +70,12 @@ def main():
     subparser.add_argument('extend_path', metavar='extend',
                            help='Explicitly extend the result-space of another catkin workspace, '
                                 'overriding the value of $CMAKE_PREFIX_PATH.')
+    subparser.add_argument('--name', help='give a name to the workspace, if not given, the name '
+                                          'will be inferred by the directory name')
+
+    subparser = subparsers.add_parser('ws-switch', help='switch to a workspace')
+    subparser.set_defaults(func=switch)
+    subparser.add_argument('name')
 
     args = parser.parse_args()
 

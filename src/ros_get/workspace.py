@@ -4,8 +4,9 @@ from __future__ import print_function
 import logging
 import os
 from argparse import Namespace
-
 from catkin_tools.verbs import catkin_config, catkin_build
+
+from ros_get.utils import mkdir_p, symlink_force
 
 from . import config_dir
 
@@ -15,7 +16,7 @@ ws_file = os.path.join(config_dir, 'workspace')
 ws_dir = os.path.join(config_dir, 'workspaces')
 
 
-def create(dir, extend_path, verbose):
+def create(dir, extend_path, name, verbose):
     if not os.path.isdir(dir):
         print('target path is not a directory')
         return
@@ -64,6 +65,28 @@ def create(dir, extend_path, verbose):
         logger.error('catkin build error')
         exit(1)
 
+    abs_dir = os.path.abspath(dir)
+    if not name:
+        name = os.path.basename(abs_dir)
 
-def switch(verbose):
-    pass
+    if not name:
+        logger.error('name not valid: %s', name)
+        return 1
+
+    # save the result
+    mkdir_p(ws_dir)
+    symlink_force(abs_dir, os.path.join(ws_dir, name))
+    print('OK')
+
+
+def switch(name, verbose):
+    dir = os.path.join(ws_dir, name)
+    if not os.path.isdir(dir):
+        logger.error('workspace does not exists: %s', name)
+        return 1
+
+    mkdir_p(ws_dir)
+
+    logging.getLogger('ros_get.utils').setLevel(logging.ERROR)
+    symlink_force(dir, ws_file)
+    print('OK')
