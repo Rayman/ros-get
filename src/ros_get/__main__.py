@@ -13,8 +13,7 @@ logging.config.dictConfig({
     'formatters': {
         'colored': {
             '()': 'colorlog.ColoredFormatter',
-            'format':
-                "%(log_color)s[%(levelname)s] %(name)s: %(message)s",
+            'format': "%(log_color)s[%(levelname)s] %(name)s: %(message)s",
         }
     },
     'handlers': {
@@ -27,7 +26,6 @@ logging.config.dictConfig({
         'vcstool.executor': {
             'level': 'INFO',
         }
-
     },
     'root': {
         'handlers': ['stream'],
@@ -67,11 +65,14 @@ def main():
     subparser = subparsers.add_parser('ws-create', help='create a new workspace')
     subparser.set_defaults(func=create)
     subparser.add_argument('dir')
-    subparser.add_argument('extend_path', metavar='extend',
-                           help='Explicitly extend the result-space of another catkin workspace, '
-                                'overriding the value of $CMAKE_PREFIX_PATH.')
-    subparser.add_argument('--name', help='give a name to the workspace, if not given, the name '
-                                          'will be inferred by the directory name')
+    subparser.add_argument(
+        'extend_path',
+        metavar='extend',
+        help='Explicitly extend the result-space of another catkin workspace, '
+        'overriding the value of $CMAKE_PREFIX_PATH.')
+    subparser.add_argument(
+        '--name', help='give a name to the workspace, if not given, the name '
+        'will be inferred by the directory name')
 
     subparser = subparsers.add_parser('ws-switch', help='switch to a workspace')
     subparser.set_defaults(func=switch)
