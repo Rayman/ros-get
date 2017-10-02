@@ -76,7 +76,12 @@ def create(dir, extend_path, name, verbose):
     # save the result
     mkdir_p(ws_dir)
     symlink_force(abs_dir, os.path.join(ws_dir, name))
-    print('OK')
+
+    if not os.path.islink(ws_file):
+        logger.info("created first workspace, let's make it the default")
+        switch(name, verbose)
+    else:
+        print('OK')
 
 
 def switch(name, verbose):
