@@ -64,6 +64,27 @@ def create(dir, extend_path, name, verbose):
         logger.error('catkin build error')
         exit(1)
 
+    save(dir, name, verbose)
+
+
+def switch(name, verbose):
+    dir = os.path.join(ws_dir, name)
+    if not os.path.isdir(dir):
+        logger.error('workspace does not exists: %s', name)
+        return 1
+
+    mkdir_p(ws_dir)
+
+    logging.getLogger('ros_get.utils').setLevel(logging.ERROR)
+    symlink_force(os.path.join('workspaces', name), ws_file)
+    print('OK')
+
+
+def save(dir, name, verbose):
+    if not os.path.isdir(dir):
+        print('target path is not a directory')
+        return
+
     abs_dir = os.path.abspath(dir)
     if not name:
         name = os.path.basename(abs_dir)
@@ -81,19 +102,6 @@ def create(dir, extend_path, name, verbose):
         switch(name, verbose)
     else:
         print('OK')
-
-
-def switch(name, verbose):
-    dir = os.path.join(ws_dir, name)
-    if not os.path.isdir(dir):
-        logger.error('workspace does not exists: %s', name)
-        return 1
-
-    mkdir_p(ws_dir)
-
-    logging.getLogger('ros_get.utils').setLevel(logging.ERROR)
-    symlink_force(os.path.join('workspaces', name), ws_file)
-    print('OK')
 
 
 def locate(verbose):
