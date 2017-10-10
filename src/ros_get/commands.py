@@ -36,6 +36,9 @@ def install(pkgs, verbose):
         while True:
             pkg = pkgs_queue.get_nowait()
 
+            if len([m for m in pkgs_manifests if m.name == pkg]):
+                continue
+
             repo = [repo for repo in distro.repositories.values() if pkg in repo.source_repository.patched_packages]
             if len(repo) == 0:
                 logger.debug("Package '%s' can't be found in a repository", pkg)
@@ -61,17 +64,16 @@ def install(pkgs, verbose):
                 # then check for found packages that were not in the yaml
                 for subfolder, package in updated_packages.items():
                     if package.name in repo.source_repository.patched_packages:
+                        print('adding %s' % os.path.join(folder, subfolder))
                         pkgs_manifests[package] = os.path.join(folder, subfolder)
                     else:
-                        logger.warn("Found package '%s' in an unexpected repo: '%s'", package.name, repo.name)
+                        logger.debug("Found package '%s' in an unexpected repo: '%s'", package.name, repo.name)
 
             manifest = [m for m in pkgs_manifests if m.name == pkg]
             if not len(manifest):
                 logger.error("Required package '%s' not found", pkg)
                 return 1
-            if len(manifest) != 1:
-                logger.error("Required package '%s' not found", pkg)
-                return 1
+            assert len(manifest) == 1
             manifest = manifest[0]
 
             repos_done.add(repo)
