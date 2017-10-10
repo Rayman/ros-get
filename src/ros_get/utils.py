@@ -1,9 +1,17 @@
 import errno
 import logging
 import os
-from rosdep2 import RosdepLookup
-from rosdep2 import create_default_installer_context, get_default_installer
+from argparse import Namespace
+
+from mock import patch
+from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
 from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
+from rosdistro import get_index, get_index_url, repository, get_distribution
+from rosdistro.source_repository_specification import SourceRepositorySpecification
+from vcstool.commands.import_ import get_repos_in_rosinstall_format, generate_jobs
+from vcstool.executor import output_repositories, execute_jobs, output_results
+from rosinstall_generator.generator import generate_rosinstall_for_repos
+from catkin_pkg.packages import find_packages_allowing_duplicates
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +37,44 @@ def symlink_force(target, link_name):
             os.symlink(target, link_name)
         else:
             raise e
+
+
+class SourceRepositorySpecificationMock(SourceRepositorySpecification):
+    def __init__(self, name, data):
+        super(SourceRepositorySpecificationMock, self).__init__(name, data)
+        self.patched_packages = data.get('packages', [])
+
+
+def get_rosdistro(distroname):
+    index = get_index(get_index_url())
+
+    # load rosdistro with patched SourceRepositorySpecification class
+    with patch.object(repository, 'SourceRepositorySpecification', SourceRepositorySpecificationMock):
+        return get_distribution(index, distroname)
+
+
+def update_folder(target_path, folder_mapping, verbose):
+    # generate rosinstall file
+    config = generate_rosinstall_for_repos(folder_mapping, version_tag=False, tar=False)
+
+    # convert it to the vcs format
+    config = get_repos_in_rosinstall_format(config)
+
+    # update the repos
+    jobs = generate_jobs(config, Namespace(path=target_path, force=False, retry=False))
+
+    print('updating %d repositories' % len(jobs))
+    if verbose:
+        output_repositories([job['client'] for job in jobs])
+
+    results = execute_jobs(jobs, show_progress=True, number_of_workers=5)
+    output_results(results)
+
+    # which packages did we download?
+    return {
+        folder: find_packages_allowing_duplicates(os.path.join(target_path, folder))
+        for folder in folder_mapping.keys()
+    }
 
 
 cached_view = None
