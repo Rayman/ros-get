@@ -56,7 +56,7 @@ def install(pkgs, verbose):
                 found_names = set(package.name for package in updated_packages.values())
                 for package in repo.source_repository.patched_packages:
                     if package not in found_names:
-                        logger.warning("Package '%s' not found in the repo: '%s'", package.name, repo.name)
+                        logger.warning("Package '%s' not found in the repo: '%s'", package, repo.name)
 
                 # then check for found packages that were not in the yaml
                 for subfolder, package in updated_packages.items():
