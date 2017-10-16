@@ -63,7 +63,6 @@ def update_folder(target_path, folder_mapping, verbose):
     # update the repos
     jobs = generate_jobs(config, Namespace(path=target_path, force=False, retry=False))
 
-    print('updating %d repositories' % len(jobs))
     if verbose:
         output_repositories([job['client'] for job in jobs])
 
