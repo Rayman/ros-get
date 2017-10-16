@@ -17,9 +17,6 @@ target_path = os.path.realpath(os.path.join(ws_file, 'repos'))
 def install(pkgs, verbose):
     mkdir_p(target_path)
 
-    print(target_path)
-    print('TODO: %s' % pkgs)
-
     # TODO: get distro from environment
     distro = get_rosdistro('tuekinetic')
 
@@ -86,7 +83,12 @@ def install(pkgs, verbose):
                     pkgs_queue.put_nowait(dep.name)
 
     except Empty:
-        print('OK')
+        pass
+    if not repos_done:
+        logger.error('no repository updated, package could not be found')
+        return 1
+
+    print('OK')
 
 
 def update(verbose):
