@@ -2,16 +2,16 @@ import errno
 import logging
 import os
 from argparse import Namespace
-
-from mock import patch
+from catkin_pkg.packages import find_packages_allowing_duplicates
 from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
 from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
 from rosdistro import get_index, get_index_url, repository, get_distribution
 from rosdistro.source_repository_specification import SourceRepositorySpecification
+
+from mock import patch
+from rosinstall_generator.generator import generate_rosinstall_for_repos
 from vcstool.commands.import_ import get_repos_in_rosinstall_format, generate_jobs
 from vcstool.executor import output_repositories, execute_jobs, output_results
-from rosinstall_generator.generator import generate_rosinstall_for_repos
-from catkin_pkg.packages import find_packages_allowing_duplicates
 
 logger = logging.getLogger(__name__)
 
@@ -26,15 +26,16 @@ def mkdir_p(path):
             raise
 
 
-def symlink_force(target, link_name):
+def symlink_force(source, link_name):
+    logging.info("symlink '%s' => '%s'", source, link_name)
     try:
-        os.symlink(target, link_name)
+        os.symlink(source, link_name)
     except OSError, e:
         if e.errno == errno.EEXIST:
-            logger.warn('symlink already exists: %s', link_name)
-            logger.warn("replacing symlink from '%s' to '%s'", os.path.realpath(link_name), target)
+            logger.debug('symlink already exists: %s', link_name)
+            logger.debug("replacing symlink from '%s' to '%s'", os.path.realpath(link_name), source)
             os.remove(link_name)
-            os.symlink(target, link_name)
+            os.symlink(source, link_name)
         else:
             raise e
 

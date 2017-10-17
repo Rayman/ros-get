@@ -4,7 +4,6 @@ from __future__ import print_function
 import logging
 import os
 from Queue import Queue, Empty
-from collections import OrderedDict
 
 from .utils import mkdir_p, get_rosdistro, update_folder, symlink_force
 from .workspace import ws_file
@@ -24,8 +23,6 @@ def install(pkgs, verbose):
     pkgs_queue = Queue()
     for pkg in pkgs:
         pkgs_queue.put_nowait(pkg)
-
-    repos_done = set()
 
     # mapping from manifest to found location
     pkgs_manifests = {}
@@ -62,7 +59,7 @@ def install(pkgs, verbose):
                 # then check for found packages that were not in the yaml
                 for subfolder, package in updated_packages.items():
                     if package.name in repo.source_repository.patched_packages:
-                        print('adding %s' % os.path.join(folder, subfolder))
+                        logger.info("found '%s'" % os.path.join(folder, subfolder))
                         pkgs_manifests[package] = os.path.join(folder, subfolder)
                     else:
                         logger.debug("Found package '%s' in an unexpected repo: '%s'", package.name, repo.name)
@@ -74,8 +71,6 @@ def install(pkgs, verbose):
             assert len(manifest) == 1
             manifest = manifest[0]
 
-            repos_done.add(repo)
-
             deps = manifest.buildtool_depends + manifest.build_depends + manifest.run_depends + manifest.test_depends
             for dep in deps:
                 # try to get the manifest of the dep
@@ -85,7 +80,7 @@ def install(pkgs, verbose):
 
     except Empty:
         pass
-    if not repos_done:
+    if not pkgs_manifests:
         logger.error('no repository updated, package could not be found')
         return 1
 
