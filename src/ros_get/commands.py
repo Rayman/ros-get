@@ -6,12 +6,13 @@ import os
 from Queue import Queue, Empty
 from collections import OrderedDict
 
-from .utils import mkdir_p, get_rosdistro, update_folder
+from .utils import mkdir_p, get_rosdistro, update_folder, symlink_force
 from .workspace import ws_file
 
 logger = logging.getLogger(__name__)
 installed_dir = os.path.join(ws_file, '.env', 'installed')
 target_path = os.path.realpath(os.path.join(ws_file, 'repos'))
+link_dir = os.path.realpath(os.path.join(ws_file, 'src'))
 
 
 def install(pkgs, verbose):
@@ -87,6 +88,13 @@ def install(pkgs, verbose):
     if not repos_done:
         logger.error('no repository updated, package could not be found')
         return 1
+
+    for manifest, folder in pkgs_manifests.items():
+        source = os.path.join(target_path, folder)
+        link_name = os.path.join(link_dir, manifest.name)
+
+        source = os.path.relpath(source, link_dir)
+        symlink_force(source, link_name)
 
     print('OK')
 
