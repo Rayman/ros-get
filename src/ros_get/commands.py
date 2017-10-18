@@ -18,7 +18,10 @@ def install(pkgs, verbose):
     mkdir_p(target_path)
 
     # TODO: get distro from environment
-    distro = get_rosdistro('tuekinetic')
+    distro = get_rosdistro('kinetic')
+    repositories = [
+        r for r in distro.repositories.values() if r.source_repository and r.source_repository.patched_packages
+    ]
 
     pkgs_queue = Queue()
     for pkg in pkgs:
@@ -34,7 +37,7 @@ def install(pkgs, verbose):
             if len([m for m in pkgs_manifests if m.name == pkg]):
                 continue
 
-            repo = [repo for repo in distro.repositories.values() if pkg in repo.source_repository.patched_packages]
+            repo = [repo for repo in repositories if pkg in repo.source_repository.patched_packages]
             if len(repo) == 0:
                 logger.debug("Package '%s' can't be found in a repository", pkg)
                 continue
