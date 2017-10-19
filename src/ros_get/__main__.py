@@ -4,7 +4,8 @@ from __future__ import print_function
 import logging.config
 from argparse import ArgumentParser
 
-from ros_get.commands import install, update, upgrade, remove
+from ros_get.commands import install, update, remove
+from ros_get.workspace import create, switch, locate, save
 
 logging.config.dictConfig({
     'version': 1,
@@ -12,8 +13,7 @@ logging.config.dictConfig({
     'formatters': {
         'colored': {
             '()': 'colorlog.ColoredFormatter',
-            'format':
-                "%(log_color)s[%(levelname)s] %(name)s: %(message)s",
+            'format': "%(log_color)s[%(levelname)s] %(name)s: %(message)s",
         }
     },
     'handlers': {
@@ -26,7 +26,6 @@ logging.config.dictConfig({
         'vcstool.executor': {
             'level': 'INFO',
         }
-
     },
     'root': {
         'handlers': ['stream'],
@@ -39,7 +38,7 @@ def not_implemented():
     raise NotImplementedError()
 
 
-if __name__ == '__main__':
+def main():
     parser = ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true')
 
@@ -49,11 +48,8 @@ if __name__ == '__main__':
     subparser.set_defaults(func=install)
     subparser.add_argument('pkgs', nargs='+', metavar='pkg')
 
-    subparser = subparsers.add_parser('update', help='update list of available packages')
+    subparser = subparsers.add_parser('update', help='update all packages in the workspace to the latest version')
     subparser.set_defaults(func=update)
-
-    subparser = subparsers.add_parser('upgrade', help='upgrade the workspace by installing/upgrading packages')
-    subparser.set_defaults(func=upgrade)
 
     subparser = subparsers.add_parser('remove', help='remove packages')
     subparser.set_defaults(func=remove)
@@ -61,6 +57,33 @@ if __name__ == '__main__':
 
     subparser = subparsers.add_parser('autoremove', help='remove automatically all unused packages')
     subparser.set_defaults(func=not_implemented)
+
+    # workspace commands
+    subparser = subparsers.add_parser('ws-create', help='create a new workspace')
+    subparser.set_defaults(func=create)
+    subparser.add_argument('dir')
+    subparser.add_argument(
+        'extend_path',
+        metavar='extend',
+        help='Explicitly extend the result-space of another catkin workspace, '
+        'overriding the value of $CMAKE_PREFIX_PATH.')
+    subparser.add_argument(
+        '--name', help='give a name to the workspace, if not given, the name '
+        'will be inferred by the directory name')
+
+    subparser = subparsers.add_parser('ws-switch', help='switch to a workspace')
+    subparser.set_defaults(func=switch)
+    subparser.add_argument('name')
+
+    subparser = subparsers.add_parser('ws-locate', help='prints the path to the current workspace')
+    subparser.set_defaults(func=locate)
+
+    subparser = subparsers.add_parser('ws-save', help='Saves the current workspace')
+    subparser.set_defaults(func=save)
+    subparser.add_argument('dir')
+    subparser.add_argument(
+        '--name', help='give a name to the workspace, if not given, the name '
+        'will be inferred by the directory name')
 
     args = parser.parse_args()
 
@@ -70,3 +93,7 @@ if __name__ == '__main__':
     func = args.func
     del args.func
     exit(func(**vars(args)))
+
+
+if __name__ == '__main__':
+    main()

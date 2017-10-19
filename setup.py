@@ -3,8 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ros_get',
-    packages=find_packages('src'),  # include all packages under src
     package_dir={'': 'src'},  # tell distutils packages are under src
-    install_requires=['rosdistro', 'vcstool', 'colorlog', 'rosinstall_generator'],
-    scripts=['scripts/ros-get', 'scripts/ros-status', 'scripts/ros-env']
-)
+    packages=find_packages('src'),  # include all packages under src
+    install_requires=['xdg', 'rosdistro', 'vcstool', 'colorlog', 'rosinstall_generator', 'catkin_tools', 'mock'],
+    entry_points={'console_scripts': ['ros-get=ros_get.__main__:main']}, )

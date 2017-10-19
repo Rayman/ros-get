@@ -1,15 +1,19 @@
 import errno
+import logging
 import os
 from argparse import Namespace
-from rosdep2 import create_default_installer_context, get_default_installer, RosdepLookup
-from rosdep2.main import rosdep_main
+from catkin_pkg.packages import find_packages_allowing_duplicates
+from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
 from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
+from rosdistro import get_index, get_index_url, repository, get_distribution
+from rosdistro.source_repository_specification import SourceRepositorySpecification
 
-from catkin_pkg.packages import find_packages
-from rosdistro import get_index, get_index_url, get_cached_distribution
+from mock import patch
 from rosinstall_generator.generator import generate_rosinstall_for_repos
 from vcstool.commands.import_ import get_repos_in_rosinstall_format, generate_jobs
 from vcstool.executor import output_repositories, execute_jobs, output_results
+
+logger = logging.getLogger(__name__)
 
 
 def mkdir_p(path):
@@ -22,10 +26,32 @@ def mkdir_p(path):
             raise
 
 
+def symlink_force(source, link_name):
+    logging.info("symlink '%s' => '%s'", source, link_name)
+    try:
+        os.symlink(source, link_name)
+    except OSError, e:
+        if e.errno == errno.EEXIST:
+            logger.debug('symlink already exists: %s', link_name)
+            logger.debug("replacing symlink from '%s' to '%s'", os.path.realpath(link_name), source)
+            os.remove(link_name)
+            os.symlink(source, link_name)
+        else:
+            raise e
+
+
+class SourceRepositorySpecificationMock(SourceRepositorySpecification):
+    def __init__(self, name, data):
+        super(SourceRepositorySpecificationMock, self).__init__(name, data)
+        self.patched_packages = data.get('packages', [])
+
+
 def get_rosdistro(distroname):
     index = get_index(get_index_url())
-    distro = get_cached_distribution(index, distroname)
-    return distro
+
+    # load rosdistro with patched SourceRepositorySpecification class
+    with patch.object(repository, 'SourceRepositorySpecification', SourceRepositorySpecificationMock):
+        return get_distribution(index, distroname)
 
 
 def update_folder(target_path, folder_mapping, verbose):
@@ -36,9 +62,8 @@ def update_folder(target_path, folder_mapping, verbose):
     config = get_repos_in_rosinstall_format(config)
 
     # update the repos
-    jobs = generate_jobs(config, Namespace(path=target_path))
+    jobs = generate_jobs(config, Namespace(path=target_path, force=False, retry=False))
 
-    print('updating %d repositories' % len(jobs))
     if verbose:
         output_repositories([job['client'] for job in jobs])
 
@@ -46,13 +71,10 @@ def update_folder(target_path, folder_mapping, verbose):
     output_results(results)
 
     # which packages did we download?
-    return {folder: find_packages(os.path.join(target_path, folder)) for folder in
-            folder_mapping.keys()}
-
-
-def install_dependencies(path):
-    args = ['install', '--from-paths', path, '--ignore-src', '--as-root', 'pip:false', '--default-yes']
-    rosdep_main(args)
+    return {
+        folder: find_packages_allowing_duplicates(os.path.join(target_path, folder))
+        for folder in folder_mapping.keys()
+    }
 
 
 cached_view = None
@@ -61,9 +83,8 @@ cached_view = None
 def get_rosdep(key):
     installer_context = create_default_installer_context(verbose=False)
 
-    installer, installer_keys, default_key, \
-    os_name, os_version = get_default_installer(installer_context=installer_context,
-                                                verbose=False)
+    installer, installer_keys, default_key, os_name, os_version = get_default_installer(
+        installer_context=installer_context, verbose=False)
 
     global cached_view
     if not cached_view:

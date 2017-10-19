@@ -1,18 +1,9 @@
 #!/bin/bash
 
 function install() {
-	INSTALL_PATH=$HOME/.ros
 	DISTRO_URL=https://github.com/Rayman/rosdistro.git
 
-	pip install -U --user --src="$INSTALL_PATH" -e git+https://github.com/Rayman/ros-get.git#egg=ros-get
-
-	DISTRO_PATH=$INSTALL_PATH/ros-get/rosdistro
-	if [[ -d "$DISTRO_PATH" ]]
-	then
-		echo "ROS distro already found: $DISTRO_PATH"
-	else
-		git clone "$DISTRO_URL" "$DISTRO_PATH"
-	fi
+	pip install -U --user -e git+https://github.com/Rayman/ros-get.git#egg=ros-get
 }
 
 install
