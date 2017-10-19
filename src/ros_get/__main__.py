@@ -2,10 +2,9 @@
 from __future__ import print_function
 
 import logging.config
-import os
 from argparse import ArgumentParser
 
-from ros_get.commands import install, update, upgrade, remove
+from ros_get.commands import install, update, remove
 from ros_get.workspace import create, switch, locate, save
 
 logging.config.dictConfig({
@@ -49,11 +48,8 @@ def main():
     subparser.set_defaults(func=install)
     subparser.add_argument('pkgs', nargs='+', metavar='pkg')
 
-    subparser = subparsers.add_parser('update', help='update list of available packages')
+    subparser = subparsers.add_parser('update', help='update all packages in the workspace to the latest version')
     subparser.set_defaults(func=update)
-
-    subparser = subparsers.add_parser('upgrade', help='upgrade the workspace by installing/upgrading packages')
-    subparser.set_defaults(func=upgrade)
 
     subparser = subparsers.add_parser('remove', help='remove packages')
     subparser.set_defaults(func=remove)

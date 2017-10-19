@@ -60,8 +60,7 @@ def create(dir, extend_path, name, verbose):
                 no_install_lock=None,
                 no_notify=None,
                 continue_on_failure=None,
-                summarize=None,
-            )):
+                summarize=None)):
         logger.error('catkin build error')
         exit(1)
 

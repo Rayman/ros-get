@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
+import errno
 import logging
 import os
 from Queue import Queue, Empty
@@ -15,6 +16,20 @@ link_dir = os.path.realpath(os.path.join(ws_file, 'src'))
 
 
 def install(pkgs, verbose):
+    add_pkgs_to_installed_list(pkgs)
+    recursive_update(pkgs, verbose)
+
+
+def update(verbose):
+    pkgs = get_pkgs_from_installed_list()
+    recursive_update(pkgs, verbose)
+
+
+def remove(pkgs, verbose):
+    remove_pkgs_from_installed_list(pkgs)
+
+
+def recursive_update(pkgs, verbose):
     mkdir_p(target_path)
 
     # TODO: get distro from environment
@@ -97,18 +112,6 @@ def install(pkgs, verbose):
     print('OK')
 
 
-def update(verbose):
-    pass
-
-
-def remove(pkgs, verbose):
-    pass
-
-
-def upgrade(verbose):
-    pass
-
-
 def add_pkgs_to_installed_list(pkgs):
     mkdir_p(installed_dir)
 
@@ -116,3 +119,20 @@ def add_pkgs_to_installed_list(pkgs):
     for pkg in pkgs:
         logger.debug('marking for installation: %s', pkg)
         open(os.path.join(installed_dir, pkg), 'a').close()
+
+
+def get_pkgs_from_installed_list():
+    return os.listdir(installed_dir)
+
+
+def remove_pkgs_from_installed_list(pkgs):
+    for pkg in pkgs:
+        try:
+            os.remove(os.path.join(installed_dir, pkg))
+        except OSError as e:
+            if e.errno == errno.ENOENT:
+                logger.error('unable to locate package: %s', pkg)
+            else:
+                raise
+        else:
+            logger.info('Removing: %s', pkg)
