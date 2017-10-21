@@ -5,7 +5,7 @@ import logging.config
 from argparse import ArgumentParser
 
 from ros_get.commands import install, update, list_installed, remove
-from ros_get.workspace import create, switch, locate, save
+from ros_get.workspace import create, switch, save, list_workspaces, locate
 
 logging.config.dictConfig({
     'version': 1,
@@ -78,15 +78,17 @@ def main():
     subparser.set_defaults(func=switch)
     subparser.add_argument('name')
 
-    subparser = subparsers.add_parser('ws-locate', help='prints the path to the current workspace')
-    subparser.set_defaults(func=locate)
-
     subparser = subparsers.add_parser('ws-save', help='Saves the current workspace')
     subparser.set_defaults(func=save)
     subparser.add_argument('dir')
     subparser.add_argument(
-        '--name', help='give a name to the workspace, if not given, the name '
-        'will be inferred by the directory name')
+        '--name', help='give a name to the workspace, if not given, the name will be inferred by the directory name')
+
+    subparser = subparsers.add_parser('ws-list', help='list all saved workspaces')
+    subparser.set_defaults(func=list_workspaces)
+
+    subparser = subparsers.add_parser('ws-locate', help='prints the path to the current workspace')
+    subparser.set_defaults(func=locate)
 
     args = parser.parse_args()
 

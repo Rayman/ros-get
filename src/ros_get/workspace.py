@@ -104,5 +104,16 @@ def save(dir, name, verbose):
         print('OK')
 
 
+def list_workspaces(verbose):
+    mkdir_p(ws_dir)
+    for link_name in os.listdir(ws_dir):
+        try:
+            source = os.readlink(os.path.join(ws_dir, link_name))
+        except OSError as e:
+            logger.error('%s => %s', link_name, repr(e))
+        else:
+            print('%s => %s' % (link_name, source))
+
+
 def locate(verbose):
     print(os.path.realpath(ws_file))
