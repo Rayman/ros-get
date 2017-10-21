@@ -44,6 +44,7 @@ def recursive_update(pkgs, verbose):
     ]
 
     pkgs_queue = Queue()
+    pkgs_done = set()
     for pkg in pkgs:
         pkgs_queue.put_nowait(pkg)
 
@@ -54,7 +55,7 @@ def recursive_update(pkgs, verbose):
         while True:
             pkg = pkgs_queue.get_nowait()
 
-            if len([m for m in pkgs_manifests if m.name == pkg]):
+            if pkg in pkgs_done:
                 continue
 
             repo = [repo for repo in repositories if pkg in repo.source_repository.patched_packages]
@@ -62,52 +63,57 @@ def recursive_update(pkgs, verbose):
                 logger.debug("Package '%s' can't be found in a repository", pkg)
                 continue
 
-            logger.info('installing: %s', pkg)
-
             assert len(repo) == 1, "Package '%s' is in multiple repositories" % pkg
             repo = repo[0]
 
-            # TODO: check if repo was already updated
+            logger.info('installing: %s', pkg)
+            if not len([m for m in pkgs_manifests if m.name == pkg]):
+                updated_mapping = update_folder(target_path, {repo.name: repo}, verbose)
 
-            updated_mapping = update_folder(target_path, {repo.name: repo}, verbose)
+                for folder, updated_packages in updated_mapping.items():
 
-            for folder, updated_packages in updated_mapping.items():
+                    # first check for expected packages that were not found
+                    found_names = set(package.name for package in updated_packages.values())
+                    for package in repo.source_repository.patched_packages:
+                        if package not in found_names:
+                            logger.warning("Package '%s' not found in the repo: '%s'", package, repo.name)
 
-                # first check for expected packages that were not found
-                found_names = set(package.name for package in updated_packages.values())
-                for package in repo.source_repository.patched_packages:
-                    if package not in found_names:
-                        logger.warning("Package '%s' not found in the repo: '%s'", package, repo.name)
-
-                # then check for found packages that were not in the yaml
-                for subfolder, package in updated_packages.items():
-                    if package.name in repo.source_repository.patched_packages:
-                        logger.info("found '%s'" % os.path.join(folder, subfolder))
-                        pkgs_manifests[package] = os.path.join(folder, subfolder)
-                    else:
-                        logger.debug("Found package '%s' in an unexpected repo: '%s'", package.name, repo.name)
+                    # then check for found packages that were not in the yaml
+                    for subfolder, package in updated_packages.items():
+                        if package.name in repo.source_repository.patched_packages:
+                            logger.info("found '%s'" % os.path.join(folder, subfolder))
+                            pkgs_manifests[package] = os.path.join(folder, subfolder)
+                        else:
+                            logger.debug("Found package '%s' in an unexpected repo: '%s'", package.name, repo.name)
 
             manifest = [m for m in pkgs_manifests if m.name == pkg]
             if not len(manifest):
                 logger.error("Required package '%s' not found", pkg)
                 return 1
-            assert len(manifest) == 1
+            assert len(manifest) == 1, "Package '%s' was found multiple times" % pkg
             manifest = manifest[0]
 
             deps = manifest.buildtool_depends + manifest.build_depends + manifest.run_depends + manifest.test_depends
             for dep in deps:
-                # try to get the manifest of the dep
-                if not len([m for m in pkgs_manifests if m.name == dep.name]):
+                if dep not in pkgs_done:
                     logger.debug("queing: '%s'", dep.name)
                     pkgs_queue.put_nowait(dep.name)
 
+            pkgs_done.add(pkg)
+
     except Empty:
         pass
-    if not pkgs_manifests:
+    if not pkgs_done:
         logger.error('no repository updated, package could not be found')
         return 1
 
-    for manifest, folder in pkgs_manifests.items():
+    for pkg in pkgs_done:
+        manifest = [m for m in pkgs_manifests if m.name == pkg]
+        assert len(manifest) == 1
+        manifest = manifest[0]
+
+        folder = pkgs_manifests[manifest]
+
         source = os.path.join(target_path, folder)
         link_name = os.path.join(link_dir, manifest.name)
 
