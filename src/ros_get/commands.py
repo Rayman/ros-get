@@ -25,6 +25,11 @@ def update(verbose):
     recursive_update(pkgs, verbose)
 
 
+def list_installed(verbose):
+    for pkg in get_pkgs_from_installed_list():
+        print(pkg)
+
+
 def remove(pkgs, verbose):
     remove_pkgs_from_installed_list(pkgs)
 
