@@ -18,11 +18,20 @@ link_dir = os.path.realpath(os.path.join(ws_file, 'src'))
 def install(pkgs, verbose):
     add_pkgs_to_installed_list(pkgs)
     recursive_update(pkgs, verbose)
+    print('OK')
 
 
 def update(verbose):
     pkgs = get_pkgs_from_installed_list()
-    recursive_update(pkgs, verbose)
+    pkgs_done = recursive_update(pkgs, verbose)
+
+    for f in os.listdir(link_dir):
+        if f not in pkgs_done:
+            if os.path.islink(f):
+                logger.info("removing symlink: %s", f)
+                os.remove(os.path.join(link_dir, f))
+
+    print('OK')
 
 
 def list_installed(verbose):
@@ -32,6 +41,8 @@ def list_installed(verbose):
 
 def remove(pkgs, verbose):
     remove_pkgs_from_installed_list(pkgs)
+    logger.warn("marked %d package(s) for removal", len(pkgs))
+    logger.warn("please run the following command to update your workspace:\n\n\tros-get update")
 
 
 def recursive_update(pkgs, verbose):
@@ -107,6 +118,7 @@ def recursive_update(pkgs, verbose):
         logger.error('no repository updated, package could not be found')
         return 1
 
+    # create the symlinks in the src folder
     for pkg in pkgs_done:
         manifest = [m for m in pkgs_manifests if m.name == pkg]
         assert len(manifest) == 1
@@ -120,7 +132,7 @@ def recursive_update(pkgs, verbose):
         source = os.path.relpath(source, link_dir)
         symlink_force(source, link_name)
 
-    print('OK')
+    return pkgs_done
 
 
 def add_pkgs_to_installed_list(pkgs):
