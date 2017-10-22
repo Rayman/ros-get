@@ -5,5 +5,14 @@ setup(
     name='ros_get',
     package_dir={'': 'src'},  # tell distutils packages are under src
     packages=find_packages('src'),  # include all packages under src
-    install_requires=['xdg', 'rosdistro', 'vcstool', 'colorlog', 'rosinstall_generator', 'catkin_tools', 'mock'],
+    install_requires=[
+        'argcomplete',
+        'catkin_tools',
+        'colorlog',
+        'mock',
+        'rosdistro',
+        'rosinstall_generator',
+        'vcstool',
+        'xdg',
+    ],
     entry_points={'console_scripts': ['ros-get=ros_get.__main__:main']}, )
