@@ -46,6 +46,10 @@ def remove(pkgs, verbose):
 
 
 def recursive_update(pkgs, verbose):
+    if not pkgs:
+        logger.warn('no package specified')
+        return set()
+
     mkdir_p(target_path)
 
     # TODO: get distro from environment
@@ -100,7 +104,7 @@ def recursive_update(pkgs, verbose):
             manifest = [m for m in pkgs_manifests if m.name == pkg]
             if not len(manifest):
                 logger.error("Required package '%s' not found", pkg)
-                return 1
+                exit(1)
             assert len(manifest) == 1, "Package '%s' was found multiple times" % pkg
             manifest = manifest[0]
 
@@ -116,7 +120,7 @@ def recursive_update(pkgs, verbose):
         pass
     if not pkgs_done:
         logger.error('no repository updated, package could not be found')
-        return 1
+        exit(1)
 
     # create the symlinks in the src folder
     for pkg in pkgs_done:
