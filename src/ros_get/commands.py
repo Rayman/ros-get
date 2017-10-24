@@ -10,7 +10,7 @@ from .utils import mkdir_p, get_rosdistro, update_folder, symlink_force
 from .workspace import ws_file
 
 logger = logging.getLogger(__name__)
-installed_dir = os.path.join(ws_file, '.env', 'installed')
+installed_dir = os.path.realpath(os.path.join(ws_file, '.env', 'installed'))
 target_path = os.path.realpath(os.path.join(ws_file, 'repos'))
 link_dir = os.path.realpath(os.path.join(ws_file, 'src'))
 
@@ -145,6 +145,7 @@ def add_pkgs_to_installed_list(pkgs):
 
 
 def get_pkgs_from_installed_list():
+    mkdir_p(installed_dir)
     return os.listdir(installed_dir)
 
 
