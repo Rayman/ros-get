@@ -18,8 +18,8 @@ ws_dir = os.path.join(config_dir, 'workspaces')
 
 def create(dir, extend_path, name, verbose):
     if not os.path.isdir(dir):
-        print('target path is not a directory')
-        return
+        logger.error('target path is not a directory')
+        return 1
 
     if catkin_config.main(
             Namespace(
@@ -31,7 +31,7 @@ def create(dir, extend_path, name, verbose):
                 init=True,
                 mkdirs=True)):
         logger.error('catkin config error')
-        exit(1)
+        return 1
 
     if catkin_build.main(
             Namespace(
@@ -62,7 +62,7 @@ def create(dir, extend_path, name, verbose):
                 continue_on_failure=None,
                 summarize=None)):
         logger.error('catkin build error')
-        exit(1)
+        return 1
 
     save(dir, name, verbose)
 
@@ -77,7 +77,6 @@ def switch(name, verbose):
 
     logging.getLogger('ros_get.utils').setLevel(logging.ERROR)
     symlink_force(os.path.join('workspaces', name), ws_file)
-    print('OK')
 
 
 def save(dir, name, verbose):

@@ -100,5 +100,5 @@ def get_rosdep(key):
         d = view.lookup(key)
         rule_installer, rule = d.get_rule_for_platform(os_name, os_version, installer_keys, default_key)
         return rule_installer, rule
-    except KeyError as e:
+    except KeyError:
         return False

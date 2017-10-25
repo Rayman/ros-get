@@ -17,8 +17,9 @@ link_dir = os.path.realpath(os.path.join(ws_file, 'src'))
 
 def install(pkgs, verbose):
     add_pkgs_to_installed_list(pkgs)
-    recursive_update(pkgs, verbose)
-    print('OK')
+    pkgs_done = recursive_update(pkgs, verbose)
+    if not pkgs_done:
+        return 1
 
 
 def update(verbose):
@@ -30,8 +31,6 @@ def update(verbose):
             if os.path.islink(f):
                 logger.info("removing symlink: %s", f)
                 os.remove(os.path.join(link_dir, f))
-
-    print('OK')
 
 
 def list_installed(verbose):
@@ -49,8 +48,6 @@ def recursive_update(pkgs, verbose):
     if not pkgs:
         logger.warn('no package specified')
         return set()
-
-    mkdir_p(target_path)
 
     # TODO: get distro from environment
     distro = get_rosdistro('kinetic')
@@ -118,9 +115,9 @@ def recursive_update(pkgs, verbose):
 
     except Empty:
         pass
+
     if not pkgs_done:
         logger.error('no repository updated, package could not be found')
-        exit(1)
 
     # create the symlinks in the src folder
     for pkg in pkgs_done:
