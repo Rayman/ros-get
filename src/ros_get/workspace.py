@@ -81,8 +81,8 @@ def switch(name, verbose):
 
 def save(dir, name, verbose):
     if not os.path.isdir(dir):
-        print('target path is not a directory')
-        return
+        logger.error('target path is not a directory')
+        return 1
 
     abs_dir = os.path.abspath(dir)
     if not name:
@@ -95,12 +95,11 @@ def save(dir, name, verbose):
     # save the result
     mkdir_p(ws_dir)
     symlink_force(abs_dir, os.path.join(ws_dir, name))
+    logger.info("saved the workspace as '%s'", name)
 
     if not os.path.islink(ws_file):
         logger.info("created first workspace, let's make it the default")
         switch(name, verbose)
-    else:
-        print('OK')
 
 
 def list_workspaces(verbose):
