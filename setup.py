@@ -7,11 +7,14 @@ setup(
     packages=find_packages('src'),  # include all packages under src
     install_requires=[
         'argcomplete',
+        'catkin_pkg',
         'catkin_tools',
         'colorlog',
         'mock',
+        'rosdep',
         'rosdistro',
         'rosinstall_generator',
+        'trollius',  # remove when catkin>0.4.4 is released
         'vcstool',
         'xdg',
     ],
