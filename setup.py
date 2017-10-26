@@ -10,6 +10,7 @@ setup(
         'catkin_pkg',
         'catkin_tools',
         'colorlog',
+        'future',
         'mock',
         'rosdep',
         'rosdistro',

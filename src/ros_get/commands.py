@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-from __future__ import print_function
+
 
 import errno
 import logging
 import os
-from Queue import Queue, Empty
+from queue import Queue, Empty
 
 from .utils import mkdir_p, get_rosdistro, update_folder, symlink_force
 from .workspace import ws_file
