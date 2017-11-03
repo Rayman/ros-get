@@ -1,6 +1,5 @@
-#!/usr/bin/env python
-
 from argparse import ArgumentParser
+
 from argcomplete import autocomplete
 
 
@@ -88,8 +87,7 @@ def main():
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    from ros_get.commands import install, update, list_installed, remove
-    from ros_get.workspace import create, switch, save, list_workspaces, locate
+    from . import install, update, list_installed, remove, create, switch, save, list_workspaces, locate
 
     # remove func from the namespace
     func = args.func

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import os
 import tempfile
 
@@ -23,46 +22,46 @@ def teardown():
 
 
 def test_install():
-    from ros_get.commands import install
+    from ros_get import install
     assert install([], verbose=True) == 1
 
 
 @pytest.mark.skip()
 def test_update():
-    from ros_get.commands import update
+    from ros_get import update
     assert update(verbose=True) == 1
 
 
 def test_list():
-    from ros_get.workspace import list_workspaces
+    from ros_get import list_workspaces
     list_workspaces(verbose=True)
 
 
 def test_remove():
-    from ros_get.commands import remove
+    from ros_get import remove
     remove(['unknown'], verbose=True)
 
 
 # def test_ws_create():
-#     from ros_get.workspace import create
+#     from ros_get import create
 #     create(verbose=True)
 
 
 def test_ws_switch():
-    from ros_get.workspace import switch
+    from ros_get import switch
     switch('unknown', verbose=True)
 
 
 def test_ws_save():
-    from ros_get.workspace import save
+    from ros_get import save
     save('dir', 'name', verbose=True)
 
 
 def test_ws_list():
-    from ros_get.workspace import list_workspaces
+    from ros_get import list_workspaces
     list_workspaces(verbose=True)
 
 
 def test_ws_locate():
-    from ros_get.workspace import locate
+    from ros_get import locate
     locate(verbose=True)

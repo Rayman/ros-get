@@ -1,17 +1,15 @@
-#!/usr/bin/env python
-
-
 import logging
 import os
 from argparse import Namespace
+
+import xdg
 from catkin_tools.verbs import catkin_config, catkin_build
 
-from ros_get.utils import mkdir_p, symlink_force
-
-from . import config_dir
+from .utils import mkdir_p, symlink_force, __name__ as utilsname
 
 logger = logging.getLogger(__name__)
 
+config_dir = os.path.join(xdg.XDG_CONFIG_HOME, 'ros-get')
 ws_file = os.path.join(config_dir, 'workspace')
 ws_dir = os.path.join(config_dir, 'workspaces')
 
@@ -75,7 +73,7 @@ def switch(name, verbose):
 
     mkdir_p(ws_dir)
 
-    logging.getLogger('ros_get.utils').setLevel(logging.ERROR)
+    logging.getLogger(utilsname).setLevel(logging.ERROR)
     symlink_force(os.path.join('workspaces', name), ws_file)
 
 

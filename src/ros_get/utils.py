@@ -2,13 +2,13 @@ import errno
 import logging
 import os
 from argparse import Namespace
-from catkin_pkg.packages import find_packages_allowing_duplicates
-from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
-from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
 from rosdistro import get_index, get_index_url, repository, get_distribution
 from rosdistro.source_repository_specification import SourceRepositorySpecification
 
+from catkin_pkg.packages import find_packages_allowing_duplicates
 from mock import patch
+from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
+from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
 from rosinstall_generator.generator import generate_rosinstall_for_repos
 from vcstool.commands.import_ import get_repos_in_rosinstall_format, generate_jobs
 from vcstool.executor import output_repositories, execute_jobs, output_results

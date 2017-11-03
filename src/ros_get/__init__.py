@@ -1,5 +1,3 @@
-import os
-
-import xdg
-
-config_dir = os.path.join(xdg.XDG_CONFIG_HOME, 'ros-get')
+from .commands import install, update, list_installed, remove
+from .workspace import create, switch, save, list_workspaces, locate
+__all__ = ['install', 'update', 'list_installed', 'remove', 'create', 'switch', 'save', 'list_workspaces', 'locate']
