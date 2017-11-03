@@ -3,6 +3,7 @@ import logging
 import os
 
 from queue import Queue, Empty
+from rosdep2.main import command_update
 
 from .utils import mkdir_p, get_rosdistro, update_folder, symlink_force
 from .workspace import ws_file
@@ -22,6 +23,13 @@ def install(pkgs, verbose):
 
 
 def update(verbose):
+    logger.info('rosdep update')
+    exit_code = command_update(None)
+
+    if exit_code:
+        logger.warning('rosdep exited with %d', exit_code)
+        return exit_code
+
     pkgs = get_pkgs_from_installed_list()
     pkgs_done = recursive_update(pkgs, verbose)
 
