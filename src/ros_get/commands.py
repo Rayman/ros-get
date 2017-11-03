@@ -2,6 +2,7 @@ import errno
 import logging
 import os
 
+from catkin_pkg.packages import find_packages_allowing_duplicates
 from queue import Queue, Empty
 from rosdep2.main import command_update
 
@@ -87,23 +88,24 @@ def recursive_update(pkgs, verbose):
 
             logger.info('installing: %s', pkg)
             if not len([m for m in pkgs_manifests if m.name == pkg]):
-                updated_mapping = update_folder(target_path, {repo.name: repo}, verbose)
+                update_folder(target_path, {repo.name: repo}, verbose)
 
-                for folder, updated_packages in updated_mapping.items():
+                # which packages did we download?
+                updated_packages = find_packages_allowing_duplicates(os.path.join(target_path, repo.name))
 
-                    # first check for expected packages that were not found
-                    found_names = set(package.name for package in updated_packages.values())
-                    for package in repo.source_repository.patched_packages:
-                        if package not in found_names:
-                            logger.warning("Package '%s' not found in the repo: '%s'", package, repo.name)
+                # first check for expected packages that were not found
+                found_names = set(package.name for package in updated_packages.values())
+                for package in repo.source_repository.patched_packages:
+                    if package not in found_names:
+                        logger.warning("Package '%s' not found in the repo: '%s'", package, repo.name)
 
-                    # then check for found packages that were not in the yaml
-                    for subfolder, package in updated_packages.items():
-                        if package.name in repo.source_repository.patched_packages:
-                            logger.info("found '%s'" % os.path.join(folder, subfolder))
-                            pkgs_manifests[package] = os.path.join(folder, subfolder)
-                        else:
-                            logger.debug("Found package '%s' in an unexpected repo: '%s'", package.name, repo.name)
+                # then check for found packages that were not in the yaml
+                for subfolder, package in updated_packages.items():
+                    if package.name in repo.source_repository.patched_packages:
+                        logger.info("found '%s'" % os.path.join(repo.name, subfolder))
+                        pkgs_manifests[package] = os.path.join(repo.name, subfolder)
+                    else:
+                        logger.debug("Found package '%s' in an unexpected repo: '%s'", package.name, repo.name)
 
             manifest = [m for m in pkgs_manifests if m.name == pkg]
             if not len(manifest):

@@ -5,7 +5,6 @@ from argparse import Namespace
 from rosdistro import get_index, get_index_url, repository, get_distribution
 from rosdistro.source_repository_specification import SourceRepositorySpecification
 
-from catkin_pkg.packages import find_packages_allowing_duplicates
 from mock import patch
 from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
 from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
@@ -69,12 +68,6 @@ def update_folder(target_path, folder_mapping, verbose):
 
     results = execute_jobs(jobs, show_progress=True, number_of_workers=5)
     output_results(results)
-
-    # which packages did we download?
-    return {
-        folder: find_packages_allowing_duplicates(os.path.join(target_path, folder))
-        for folder in folder_mapping.keys()
-    }
 
 
 cached_view = None
