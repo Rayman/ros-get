@@ -1,6 +1,9 @@
 from argparse import ArgumentParser
 
-from argcomplete import autocomplete
+try:
+    from argcomplete import autocomplete
+except ImportError:
+    autocomplete = None
 
 
 def main():
@@ -52,10 +55,11 @@ def main():
     subparser = subparsers.add_parser('ws-locate', help='prints the path to the current workspace')
     subparser.set_defaults(func='locate')
 
-    autocomplete(parser)
+    if autocomplete is not None:
+        autocomplete(parser)
     args = parser.parse_args()
 
-    # computation has te be avoided before the 'autocomplete(parser)' call
+    # computation has to be avoided before the 'autocomplete(parser)' call
 
     import logging.config
     logging.config.dictConfig({
