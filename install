@@ -1,9 +1,0 @@
-#!/bin/bash
-
-function install() {
-	DISTRO_URL=https://github.com/Rayman/rosdistro.git
-
-	pip install -U --user -e git+https://github.com/Rayman/ros-get.git#egg=ros-get
-}
-
-install

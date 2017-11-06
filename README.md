@@ -2,11 +2,22 @@
 ros-env is a collection of simple tools for working with ROS source packages.
 
 ### Installation
-TODO
+TODO: upload to PyPI
+
+For now, please install from source
+
+### Installation from source
+```sh
+mkdir -p src/
+cd src/
+git clone https://github.com/Rayman/ros-get.git
+cd ros-get/
+pip install --user -e ros-get/
+```
 
 ### Usage
 ```sh
-ros-get install tue_env
+ros-get install tue_config
 ```
 
 ### Comparison with [tue-env](https://github.com/tue-robotics/tue-env)
