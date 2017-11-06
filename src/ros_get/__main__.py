@@ -55,7 +55,7 @@ def main():
     autocomplete(parser)
     args = parser.parse_args()
 
-    # computation has te be avoided before the 'autocomplete(parser)' call
+    # computation has to be avoided before the 'autocomplete(parser)' call
 
     import logging.config
     logging.config.dictConfig({
