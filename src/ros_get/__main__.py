@@ -1,9 +1,6 @@
 from argparse import ArgumentParser
 
-try:
-    from argcomplete import autocomplete
-except ImportError:
-    autocomplete = None
+from argcomplete import autocomplete
 
 
 def main():
@@ -55,8 +52,7 @@ def main():
     subparser = subparsers.add_parser('ws-locate', help='prints the path to the current workspace')
     subparser.set_defaults(func='locate')
 
-    if autocomplete is not None:
-        autocomplete(parser)
+    autocomplete(parser)
     args = parser.parse_args()
 
     # computation has to be avoided before the 'autocomplete(parser)' call
