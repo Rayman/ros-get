@@ -2,18 +2,8 @@
 ros-env is a collection of simple tools for working with ROS source packages.
 
 ### Installation
-TODO: upload to PyPI
-
-For now, please install from source
-
-### Installation from source
-```sh
-mkdir -p src/
-cd src/
-git clone https://github.com/Rayman/ros-get.git
-cd ros-get/
-pip install --user -e ros-get/
-```
+For now, please install from source, for development.
+Details can be found in the [installation manual](doc/install.md).
 
 ### Usage
 ```sh
