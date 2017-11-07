@@ -184,3 +184,43 @@ which removes packages PKG1 and PKG2 from the workspace.
 **really? what if it is needed by some other package??**
 **is a package removed automatically by itself when it is not required any more??**
 **if so, can you avoid that?**
+
+## Features in tue-env
+
+- ``tue-checkout BRANCH`` switch repositories to the given branch name
+- ``tue-get --release`` build Debian package
+- ``tue-get list-installed`` list manually installed packages (ie not automagically added dependencies)
+- ``tue-get dep [PKG]`` list dependencies of PKG
+  Perhaps up to some depth D ?
+- ``tue-git-status`` list branch/revision/status of all repos
+
+- ``tue-make`` / ``tue-make-dev`` / ``tue-make-dev-isolated`` / ``tue-make-system``
+  probably provided by catkin already?
+
+- ``tue-revert`` and ``tue-revert-undo``.
+
+- ``tue-set-git-remote`` setup an origin for all packages in the workspace.
+  Adding a new remote (or deleting one) seems more elementary. Would need
+  adding a new branch labels for the new remote, although making new branch
+  labels looks more elementary even without additional remotes.
+
+- Some form of switching main repositories away from github
+  (``tue-robocup-set-github-origin`` and ``tue-robocup-reset-github-origin``).
+
+- ``tue-status`` dump catkin system dir, tue-env packages, tue repository status ??
+
+- tue-data (no idea wht it is)
+- tue-dashboard (no idea what it is)
+
+### Features that we may not want to support
+
+- ``tue-create ros-kpg PACKAGE_NAME [DEPENDENCY1 DEPENDENCY2 ..]`` code generator for ROS package boiler-plate
+- ``tue-create cpp-class CLASS_NAME PROJECT SUPER_CLASS`` code generator for cpp class.
+  Code generators could be a separate set of scripts, probably by extracting
+  from tue-create (or even keeping tue-create).
+
+- ``tue-env cd`` woud at least be bash. Likely also exists as ``roscd``?
+- time-zone commands
+- apt-get-proxy
+- ``tue-save-map``
+
