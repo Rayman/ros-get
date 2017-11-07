@@ -15,6 +15,13 @@ ws_dir = os.path.join(config_dir, 'workspaces')
 
 
 def create(dir, extend_path, name, verbose):
+    """Creates a new workspace, saves it, and switches to it if it is the first
+    workspace.
+
+    :param extend_path: Parent workspace to use.
+    :param name: Name of the new workspace.
+    :param verbose: Unused.
+    """
     if not os.path.isdir(dir):
         logger.error('target path is not a directory')
         return 1
@@ -66,18 +73,29 @@ def create(dir, extend_path, name, verbose):
 
 
 def switch(name, verbose):
+    """Switch workspace.
+
+    :param name: Name of the workspace to switch to.
+    :param verbose: Unused.
+    """
+    mkdir_p(ws_dir)
     dir = os.path.join(ws_dir, name)
     if not os.path.isdir(dir):
         logger.error('workspace does not exists: %s', name)
         return 1
-
-    mkdir_p(ws_dir)
 
     logging.getLogger(utilsname).setLevel(logging.ERROR)
     symlink_force(os.path.join('workspaces', name), ws_file)
 
 
 def save(dir, name, verbose):
+    """Internal ws-save command to register an existing workspace.
+
+    If there is no workspace currently, the command also switches to it.
+
+    :param name: Name of the workspace to save.
+    :param verbose: Unused.
+    """
     if not os.path.isdir(dir):
         logger.error('target path is not a directory')
         return 1
@@ -101,6 +119,10 @@ def save(dir, name, verbose):
 
 
 def list_workspaces(verbose):
+    """List the available workspaces.
+
+    :param verbose: Unused.
+    """
     mkdir_p(ws_dir)
     for link_name in os.listdir(ws_dir):
         try:
@@ -112,4 +134,13 @@ def list_workspaces(verbose):
 
 
 def locate(verbose):
-    print(os.path.realpath(ws_file))
+    """Print location of the current workspace.
+
+    :param verbose: Unused.
+    """
+    if not os.path.islink(ws_file):
+        print('no current workspace found, see "ros-get ws-create --help" how to create one')
+        return 1
+
+    else:
+        print(os.path.realpath(ws_file))
