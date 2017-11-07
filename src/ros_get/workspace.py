@@ -66,12 +66,11 @@ def create(dir, extend_path, name, verbose):
 
 
 def switch(name, verbose):
+    mkdir_p(ws_dir)
     dir = os.path.join(ws_dir, name)
     if not os.path.isdir(dir):
         logger.error('workspace does not exists: %s', name)
         return 1
-
-    mkdir_p(ws_dir)
 
     logging.getLogger(utilsname).setLevel(logging.ERROR)
     symlink_force(os.path.join('workspaces', name), ws_file)
