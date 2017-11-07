@@ -112,4 +112,9 @@ def list_workspaces(verbose):
 
 
 def locate(verbose):
-    print(os.path.realpath(ws_file))
+    if not os.path.islink(ws_file):
+        print('no current workspace found, see "ros-get ws-create --help" how to create one')
+        return 1
+
+    else:
+        print(os.path.realpath(ws_file))
