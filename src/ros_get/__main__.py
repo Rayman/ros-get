@@ -9,6 +9,7 @@ def main():
 
     subparsers = parser.add_subparsers()
 
+    # Package management commaneds.
     subparser = subparsers.add_parser('install', help='Install packages.')
     subparser.set_defaults(func='install')
     subparser.add_argument('pkgs', nargs='+', metavar='pkg')
@@ -33,8 +34,8 @@ def main():
         help='Explicitly extend the result-space of another catkin workspace, '
         'overriding the value of $CMAKE_PREFIX_PATH.')
     subparser.add_argument(
-        '--name', help='give a name to the workspace, if not given, the name '
-        'will be inferred by the directory name')
+        '--name', help='Give a name to the workspace. If not given, the name '
+        'will be inferred by the directory name.')
 
     subparser = subparsers.add_parser('ws-switch', help='Switch to a workspace.')
     subparser.set_defaults(func='switch')
@@ -44,7 +45,7 @@ def main():
     subparser.set_defaults(func='save')
     subparser.add_argument('dir')
     subparser.add_argument(
-        '--name', help='give a name to the workspace, if not given, the name will be inferred by the directory name')
+        '--name', help='Give a name to the workspace. If not given, the name will be inferred by the directory name.')
 
     subparser = subparsers.add_parser('ws-list', help='List all saved workspaces.')
     subparser.set_defaults(func='list_workspaces')
