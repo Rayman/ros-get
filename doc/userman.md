@@ -143,7 +143,7 @@ To add new packages to the workspace, use the ``install`` command.
 The listed packages get added to the workspace. If they require other packages
 that are not yet available, those are added as well.
 
-**where do these packages come from??**
+**1. where do these packages come from??**
 (would seem it needs more introduction of how ros-get works?)`
 
 
@@ -160,18 +160,18 @@ The command is
 
 It updates all packages in the workspace from their repositories.
 
-**which branch?**
-**are all branches updated?**
+**2. which branch?**
+**3. are all branches updated?**
 
 
 ### *ros-get list*
 With all the packages in the workspace, it is useful to get an overview of the
-top-level **is this true?** packages. The list command provides that functionality.
+top-level **4. is this true?** packages. The list command provides that functionality.
 The command is
 
     ros-get list
 
-**get other information?? how??**
+**5. get other information?? how??**
 
 
 ### *ros-get remove*
@@ -181,9 +181,9 @@ Removing packages can be done using the
 
 which removes packages PKG1 and PKG2 from the workspace.
 
-**really? what if it is needed by some other package??**
-**is a package removed automatically by itself when it is not required any more??**
-**if so, can you avoid that?**
+**6. really? what if it is needed by some other package??**
+**7. is a package removed automatically by itself when it is not required any more??**
+**8. if so, can you avoid that?**
 
 ## Features in tue-env
 
