@@ -6,12 +6,16 @@ import xdg
 from catkin_tools.verbs import catkin_config, catkin_build
 
 from .utils import mkdir_p, symlink_force, __name__ as utilsname
+from catkin_tools.terminal_color import ColorMapper
+
 
 logger = logging.getLogger(__name__)
 
 config_dir = os.path.join(xdg.XDG_CONFIG_HOME, 'ros-get')
 ws_file = os.path.join(config_dir, 'workspace')
 ws_dir = os.path.join(config_dir, 'workspaces')
+
+clr = ColorMapper().clr
 
 
 def create(dir, extend_path, name, verbose):
@@ -123,6 +127,12 @@ def list_workspaces(verbose):
 
     :param verbose: Unused.
     """
+    if not os.path.islink(ws_file):
+        print('no current workspace found, see "ros-get ws-create --help" how to create one')
+        return 1
+
+    active = os.path.relpath(os.readlink(ws_file), 'workspaces')
+
     mkdir_p(ws_dir)
     for link_name in os.listdir(ws_dir):
         try:
@@ -130,7 +140,10 @@ def list_workspaces(verbose):
         except OSError as e:
             logger.error('%s => %s', link_name, repr(e))
         else:
-            print('%s => %s' % (link_name, source))
+            if link_name == active:
+                print(clr('@pf-@| @{cf}%s@| => @{cf}%s@| (@{yf}active@|)') % (link_name, source))
+            else:
+                print(clr('@pf-@| @{cf}%s@| => @{cf}%s@|') % (link_name, source))
 
 
 def locate(verbose):
