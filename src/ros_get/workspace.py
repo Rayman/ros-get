@@ -127,11 +127,10 @@ def list_workspaces(verbose):
 
     :param verbose: Unused.
     """
-    if not os.path.islink(ws_file):
-        print('no current workspace found, see "ros-get ws-create --help" how to create one')
-        return 1
-
-    active = os.path.relpath(os.readlink(ws_file), 'workspaces')
+    try:
+        active = os.path.relpath(os.readlink(ws_file), 'workspaces')
+    except OSError:
+        active = None
 
     mkdir_p(ws_dir)
     for link_name in os.listdir(ws_dir):
