@@ -8,7 +8,6 @@ from catkin_tools.verbs import catkin_config, catkin_build
 from .utils import mkdir_p, symlink_force, __name__ as utilsname
 from catkin_tools.terminal_color import ColorMapper
 
-
 logger = logging.getLogger(__name__)
 
 config_dir = os.path.join(xdg.XDG_CONFIG_HOME, 'ros-get')
@@ -18,7 +17,7 @@ ws_dir = os.path.join(config_dir, 'workspaces')
 clr = ColorMapper().clr
 
 
-def create(dir, extend_path, name, verbose):
+def create(rosdistro_index_url, extend_path, dir, name, verbose):
     """Creates a new workspace, saves it, and switches to it if it is the first
     workspace.
 
@@ -74,6 +73,7 @@ def create(dir, extend_path, name, verbose):
         return 1
 
     save(dir, name, verbose)
+    save_config(dir, rosdistro_index_url=rosdistro_index_url)
 
 
 def switch(name, verbose):
@@ -156,3 +156,25 @@ def locate(verbose):
 
     else:
         print(os.path.realpath(ws_file))
+
+
+def rosdistro_url(verbose):
+    ws_file = os.path.join(config_dir, 'workspace', '.ros-get')
+    print(load_config(ws_file, 'rosdistro_index_url'))
+
+
+def save_config(dir, **kwargs):
+    ws_config_dir = os.path.join(dir, '.ros-get')
+    mkdir_p(ws_config_dir)
+
+    for k, v in kwargs.items():
+        with open(os.path.join(ws_config_dir, k), 'w') as f:
+            f.write(v)
+
+
+def load_config(dir, key):
+    ws_config_dir = os.path.join(dir, '.ros-get')
+    mkdir_p(ws_config_dir)
+
+    with open(os.path.join(dir, key)) as f:
+        return f.read()

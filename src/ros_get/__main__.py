@@ -1,3 +1,4 @@
+import os
 from argparse import ArgumentParser
 
 from argcomplete import autocomplete
@@ -24,14 +25,22 @@ def main():
     subparser.add_argument('pkgs', nargs='+', metavar='pkg')
 
     # workspace commands
-    subparser = subparsers.add_parser('ws-create', help='create a new workspace')
+    subparser = subparsers.add_parser(
+        'ws-create',
+        help='create a new workspace',
+        description='Create a new catkin workspace where the packages are managed by ros-get')
     subparser.set_defaults(func='create')
-    subparser.add_argument('dir')
+    subparser.add_argument(
+        'rosdistro_index_url',
+        help='Custom rosdistro database url. This can be either a web url (http://) or local file url (file://).')
     subparser.add_argument(
         'extend_path',
         metavar='extend',
-        help='Explicitly extend the result-space of another catkin workspace, '
-        'overriding the value of $CMAKE_PREFIX_PATH.')
+        help='Explicitly extend the result-space of another catkin workspace. Example: /opt/ros/kinetic')
+    subparser.add_argument(
+        '--dir',
+        default=os.getcwd(),
+        help='The directory to create the workspace in. Defaults to the current working directory')
     subparser.add_argument(
         '--name', help='give a name to the workspace, if not given, the name '
         'will be inferred by the directory name')
@@ -51,6 +60,9 @@ def main():
 
     subparser = subparsers.add_parser('ws-locate', help='prints the path to the current workspace')
     subparser.set_defaults(func='locate')
+
+    subparser = subparsers.add_parser('ws-rosdistro-url', help='Prints the current rosdistro_index_url')
+    subparser.set_defaults(func='rosdistro_url')
 
     autocomplete(parser)
     args = parser.parse_args()
@@ -87,7 +99,7 @@ def main():
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    from . import install, update, list_installed, remove, create, switch, save, list_workspaces, locate
+    from . import install, update, list_installed, remove, create, switch, save, list_workspaces, locate, rosdistro_url
 
     # remove func from the namespace
     func = args.func
@@ -104,6 +116,7 @@ def main():
         'save': save,
         'list_workspaces': list_workspaces,
         'locate': locate,
+        'rosdistro_url': rosdistro_url,
     }[func]
     exit(func(**vars(args)))
 
