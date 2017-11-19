@@ -9,22 +9,23 @@ def main():
 
     subparsers = parser.add_subparsers()
 
-    subparser = subparsers.add_parser('install', help='install packages')
+    # Package management commaneds.
+    subparser = subparsers.add_parser('install', help='Install packages.')
     subparser.set_defaults(func='install')
     subparser.add_argument('pkgs', nargs='+', metavar='pkg')
 
-    subparser = subparsers.add_parser('update', help='update all packages in the workspace to the latest version')
+    subparser = subparsers.add_parser('update', help='Update all packages in the workspace to the latest version.')
     subparser.set_defaults(func='update')
 
-    subparser = subparsers.add_parser('list', help='list all installed packages')
+    subparser = subparsers.add_parser('list', help='List all installed packages.')
     subparser.set_defaults(func='list_installed')
 
-    subparser = subparsers.add_parser('remove', help='remove packages')
+    subparser = subparsers.add_parser('remove', help='Remove packages.')
     subparser.set_defaults(func='remove')
     subparser.add_argument('pkgs', nargs='+', metavar='pkg')
 
     # workspace commands
-    subparser = subparsers.add_parser('ws-create', help='create a new workspace')
+    subparser = subparsers.add_parser('ws-create', help='Create a new workspace.')
     subparser.set_defaults(func='create')
     subparser.add_argument('dir')
     subparser.add_argument(
@@ -33,23 +34,23 @@ def main():
         help='Explicitly extend the result-space of another catkin workspace, '
         'overriding the value of $CMAKE_PREFIX_PATH.')
     subparser.add_argument(
-        '--name', help='give a name to the workspace, if not given, the name '
-        'will be inferred by the directory name')
+        '--name', help='Give a name to the workspace. If not given, the name '
+        'will be inferred by the directory name.')
 
-    subparser = subparsers.add_parser('ws-switch', help='switch to a workspace')
+    subparser = subparsers.add_parser('ws-switch', help='Switch to a workspace.')
     subparser.set_defaults(func='switch')
     subparser.add_argument('name')
 
-    subparser = subparsers.add_parser('ws-save', help='Saves the current workspace')
+    subparser = subparsers.add_parser('ws-save', help='Saves the current workspace.')
     subparser.set_defaults(func='save')
     subparser.add_argument('dir')
     subparser.add_argument(
-        '--name', help='give a name to the workspace, if not given, the name will be inferred by the directory name')
+        '--name', help='Give a name to the workspace. If not given, the name will be inferred by the directory name.')
 
-    subparser = subparsers.add_parser('ws-list', help='list all saved workspaces')
+    subparser = subparsers.add_parser('ws-list', help='List all saved workspaces.')
     subparser.set_defaults(func='list_workspaces')
 
-    subparser = subparsers.add_parser('ws-locate', help='prints the path to the current workspace')
+    subparser = subparsers.add_parser('ws-locate', help='Prints the path to the current workspace.')
     subparser.set_defaults(func='locate')
 
     autocomplete(parser)
