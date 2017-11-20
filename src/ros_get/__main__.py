@@ -102,7 +102,8 @@ def main():
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    from . import install, update, list_installed, remove, create, switch, save, list_workspaces, locate, name, rosdistro_url
+    from . import (install, update, list_installed, remove, create, switch, save, list_workspaces, locate, name,
+                   rosdistro_url)
 
     # remove func from the namespace
     func = args.func
