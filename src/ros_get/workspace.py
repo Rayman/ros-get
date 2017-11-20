@@ -73,7 +73,7 @@ def create(rosdistro_index_url, extend_path, dir, name, verbose):
         return 1
 
     save(dir, name, verbose)
-    save_config(dir, rosdistro_index_url=rosdistro_index_url)
+    save_config(dir, rosdistro_index_url=os.path.expanduser(rosdistro_index_url))
 
 
 def switch(name, verbose):
