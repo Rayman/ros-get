@@ -61,6 +61,9 @@ def main():
     subparser = subparsers.add_parser('ws-locate', help='prints the path to the current workspace')
     subparser.set_defaults(func='locate')
 
+    subparser = subparsers.add_parser('ws-name', help='prints the name of the current workspace')
+    subparser.set_defaults(func='name')
+
     subparser = subparsers.add_parser('ws-rosdistro-url', help='Prints the current rosdistro_index_url')
     subparser.set_defaults(func='rosdistro_url')
 
@@ -99,7 +102,7 @@ def main():
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    from . import install, update, list_installed, remove, create, switch, save, list_workspaces, locate, rosdistro_url
+    from . import install, update, list_installed, remove, create, switch, save, list_workspaces, locate, name, rosdistro_url
 
     # remove func from the namespace
     func = args.func
@@ -116,6 +119,7 @@ def main():
         'save': save,
         'list_workspaces': list_workspaces,
         'locate': locate,
+        'name': name,
         'rosdistro_url': rosdistro_url,
     }[func]
     exit(func(**vars(args)))
