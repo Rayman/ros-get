@@ -158,6 +158,19 @@ def locate(verbose):
         print(os.path.realpath(ws_file))
 
 
+def name(verbose):
+    """Print name of the current workspace.
+
+    :param verbose: Unused.
+    """
+    if not os.path.islink(ws_file):
+        print('no current workspace found, see "ros-get ws-create --help" how to create one')
+        return 1
+
+    else:
+        print(os.path.relpath(os.readlink(ws_file), 'workspaces'))
+
+
 def rosdistro_url(verbose):
     ws_file = os.path.join(config_dir, 'workspace', '.ros-get')
     print(load_config(ws_file, 'rosdistro_index_url'))
