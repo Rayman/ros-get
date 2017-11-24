@@ -3,10 +3,12 @@ import os
 from argparse import Namespace
 
 import xdg
+from catkin_tools.terminal_color import ColorMapper
 from catkin_tools.verbs import catkin_config, catkin_build
+from future.moves.urllib.error import URLError
+from future.moves.urllib.request import urlopen
 
 from .utils import mkdir_p, symlink_force, __name__ as utilsname
-from catkin_tools.terminal_color import ColorMapper
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +27,12 @@ def create(rosdistro_index_url, extend_path, dir, name, verbose):
     :param name: Name of the new workspace.
     :param verbose: Unused.
     """
+    try:
+        urlopen(rosdistro_index_url)
+    except (ValueError, URLError) as e:
+        logger.error(e)
+        return 1
+
     if not os.path.isdir(dir):
         logger.error('target path is not a directory')
         return 1
