@@ -37,16 +37,20 @@ def create(rosdistro_index_url, extend_path, dir, name, verbose):
         logger.error('target path is not a directory')
         return 1
 
-    if catkin_config.main(
-            Namespace(
-                workspace=dir,
-                extend_path=extend_path,
-                profile=None,
-                append_args=None,
-                remove_args=None,
-                init=True,
-                mkdirs=True)):
-        logger.error('catkin config error')
+    try:
+        if catkin_config.main(
+                Namespace(
+                    workspace=dir,
+                    extend_path=extend_path,
+                    profile=None,
+                    append_args=None,
+                    remove_args=None,
+                    init=True,
+                    mkdirs=True)):
+            logger.error('catkin config error')
+            return 1
+    except ValueError as e:
+        logger.error(e)
         return 1
 
     if catkin_build.main(
