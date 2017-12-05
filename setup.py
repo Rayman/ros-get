@@ -17,6 +17,6 @@ setup(
         'rosinstall_generator',
         'trollius',  # remove when catkin>0.4.4 is released
         'vcstool',
-        'xdg',
+        'xdg==1.0.7',
     ],
     entry_points={'console_scripts': ['ros-get=ros_get.__main__:main']}, )
