@@ -21,13 +21,13 @@ pointing the installation to the development code.
 
 1. Make *ros-get* available locally, eg by download or cloning the repository, for example
 
-    ``` shell
+    ```sh
     git checkout https://github.com/Rayman/ros-get.git
     ```
 
 2. Install using ``pip`` with the *editable* option ``-e DIR``.
 
-    ``` shell
+    ```sh
     cd ros-get
     pip install --user -e .
     ```
@@ -49,3 +49,8 @@ ros-get update
 - Dependency definition according to [REP 112](http://www.ros.org/reps/rep-0112.html)
 - Parallel git clone/pull
 - Python (instead of bash)
+
+## Uninstall
+```sh
+pip uninstall ros-get
+```
