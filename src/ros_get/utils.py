@@ -2,6 +2,8 @@ import errno
 import logging
 import os
 from argparse import Namespace
+from rosdep2.main import _rosdep_main
+
 from rosdistro import get_index, get_index_url, repository, get_distribution
 from rosdistro.source_repository_specification import SourceRepositorySpecification
 
@@ -95,3 +97,7 @@ def get_rosdep(key):
         return rule_installer, rule
     except KeyError:
         return False
+
+
+def rosdep_install(path):
+    _rosdep_main(['install', '--from-paths', path, '-i', '-y'])

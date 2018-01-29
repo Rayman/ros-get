@@ -6,7 +6,7 @@ from catkin_pkg.packages import find_packages_allowing_duplicates
 from queue import Queue, Empty
 from rosdep2.main import command_update
 
-from .utils import mkdir_p, get_rosdistro, update_folder, symlink_force
+from .utils import mkdir_p, get_rosdistro, update_folder, symlink_force, rosdep_install
 from .workspace import ws_file
 
 logger = logging.getLogger(__name__)
@@ -21,6 +21,7 @@ def install(pkgs, verbose):
     pkgs_done = recursive_update(pkgs, verbose)
     if not pkgs_done:
         return 1
+    rosdep_install(link_dir)
 
 
 def update(verbose):
@@ -39,6 +40,8 @@ def update(verbose):
             if os.path.islink(f):
                 logger.info("removing symlink: %s", f)
                 os.remove(os.path.join(link_dir, f))
+
+    rosdep_install(link_dir)
 
 
 def list_installed(verbose):
