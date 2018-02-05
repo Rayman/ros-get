@@ -5,6 +5,8 @@ import os
 from catkin_pkg.packages import find_packages_allowing_duplicates
 from queue import Queue, Empty
 from rosdep2.main import command_update
+from rosinstall_generator.generator import generate_rosinstall_for_repos
+from vcstools import get_vcs_client
 
 from .utils import mkdir_p, get_rosdistro, update_folder, symlink_force, rosdep_install
 from .workspace import ws_file
@@ -42,6 +44,46 @@ def update(verbose):
                 os.remove(os.path.join(link_dir, f))
 
     rosdep_install(link_dir)
+
+
+def status(verbose):
+    # TODO: get distro from environment
+    distro = get_rosdistro('kinetic')
+    repositories = [
+        r for r in distro.repositories.values() if r.source_repository and r.source_repository.patched_packages
+    ]
+
+    for path in os.listdir(target_path):
+        name = os.path.basename(path)
+
+        repo = [r for r in repositories if r.name == name]
+        assert len(repo) == 1
+        repo = repo[0]
+
+        config = generate_rosinstall_for_repos({'DOESNOTMATTER': repo}, version_tag=False, tar=False)[0]
+
+        assert len(config) == 1
+        repo_type, attributes = next(iter(config.items()))
+
+        try:
+            url = attributes['uri']
+            if 'version' in attributes:
+                version = attributes['version']
+        except AttributeError as e:
+            logger.warning("Repository '%s' does not provide the necessary " 'information: %s' % (path, e))
+            continue
+
+        client = get_vcs_client(repo_type, os.path.join(target_path, path))
+        # TODO: print a useful warning here
+        assert client.get_url() == url
+
+        current_version = client.get_current_version_label()
+        if current_version == version:
+            print('=== %s (%s) ===' % (name, repo_type))
+        else:
+            print('=== %s (%s) === @ %s' % (name, repo_type, current_version))
+
+        print(client.get_status(untracked=True))
 
 
 def list_installed(verbose):
