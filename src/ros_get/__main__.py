@@ -88,11 +88,6 @@ def main():
                 'formatter': 'colored',
             },
         },
-        'loggers': {
-            'vcstool.executor': {
-                'level': 'INFO',
-            }
-        },
         'root': {
             'handlers': ['stream'],
             'level': 'INFO',
