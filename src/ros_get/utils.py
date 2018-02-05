@@ -1,7 +1,7 @@
 import errno
 import logging
 import os
-from argparse import Namespace
+
 from rosdep2.main import _rosdep_main
 
 from rosdistro import get_index, get_index_url, repository, get_distribution
@@ -11,8 +11,7 @@ from mock import patch
 from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
 from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
 from rosinstall_generator.generator import generate_rosinstall_for_repos
-from vcstool.commands.import_ import get_repos_in_rosinstall_format, generate_jobs
-from vcstool.executor import output_repositories, execute_jobs, output_results
+from vcstools import get_vcs_client
 
 logger = logging.getLogger(__name__)
 
@@ -59,17 +58,31 @@ def update_folder(target_path, folder_mapping, verbose):
     # generate rosinstall file
     config = generate_rosinstall_for_repos(folder_mapping, version_tag=False, tar=False)
 
-    # convert it to the vcs format
-    config = get_repos_in_rosinstall_format(config)
+    for i, item in enumerate(config):
+        assert len(item) == 1
+        repo_type, attributes = next(iter(item.items()))
 
-    # update the repos
-    jobs = generate_jobs(config, Namespace(path=target_path, force=False, retry=False))
+        try:
+            path = attributes['local-name']
+        except AttributeError as e:
+            logger.warning('Repository #%d does not provide the necessary ' 'information: %s' % (i, e))
+            continue
+        try:
+            url = attributes['uri']
+            if 'version' in attributes:
+                version = attributes['version']
+        except AttributeError as e:
+            logger.warning("Repository '%s' does not provide the necessary " 'information: %s' % (path, e))
+            continue
 
-    if verbose:
-        output_repositories([job['client'] for job in jobs])
+        client = get_vcs_client(repo_type, os.path.join(target_path, path))
+        if client.detect_presence():
+            assert client.get_url() == url
 
-    results = execute_jobs(jobs, show_progress=True, number_of_workers=5)
-    output_results(results)
+            # skip version because we only want to pull
+            assert client.update(verbose=verbose)
+        else:
+            assert client.checkout(url, version=version, verbose=verbose)
 
 
 cached_view = None
