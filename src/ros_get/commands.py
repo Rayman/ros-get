@@ -27,6 +27,10 @@ def install(pkgs, verbose):
 
 
 def update(verbose):
+    # first check if a custom rosdistro has been configured
+    # TODO: get distro from environment
+    get_rosdistro('kinetic')
+
     logger.info('rosdep update')
     exit_code = command_update(None)
 
