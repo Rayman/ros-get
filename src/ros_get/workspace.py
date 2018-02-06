@@ -23,10 +23,17 @@ def create(rosdistro_index_url, extend_path, dir, name, verbose):
     """Creates a new workspace, saves it, and switches to it if it is the first
     workspace.
 
+    :param rosdistro_index_url: The rosdistro to use
     :param extend_path: Parent workspace to use.
+    :param dir: Where to create the workspace
     :param name: Name of the new workspace.
     :param verbose: Unused.
     """
+
+    # also allow files
+    if os.path.isfile(rosdistro_index_url):
+        rosdistro_index_url = 'file://%s' % os.path.realpath(rosdistro_index_url)
+
     try:
         urlopen(rosdistro_index_url)
     except (ValueError, URLError) as e:
