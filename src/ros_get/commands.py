@@ -93,9 +93,22 @@ def status(verbose):
         print(client.get_status(untracked=True))
 
 
-def list_installed(verbose):
-    for pkg in get_pkgs_from_installed_list():
-        print(pkg)
+def list_packages(installed, verbose):
+    if installed:
+        for pkg in get_pkgs_from_installed_list():
+            print(pkg)
+    else:
+        # TODO: get distro from environment
+        distro = get_rosdistro('kinetic')
+
+        pkgs = []
+        for r in distro.repositories.values():
+            if r.source_repository and r.source_repository.patched_packages:
+                for p in r.source_repository.patched_packages:
+                    pkgs.append(p)
+
+        for p in sorted(pkgs):
+            print(p)
 
 
 def remove(pkgs, verbose):
