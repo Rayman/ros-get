@@ -57,7 +57,10 @@ def status(verbose):
         name = os.path.basename(path)
 
         repo = [r for r in repositories if r.name == name]
-        assert len(repo) == 1
+
+        if len(repo) != 1:
+            logger.warning('skipping unknown repo: %s', name)
+            continue
         repo = repo[0]
 
         config = generate_rosinstall_for_repos({'DOESNOTMATTER': repo}, version_tag=False, tar=False)[0]
