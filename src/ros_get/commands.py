@@ -33,9 +33,8 @@ def update(verbose):
 
     logger.info('rosdep update')
     exit_code = command_update(None)
-
     if exit_code:
-        logger.warning('rosdep exited with %d', exit_code)
+        logger.error('`rosdep update` exited with %d', exit_code)
         return exit_code
 
     pkgs = get_pkgs_from_installed_list()
@@ -47,7 +46,10 @@ def update(verbose):
                 logger.info("removing symlink: %s", f)
                 os.remove(os.path.join(link_dir, f))
 
-    rosdep_install(link_dir)
+    exit_code = rosdep_install(link_dir)
+    if exit_code:
+        logger.error('`rosdep install` exited with %d', exit_code)
+        return exit_code
 
 
 def status(verbose):

@@ -118,4 +118,4 @@ def get_rosdep(key):
 
 
 def rosdep_install(path):
-    _rosdep_main(['install', '--from-paths', path, '-i', '-y'])
+    return _rosdep_main(['install', '--from-paths', path, '-i', '-y'])
