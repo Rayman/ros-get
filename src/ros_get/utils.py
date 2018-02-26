@@ -85,7 +85,9 @@ def update_folder(target_path, folder_mapping, verbose):
             assert client.get_url() == url
 
             # skip version because we only want to pull
-            assert client.update(verbose=verbose)
+            if not client.update(verbose=verbose):
+                logger.error("Could not update %s repo: %s", repo_type, path)
+                exit(1)
         else:
             assert client.checkout(url, version=version, verbose=verbose)
 
