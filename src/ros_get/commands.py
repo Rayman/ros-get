@@ -83,8 +83,10 @@ def status(verbose):
             continue
 
         client = get_vcs_client(repo_type, os.path.join(target_path, path))
-        # TODO: print a useful warning here
-        assert client.get_url() == url
+
+        if client.get_url() != url:
+            logger.error("local vcs url is different from the distro's url:\n\tlocal:  %s\n\tdistro: %s",
+                         client.get_url(), url)
 
         current_version = client.get_current_version_label()
         if current_version == version:

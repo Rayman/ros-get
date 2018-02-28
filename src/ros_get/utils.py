@@ -82,7 +82,10 @@ def update_folder(target_path, folder_mapping, verbose):
 
         client = get_vcs_client(repo_type, os.path.join(target_path, path))
         if client.detect_presence():
-            assert client.get_url() == url
+            # TODO: backup folder and checkout the new version
+            if client.get_url() != url:
+                logger.error("local vcs url is different from the distro's url:\n\tlocal:  %s\n\tdistro: %s",
+                             client.get_url(), url)
 
             # skip version because we only want to pull
             if not client.update(verbose=verbose):
