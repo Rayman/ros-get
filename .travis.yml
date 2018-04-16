@@ -8,11 +8,19 @@ python:
   - 3.6
 matrix:
   include:
-  - python: 2.7
-    env: TOXENV=lint
+    - python: 2.7
+      env: TOXENV=lint
 install:
   - pip install tox-travis
   - pip install .
 script:
   - ros-get -h
   - tox
+deploy:
+  provider: pypi
+  user: Rayman
+  password:
+    secure: wTi0MGXMfeO4tjZUzdA9BAPRuxsvlPXovsxeCP81LOd0kkxmDMP6gAHF2/sTlqZHHuhrqtDu4rZUj5jsaSCZbM7dd0ZbLF9cDpO6/Pmoe4UXwkG6W5nbz8JAOmlQnBdfrOp/NyF7O7vZYQ1LYuKeoHvX83WM6B30Pt6/WP3BikO/v7LHTEhqQPaaLaYwasCxaWIuxcEXqe1bE9CMQn60R6+4nsJi0c8BL5iMZPtRfkFRMGursXomw0WeCCyMcwvy2lU3lAixzG94A4/eXv85f8RMN5HaqkwIAJxAv074WEWiGEgnQ9uf7JBZpki1QrNeGngoWXHpcUTZH5d8bVmOll46Q4frAnRx4cMcmXg/nl9fCgpMVOEeBxPhmryZDp2ODy59cfz6eT3snMHJkmutHPA5qLaXZmB5+2haoo8jJvg+l0gXPVHNjV5fxGbuwN2KH4nS8mHG9mrANUWIPoY3jpda38nGzyGL8mAVi73QsRLH1q7aS53wp5xa9j22++HrlnIjOT78Ulq66Q47CaNxwGjTaxvZ12zSV+8hVUWDg5vH+UROaUv1eu21kQtBLxnuft96CfO6+LD9sK5PhY56v5PNOHyb9IJHciJ1z9XIo/ruB4akAy6Hl5elFbMDXdDZf1bQZrZJLJRKVqvxE+YNaXQnmCMocQE/jxPaBFglnDc=
+  distributions: sdist bdist_wheel
+  on:
+    tags: true
