@@ -14,6 +14,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as r_file:
 
 setup(
     name='ros_get',
+    license='MIT',
     version=get_ini_variable('__version__'),
     url=get_ini_variable('__url__'),
     author=get_ini_variable('__author__'),
