@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 def get_ini_variable(name):
     with open(os.path.join(os.path.dirname(__file__), 'src', 'ros_get', '__init__.py')) as f:
-        return re.compile(r".*__version__ = '(.*?)'", re.S).match(f.read()).group(1)
+        return re.compile(r".*%s = '(.*?)'" % name, re.S).match(f.read()).group(1)
 
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as r_file:
