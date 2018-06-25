@@ -123,4 +123,6 @@ def get_rosdep(key):
 
 
 def rosdep_install(path):
-    return _rosdep_main(['install', '--from-paths', path, '-i', '-y'])
+    result = _rosdep_main(['install', '--from-paths', path, '-i', '-y'])
+    logger.info('rosdep exited with code %d', result)
+    return result

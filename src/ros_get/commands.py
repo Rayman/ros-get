@@ -19,11 +19,21 @@ link_dir = os.path.realpath(os.path.join(ws_file, 'src'))
 
 
 def install(pkgs, verbose):
-    add_pkgs_to_installed_list(pkgs)
     pkgs_done = recursive_update(pkgs, verbose)
+    pkgs_skipped = set(pkgs) - pkgs_done
+
+    for pkg in pkgs:
+        if pkg in pkgs_done:
+            add_pkgs_to_installed_list(pkgs_done)
+        else:
+            logger.error("Package %s was not defined in the ros distribution", pkg)
+
     if not pkgs_done:
         return 1
-    rosdep_install(link_dir)
+    result = rosdep_install(link_dir)
+    if pkgs_skipped:
+        return 1
+    return result
 
 
 def update(verbose):
