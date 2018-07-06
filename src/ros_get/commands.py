@@ -52,9 +52,10 @@ def update(verbose):
 
     for f in os.listdir(link_dir):
         if f not in pkgs_done:
-            if os.path.islink(f):
+            filename = os.path.join(link_dir, f)
+            if os.path.islink(filename):
                 logger.info("removing symlink: %s", f)
-                os.remove(os.path.join(link_dir, f))
+                os.remove(filename)
 
     exit_code = rosdep_install(link_dir)
     if exit_code:
