@@ -28,6 +28,8 @@ def install(pkgs, verbose):
         else:
             logger.error("Package %s was not defined in the ros distribution", pkg)
 
+    cleanup_symlinks(pkgs_done)
+
     if not pkgs_done:
         return 1
     result = rosdep_install(link_dir)
@@ -50,12 +52,7 @@ def update(verbose):
     pkgs = get_pkgs_from_installed_list()
     pkgs_done = recursive_update(pkgs, verbose)
 
-    for f in os.listdir(link_dir):
-        if f not in pkgs_done:
-            filename = os.path.join(link_dir, f)
-            if os.path.islink(filename):
-                logger.info("removing symlink: %s", f)
-                os.remove(filename)
+    cleanup_symlinks(pkgs_done)
 
     exit_code = rosdep_install(link_dir)
     if exit_code:
@@ -224,6 +221,16 @@ def recursive_update(pkgs, verbose):
 
     return pkgs_done
 
+
+def cleanup_symlinks(pkgs_done):
+    """Remove all symlinks from the link_dir that are not in pkgs_done"""
+    logger.info("Cleaning up old symlinks")
+    for f in os.listdir(link_dir):
+        if f not in pkgs_done:
+            filename = os.path.join(link_dir, f)
+            if os.path.islink(filename):
+                logger.info("removing symlink: %s", f)
+                os.remove(filename)
 
 def add_pkgs_to_installed_list(pkgs):
     mkdir_p(installed_dir)
