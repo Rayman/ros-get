@@ -38,8 +38,8 @@ def install(pkgs, verbose):
 
 def update(verbose):
     # first check if a custom rosdistro has been configured
-    # TODO: get distro from environment
-    get_rosdistro('kinetic')
+    distro_name = os.environ['ROS_DISTRO'] if 'ROS_DISTRO' in os.environ else None
+    get_rosdistro(distro_name)
 
     logger.info('rosdep update')
     exit_code = command_update(None)
@@ -64,8 +64,8 @@ def update(verbose):
 
 
 def status(verbose):
-    # TODO: get distro from environment
-    distro = get_rosdistro('kinetic')
+    distro_name = os.environ['ROS_DISTRO'] if 'ROS_DISTRO' in os.environ else None
+    distro = get_rosdistro(distro_name)
     repositories = [
         r for r in distro.repositories.values() if r.source_repository and r.source_repository.patched_packages
     ]
@@ -113,8 +113,8 @@ def list_packages(installed, verbose):
         for pkg in get_pkgs_from_installed_list():
             print(pkg)
     else:
-        # TODO: get distro from environment
-        distro = get_rosdistro('kinetic')
+        distro_name = os.environ['ROS_DISTRO'] if 'ROS_DISTRO' in os.environ else None
+        distro = get_rosdistro(distro_name)
 
         pkgs = []
         for r in distro.repositories.values():
@@ -137,8 +137,8 @@ def recursive_update(pkgs, verbose):
         logger.warn('no package specified')
         return set()
 
-    # TODO: get distro from environment
-    distro = get_rosdistro('kinetic')
+    distro_name = os.environ['ROS_DISTRO'] if 'ROS_DISTRO' in os.environ else None
+    distro = get_rosdistro(distro_name)
     repositories = [
         r for r in distro.repositories.values() if r.source_repository and r.source_repository.patched_packages
     ]
