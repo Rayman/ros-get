@@ -38,8 +38,11 @@ def install(pkgs, verbose):
 
 def update(verbose):
     # first check if a custom rosdistro has been configured
-    distro_name = os.environ['ROS_DISTRO'] if 'ROS_DISTRO' in os.environ else None
-    get_rosdistro(distro_name)
+    if 'ROS_DISTRO' in os.environ:
+        distro_n = os.environ['ROS_DISTRO']
+    else:
+        raise AssertionError('ROS_DISTRO is not defined in environment')
+    get_rosdistro(distro_n)
 
     logger.info('rosdep update')
     exit_code = command_update(None)
@@ -64,8 +67,12 @@ def update(verbose):
 
 
 def status(verbose):
-    distro_name = os.environ['ROS_DISTRO'] if 'ROS_DISTRO' in os.environ else None
-    distro = get_rosdistro(distro_name)
+    if 'ROS_DISTRO' in os.environ:
+        distro_n = os.environ['ROS_DISTRO']
+    else:
+        raise AssertionError('ROS_DISTRO is not defined in environment')
+    distro = get_rosdistro(distro_n)
+
     repositories = [
         r for r in distro.repositories.values() if r.source_repository and r.source_repository.patched_packages
     ]
@@ -113,8 +120,11 @@ def list_packages(installed, verbose):
         for pkg in get_pkgs_from_installed_list():
             print(pkg)
     else:
-        distro_name = os.environ['ROS_DISTRO'] if 'ROS_DISTRO' in os.environ else None
-        distro = get_rosdistro(distro_name)
+        if 'ROS_DISTRO' in os.environ:
+            distro_n = os.environ['ROS_DISTRO']
+        else:
+            raise AssertionError('ROS_DISTRO is not defined in environment')
+        distro = get_rosdistro(distro_n)
 
         pkgs = []
         for r in distro.repositories.values():
@@ -137,8 +147,12 @@ def recursive_update(pkgs, verbose):
         logger.warn('no package specified')
         return set()
 
-    distro_name = os.environ['ROS_DISTRO'] if 'ROS_DISTRO' in os.environ else None
-    distro = get_rosdistro(distro_name)
+    if 'ROS_DISTRO' in os.environ:
+        distro_n = os.environ['ROS_DISTRO']
+    else:
+        raise AssertionError('ROS_DISTRO is not defined in environment')
+    distro = get_rosdistro(distro_n)
+
     repositories = [
         r for r in distro.repositories.values() if r.source_repository and r.source_repository.patched_packages
     ]
