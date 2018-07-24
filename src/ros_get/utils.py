@@ -46,7 +46,12 @@ class SourceRepositorySpecificationMock(SourceRepositorySpecification):
         self.patched_packages = data.get('packages', [])
 
 
-def get_rosdistro(distroname):
+def get_rosdistro():
+    if 'ROS_DISTRO' in os.environ:
+        distroname = os.environ['ROS_DISTRO']
+    else:
+        raise AssertionError('ROS_DISTRO is not defined in environment')
+
     index_url = get_index_url()
     index = get_index(index_url)
 
