@@ -38,11 +38,7 @@ def install(pkgs, verbose):
 
 def update(verbose):
     # first check if a custom rosdistro has been configured
-    if 'ROS_DISTRO' in os.environ:
-        distro_n = os.environ['ROS_DISTRO']
-    else:
-        raise AssertionError('ROS_DISTRO is not defined in environment')
-    get_rosdistro(distro_n)
+    get_rosdistro()
 
     logger.info('rosdep update')
     exit_code = command_update(None)
@@ -67,11 +63,8 @@ def update(verbose):
 
 
 def status(verbose):
-    if 'ROS_DISTRO' in os.environ:
-        distro_n = os.environ['ROS_DISTRO']
-    else:
-        raise AssertionError('ROS_DISTRO is not defined in environment')
-    distro = get_rosdistro(distro_n)
+
+    distro = get_rosdistro()
 
     repositories = [
         r for r in distro.repositories.values() if r.source_repository and r.source_repository.patched_packages
@@ -120,11 +113,7 @@ def list_packages(installed, verbose):
         for pkg in get_pkgs_from_installed_list():
             print(pkg)
     else:
-        if 'ROS_DISTRO' in os.environ:
-            distro_n = os.environ['ROS_DISTRO']
-        else:
-            raise AssertionError('ROS_DISTRO is not defined in environment')
-        distro = get_rosdistro(distro_n)
+        distro = get_rosdistro()
 
         pkgs = []
         for r in distro.repositories.values():
@@ -147,11 +136,7 @@ def recursive_update(pkgs, verbose):
         logger.warn('no package specified')
         return set()
 
-    if 'ROS_DISTRO' in os.environ:
-        distro_n = os.environ['ROS_DISTRO']
-    else:
-        raise AssertionError('ROS_DISTRO is not defined in environment')
-    distro = get_rosdistro(distro_n)
+    distro = get_rosdistro()
 
     repositories = [
         r for r in distro.repositories.values() if r.source_repository and r.source_repository.patched_packages
