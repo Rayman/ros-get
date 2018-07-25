@@ -1,9 +1,9 @@
 import errno
 import logging
 import os
+from queue import Queue, Empty
 
 from catkin_pkg.packages import find_packages_allowing_duplicates
-from queue import Queue, Empty
 from rosdep2.main import command_update
 from rosinstall_generator.generator import generate_rosinstall_for_repos
 from vcstools import get_vcs_client
@@ -227,6 +227,7 @@ def cleanup_symlinks(pkgs_done):
             if os.path.islink(filename):
                 logger.info("removing symlink: %s", f)
                 os.remove(filename)
+
 
 def add_pkgs_to_installed_list(pkgs):
     mkdir_p(installed_dir)
