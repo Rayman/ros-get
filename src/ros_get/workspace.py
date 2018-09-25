@@ -7,6 +7,7 @@ from catkin_tools.terminal_color import ColorMapper
 from catkin_tools.verbs import catkin_config, catkin_build
 from future.moves.urllib.error import URLError
 from future.moves.urllib.request import urlopen
+from rosdep2.main import command_update
 
 from .utils import mkdir_p, symlink_force, __name__ as utilsname
 
@@ -93,6 +94,11 @@ def create(rosdistro_index_url, extend_path, dir, name, verbose):
 
     save(dir, name, verbose)
     save_config(dir, rosdistro_index_url=rosdistro_index_url)
+
+    exit_code = command_update(None)
+    if exit_code:
+        logger.error('`rosdep update` exited with %d', exit_code)
+        return exit_code
 
 
 def switch(name, verbose):
