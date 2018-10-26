@@ -110,7 +110,7 @@ def status(verbose):
 
 def list_packages(installed, verbose):
     if installed:
-        for pkg in get_pkgs_from_installed_list():
+        for pkg in sorted(get_pkgs_from_installed_list()):
             print(pkg)
     else:
         distro = get_rosdistro()
