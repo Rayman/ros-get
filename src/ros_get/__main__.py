@@ -1,12 +1,37 @@
 import os
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Action, SUPPRESS
 
 from argcomplete import autocomplete
+
+
+class VersionAction(Action):
+    """
+    Custom VersionAction that prints the version of this package
+    """
+
+    def __init__(self,
+                 option_strings,
+                 dest=SUPPRESS,
+                 default=SUPPRESS,
+                 help="show program's version number and exit"):
+        super(VersionAction, self).__init__(
+            option_strings=option_strings,
+            dest=dest,
+            default=default,
+            nargs=0,
+            help=help)
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        from . import __version__
+        formatter = parser._get_formatter()
+        formatter.add_text('%(prog)s version ' + __version__)
+        parser.exit(message=formatter.format_help())
 
 
 def main():
     parser = ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true')
+    parser.add_argument('--version', action=VersionAction)
 
     subparsers = parser.add_subparsers()
 
