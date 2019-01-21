@@ -1,9 +1,10 @@
 import errno
 import logging
 import os
-from queue import Queue, Empty
+from argparse import Namespace
 
 from catkin_pkg.packages import find_packages_allowing_duplicates
+from queue import Queue, Empty
 from rosdep2.main import command_update
 from rosinstall_generator.generator import generate_rosinstall_for_repos
 from vcstools import get_vcs_client
@@ -40,7 +41,7 @@ def update(verbose):
     get_rosdistro()
 
     logger.info('rosdep update')
-    exit_code = command_update(None)
+    exit_code = command_update(Namespace(include_eol_distros=False))
     if exit_code:
         logger.error('`rosdep update` exited with %d', exit_code)
         return exit_code
@@ -57,7 +58,6 @@ def update(verbose):
 
 
 def status(verbose):
-
     distro = get_rosdistro()
 
     repositories = [
