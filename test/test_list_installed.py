@@ -8,10 +8,17 @@ from ros_get import create, install, list_workspaces, locate, remove, save, swit
 
 @pytest.fixture()
 def empty_config_home(tmpdir, monkeypatch):
+    """
+    Monkeypatch XDG_CONFIG_HOME to an empty directory in /tmp
+    """
     monkeypatch.setenv('XDG_CONFIG_HOME', str(tmpdir))
     imp.reload(xdg)
     imp.reload(ros_get.workspace)
     return tmpdir
+
+
+def test_fixture(empty_config_home):
+    assert ros_get.workspace.config_dir.startswith('/tmp')
 
 
 def test_install(empty_config_home):
