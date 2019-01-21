@@ -1,9 +1,9 @@
 import errno
 import logging
 import os
+from queue import Queue, Empty
 
 from catkin_pkg.packages import find_packages_allowing_duplicates
-from queue import Queue, Empty
 from rosdep2.main import command_update
 from rosinstall_generator.generator import generate_rosinstall_for_repos
 from vcstools import get_vcs_client
@@ -20,13 +20,12 @@ link_dir = os.path.realpath(os.path.join(ws_file, 'src'))
 
 def install(pkgs, verbose):
     pkgs_done = recursive_update(pkgs, verbose)
+    pkgs_succeeded = [pkg for pkg in pkgs if pkg in pkgs_done]
     pkgs_skipped = set(pkgs) - pkgs_done
 
-    for pkg in pkgs:
-        if pkg in pkgs_done:
-            add_pkgs_to_installed_list(pkgs_done)
-        else:
-            logger.error("Package %s was not defined in the ros distribution", pkg)
+    for pkg in pkgs_skipped:
+        logger.error("Package %s was not defined in the ros distribution", pkg)
+    add_pkgs_to_installed_list(pkgs_succeeded)
 
     if not pkgs_done:
         return 1
@@ -49,12 +48,7 @@ def update(verbose):
     pkgs = get_pkgs_from_installed_list()
     pkgs_done = recursive_update(pkgs, verbose)
 
-    for f in os.listdir(link_dir):
-        if f not in pkgs_done:
-            filename = os.path.join(link_dir, f)
-            if os.path.islink(filename):
-                logger.info("removing symlink: %s", f)
-                os.remove(filename)
+    cleanup_symlinks(pkgs_done)
 
     exit_code = rosdep_install(link_dir)
     if exit_code:
@@ -222,6 +216,17 @@ def recursive_update(pkgs, verbose):
         symlink_force(source, link_name)
 
     return pkgs_done
+
+
+def cleanup_symlinks(pkgs_done):
+    """Remove all symlinks from the link_dir that are not in pkgs_done"""
+    logger.info("Cleaning up old symlinks")
+    for f in os.listdir(link_dir):
+        if f not in pkgs_done:
+            filename = os.path.join(link_dir, f)
+            if os.path.islink(filename):
+                logger.info("removing symlink: %s", f)
+                os.remove(filename)
 
 
 def add_pkgs_to_installed_list(pkgs):
