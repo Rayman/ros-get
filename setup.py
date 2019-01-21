@@ -33,6 +33,7 @@ setup(
         'rosdep',
         'rosdistro >= 0.6.8',
         'rosinstall_generator',
+        'trollius',  # remove when catkin>0.4.4 is released
         'vcstools',
         'xdg==1.0.7',
     ],
