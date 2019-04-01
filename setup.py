@@ -31,7 +31,7 @@ setup(
         'future',
         'mock',
         'rosdep',
-        'rosdistro >= 0.6.8',
+        'rosdistro >= 0.7.3',
         'rosinstall_generator',
         'trollius',  # remove when catkin>0.4.4 is released
         'vcstools',
