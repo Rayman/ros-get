@@ -128,6 +128,6 @@ def get_rosdep(key):
 
 
 def rosdep_install(path):
-    result = _rosdep_main(['install', '--from-paths', path, '-i', '-y'])
+    result = _rosdep_main(['install', '--from-paths', path, '-i', '-y', '--as-root', 'pip:false'])
     logger.info('rosdep exited with code %d', result)
     return result
