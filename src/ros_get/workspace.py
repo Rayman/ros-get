@@ -3,6 +3,7 @@ import os
 from argparse import Namespace
 
 import xdg
+from catkin_tools.metadata import find_enclosing_workspace
 from catkin_tools.terminal_color import ColorMapper
 from catkin_tools.verbs import catkin_config, catkin_build
 from future.moves.urllib.error import URLError
@@ -42,6 +43,12 @@ def create(rosdistro_index_url, extend_path, dir, name, verbose):
 
     if not os.path.isdir(dir):
         logger.error('target path is not a directory')
+        return 1
+
+    enclosing_workspace = find_enclosing_workspace(dir)
+    if enclosing_workspace:
+        logger.error("Its not allowed to create a worksapce inside another workspace, other workspace found here:\n%s",
+                     enclosing_workspace)
         return 1
 
     try:
