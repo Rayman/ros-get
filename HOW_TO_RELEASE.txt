@@ -1,0 +1,7 @@
+Example current version is v0.1.0
+
+bumpversion minor -> v0.2.0-dev0
+bumpversion build -> v0.2.0-dev1
+bumpversion release -> v0.2.0
+
+If you push a tag, it will automatically be released by the CI to PyPI
