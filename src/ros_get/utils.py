@@ -64,7 +64,7 @@ def get_rosdistro():
         return get_distribution(index, distroname)
 
 
-def update_folder(target_path, folder_mapping, verbose):
+def update_folder(target_path, folder_mapping, restore_version, verbose):
     # generate rosinstall file
     config = generate_rosinstall_for_repos(folder_mapping, version_tag=False, tar=False)
 
@@ -92,8 +92,12 @@ def update_folder(target_path, folder_mapping, verbose):
                 logger.error("local vcs url is different from the distro's url:\n\tlocal:  %s\n\tdistro: %s",
                              client.get_url(), url)
 
-            # skip version because we only want to pull
-            if not client.update(verbose=verbose):
+            target_version = None
+            if restore_version:
+                logger.warn("Restoring %s repo %s to version %s", repo_type, path, version)
+                target_version = version
+
+            if not client.update(version=target_version, verbose=verbose):
                 logger.error("Could not update %s repo: %s", repo_type, path)
                 exit(1)
         else:

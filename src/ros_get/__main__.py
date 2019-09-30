@@ -41,6 +41,8 @@ def main():
 
     subparser = subparsers.add_parser('update', help='update all packages in the workspace to the latest version')
     subparser.set_defaults(func='update')
+    subparser.add_argument('--restore-versions', action='store_true',
+                           help='Whether to restore the versions to the versions as defined in the rosdistro database')
 
     subparser = subparsers.add_parser('status', help='check if there are modified files in the workspace')
     subparser.set_defaults(func='status')

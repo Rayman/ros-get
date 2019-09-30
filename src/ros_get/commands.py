@@ -20,7 +20,7 @@ link_dir = os.path.realpath(os.path.join(ws_file, 'src'))
 
 
 def install(pkgs, verbose):
-    pkgs_done = recursive_update(pkgs, verbose)
+    pkgs_done = recursive_update(pkgs, False, verbose)
     pkgs_succeeded = [pkg for pkg in pkgs if pkg in pkgs_done]
     pkgs_skipped = set(pkgs) - pkgs_done
 
@@ -36,7 +36,7 @@ def install(pkgs, verbose):
     return result
 
 
-def update(verbose):
+def update(restore_versions, verbose):
     # first check if a custom rosdistro has been configured
     get_rosdistro()
 
@@ -47,7 +47,7 @@ def update(verbose):
         return exit_code
 
     pkgs = get_pkgs_from_installed_list()
-    pkgs_done = recursive_update(pkgs, verbose)
+    pkgs_done = recursive_update(pkgs, restore_versions, verbose)
 
     cleanup_symlinks(pkgs_done)
 
@@ -125,7 +125,7 @@ def remove(pkgs, verbose):
     logger.warn("please run the following command to update your workspace:\n\n\tros-get update")
 
 
-def recursive_update(pkgs, verbose):
+def recursive_update(pkgs, restore_versions, verbose):
     if not pkgs:
         logger.warn('no package specified')
         return set()
@@ -161,7 +161,7 @@ def recursive_update(pkgs, verbose):
 
             logger.info('installing: %s', pkg)
             if not len([m for m in pkgs_manifests if m.name == pkg]):
-                update_folder(target_path, {repo.name: repo}, verbose)
+                update_folder(target_path, {repo.name: repo}, restore_versions, verbose)
 
                 # which packages did we download?
                 updated_packages = find_packages_allowing_duplicates(os.path.join(target_path, repo.name))
