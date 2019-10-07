@@ -27,7 +27,7 @@ def test_install(empty_config_home):
 
 @pytest.mark.skip()
 def test_update():
-    assert update(verbose=True) == 1
+    assert update(restore_versions=False, verbose=True) == 1
 
 
 def test_list(empty_config_home):
