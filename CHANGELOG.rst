@@ -2,8 +2,24 @@ Changelog
 =========
 
 
-(unreleased)
-------------
+v0.3.1 (2019-12-06)
+-------------------
+- Feat(update): Added --restore-versions option. [Rein Appeldoorn]
+
+  Closes https://github.com/Rayman/ros-get/issues/85
+
+
+v0.2.0 (2019-06-26)
+-------------------
+- Fix "ImportError: cannot import name wraps" on trusty. [Ramon
+  Wijnands]
+
+  https://github.com/testing-cabal/mock/issues/257
+- Add a short readme on how to release. [Ramon Wijnands]
+- Forbid creating a new workspace inside a catkin workspace, fix #72.
+  [Ramon Wijnands]
+- Run pip without root when installing rosdeps. [Ramon Wijnands]
+- Update changelog. [Ramon Wijnands]
 - Add script to update the changelog for convenience. [Ramon Wijnands]
 
 
