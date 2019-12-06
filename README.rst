@@ -14,10 +14,11 @@ using ``sudo apt install python-pip``.)
 Installation from PyPI
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Not yet available.
+   .. code:: sh
 
-For now, please install from source, for development. Details can be
-found in the `installation manual <doc/install.md>`__.
+      pip install ros-get
+
+For development it is recommended to install ``ros-get`` with ``pip install -e``. This installs a package in editable mode.
 
 Installation from source
 ~~~~~~~~~~~~~~~~~~~~~~~~
