@@ -35,6 +35,7 @@ def parse_args(argv):
     parser.add_argument('--version', action=VersionAction)
 
     subparsers = parser.add_subparsers(dest="command")
+    subparsers.required = True
 
     subparser = subparsers.add_parser('install', help='install packages')
     subparser.set_defaults(func='install')
