@@ -1,4 +1,5 @@
 import os
+import sys
 from argparse import ArgumentParser, Action, SUPPRESS
 
 from argcomplete import autocomplete
@@ -28,12 +29,12 @@ class VersionAction(Action):
         parser.exit(message=formatter.format_help())
 
 
-def main():
+def parse_args(argv):
     parser = ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true')
     parser.add_argument('--version', action=VersionAction)
 
-    subparsers = parser.add_subparsers()
+    subparsers = parser.add_subparsers(dest="command")
 
     subparser = subparsers.add_parser('install', help='install packages')
     subparser.set_defaults(func='install')
@@ -99,7 +100,7 @@ def main():
     subparser.set_defaults(func='rosdistro_url')
 
     autocomplete(parser)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     # computation has to be avoided before the 'autocomplete(parser)' call
 
@@ -128,13 +129,19 @@ def main():
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    from . import (install, update, status, list_packages, remove, create, switch, save, list_workspaces, locate, name,
-                   rosdistro_url)
-
     # remove func from the namespace
     func = args.func
     del args.func
+    del args.command
 
+    return func, args
+
+
+def main():
+    from . import (install, update, status, list_packages, remove, create, switch, save, list_workspaces, locate, name,
+                   rosdistro_url)
+
+    func, args = parse_args(sys.argv[1:])
     # execute the function given in 'func'
     func = {
         'install': install,
@@ -150,8 +157,8 @@ def main():
         'name': name,
         'rosdistro_url': rosdistro_url,
     }[func]
-    exit(func(**vars(args)))
+    return func(**vars(args))
 
 
 if __name__ == '__main__':
-    main()
+    exit(main())
