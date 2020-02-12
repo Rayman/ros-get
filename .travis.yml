@@ -7,10 +7,11 @@ python:
   - 3.6
 matrix:
   include:
-    - python: 2.7
+    - env: description=xenial
       dist: xenial
-    - python: 2.7
-      env: TOXENV=lint
+      python: 2.7
+    - env: TOXENV=lint
+      python: 2.7
 install:
   - pip install tox-travis
   - pip install .
