@@ -2,6 +2,23 @@ Changelog
 =========
 
 
+v0.3.2 (2020-02-12)
+-------------------
+- Add description for matrix include. [Ramon Wijnands]
+- Use unittest.mock on Python 3. [Ramon Wijnands]
+- Pin mock at version 3 on Python 2, fix #91. [Ramon Wijnands]
+
+  Mock v4 is not compatible with Python 2. Unfortunately the pip version
+  on 16.04 is too old to install the correct version.
+- Update travis to xential & bionic. [Ramon Wijnands]
+- Add test for running ros-get without arguments. [Ramon Wijnands]
+- Fix running ros-get with no arguments (python3) [Ramon Wijnands]
+- Reorganize argument parsing code to allow for testing. [Ramon
+  Wijnands]
+- Add pip install guide to README, fix #87. [Ramon Wijnands]
+- Update changelog. [Ramon Wijnands]
+
+
 v0.3.1 (2019-12-06)
 -------------------
 - Feat(update): Added --restore-versions option. [Rein Appeldoorn]
