@@ -7,11 +7,15 @@ from rosdep2.main import _rosdep_main
 from rosdistro import get_index, get_index_url, repository, get_distribution, DEFAULT_INDEX_URL
 from rosdistro.source_repository_specification import SourceRepositorySpecification
 
-from mock import patch
 from rosdep2 import RosdepLookup, create_default_installer_context, get_default_installer
 from rosdep2.rospkg_loader import DEFAULT_VIEW_KEY
 from rosinstall_generator.generator import generate_rosinstall_for_repos
 from vcstools import get_vcs_client
+
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 logger = logging.getLogger(__name__)
 
