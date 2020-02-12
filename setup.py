@@ -29,7 +29,7 @@ setup(
         'catkin_tools',
         'colorlog',
         'future',
-        'mock',
+        "mock < 4; python_version < '3'",
         'six>=1.7',  # https://github.com/testing-cabal/mock/issues/257
         'rosdep',
         'rosdistro >= 0.7.3',
