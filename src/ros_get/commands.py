@@ -41,7 +41,7 @@ def update(restore_versions, verbose):
     get_rosdistro()
 
     logger.info('rosdep update')
-    exit_code = command_update(Namespace(include_eol_distros=False))
+    exit_code = command_update(Namespace(include_eol_distros=False, ros_distro=None))
     if exit_code:
         logger.error('`rosdep update` exited with %d', exit_code)
         return exit_code
