@@ -2,6 +2,12 @@ Changelog
 =========
 
 
+v0.3.3 (2020-05-01)
+-------------------
+- Fix #93: AttributeError: 'Namespace' object has no attribute
+  'ros_distro' [Ramon Wijnands]
+
+
 v0.3.2 (2020-02-12)
 -------------------
 - Add description for matrix include. [Ramon Wijnands]
