@@ -25,7 +25,8 @@ class VersionAction(Action):
     def __call__(self, parser, namespace, values, option_string=None):
         from . import __version__
         formatter = parser._get_formatter()
-        formatter.add_text('%(prog)s version ' + __version__)
+        python_version = '.'.join(map(str, sys.version_info[:2]))
+        formatter.add_text('%(prog)s version ' + __version__ + ' (python ' + python_version + ')')
         parser.exit(message=formatter.format_help())
 
 
