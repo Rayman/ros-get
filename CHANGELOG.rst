@@ -2,6 +2,11 @@ Changelog
 =========
 
 
+v0.3.4 (2020-12-02)
+-------------------
+- Add python version to the --version print. [Ramon Wijnands]
+
+
 v0.3.3 (2020-05-01)
 -------------------
 - Fix #93: AttributeError: 'Namespace' object has no attribute
