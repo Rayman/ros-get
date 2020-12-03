@@ -2,9 +2,9 @@ import errno
 import logging
 import os
 from argparse import Namespace
+from queue import Queue, Empty
 
 from catkin_pkg.packages import find_packages_allowing_duplicates
-from queue import Queue, Empty
 from rosdep2.main import command_update
 from rosinstall_generator.generator import generate_rosinstall_for_repos
 from vcstools import get_vcs_client
@@ -130,6 +130,10 @@ def recursive_update(pkgs, restore_versions, verbose):
         logger.warn('no package specified')
         return set()
 
+    mkdir_p(target_path)
+    # create an ignore file so that colcon won't process the repos directory
+    open(os.path.join(target_path, 'COLCON_IGNORE'), 'w')
+
     distro = get_rosdistro()
 
     repositories = [
@@ -202,6 +206,7 @@ def recursive_update(pkgs, restore_versions, verbose):
         logger.error('no repository updated, package could not be found')
 
     # create the symlinks in the src folder
+    mkdir_p(link_dir)
     for pkg in pkgs_done:
         manifest = [m for m in pkgs_manifests if m.name == pkg]
         assert len(manifest) == 1

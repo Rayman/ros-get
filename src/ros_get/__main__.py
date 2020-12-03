@@ -76,8 +76,10 @@ def parse_args(argv):
         default=os.getcwd(),
         help='The directory to create the workspace in. Defaults to the current working directory')
     subparser.add_argument(
-        '--name', help='give a name to the workspace, if not given, the name '
-        'will be inferred by the directory name')
+        '--name',
+        help='give a name to the workspace, if not given, the name will be inferred by the directory name')
+    subparser.add_argument('--colcon', action='store_true',
+                           help='Create the workspace with colcon, instead of catkin_tools')
 
     subparser = subparsers.add_parser('ws-switch', help='switch to a workspace')
     subparser.set_defaults(func='switch')
