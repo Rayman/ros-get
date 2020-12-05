@@ -165,10 +165,12 @@ def list_workspaces(verbose):
         except OSError as e:
             logger.error('%s => %s', link_name, repr(e))
         else:
+            s = '@pf-@| @{cf}%s@| => @{cf}%s@|' % (link_name, source)
             if link_name == active:
-                print(clr('@pf-@| @{cf}%s@| => @{cf}%s@| (@{yf}active@|)') % (link_name, source))
-            else:
-                print(clr('@pf-@| @{cf}%s@| => @{cf}%s@|') % (link_name, source))
+                s += ' (@{yf}active@|)'
+            if not os.path.isdir(source):
+                s += ' @{rf}No such directory@|'
+            print(clr(s))
 
 
 def locate(verbose):
