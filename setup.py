@@ -24,16 +24,17 @@ setup(
     package_dir={'': 'src'},  # tell distutils packages are under src
     packages=find_packages('src'),  # include all packages under src
     install_requires=[
+        "mock < 4; python_version < '3'",
         'argcomplete',
         'catkin_pkg',
         'catkin_tools',
+        'colcon-common-extensions',
         'colorlog',
         'future',
-        "mock < 4; python_version < '3'",
-        'six>=1.7',  # https://github.com/testing-cabal/mock/issues/257
         'rosdep',
         'rosdistro >= 0.7.3',
         'rosinstall_generator',
+        'six>=1.7',  # https://github.com/testing-cabal/mock/issues/257
         'trollius',  # remove when catkin>0.4.4 is released
         'vcstools',
         'xdg==1.0.7',
