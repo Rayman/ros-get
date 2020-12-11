@@ -28,7 +28,7 @@ setup(
         'argcomplete',
         'catkin_pkg',
         'catkin_tools',
-        'colcon-common-extensions',
+        "colcon-common-extensions; python_version >= '3'",
         'colorlog',
         'future',
         'rosdep',

@@ -1,6 +1,7 @@
 import logging
 import os
 import subprocess
+import sys
 from argparse import Namespace
 
 import xdg
@@ -235,4 +236,19 @@ def create_workspace_with_catkin_tools(extend_path, dir):
 
 def create_workspace_with_colcon(extend_path, dir):
     cmd = '. %s/setup.sh && colcon build' % extend_path
-    return subprocess.call(cmd, shell=True, cwd=dir, env={})
+    result = subprocess.call(cmd, shell=True, cwd=dir, env={})
+    if not result:
+        return result
+
+    # command failed, let's check if the reason
+    if subprocess.call('command -v colcon', shell=True):
+        # in Python3 we should have colcon, so the failure was due to colcon's failure
+        if sys.version_info > (3,):
+            return result
+        else:
+            # in Python2 we can't guarantee a colcon installation, the user has to provide it
+            logger.error("colcon was not found. For Python2 ros-get can't add it as a dependency, so you should "
+                         "install it by yourself")
+            return result
+    else:
+        return result
