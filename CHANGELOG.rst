@@ -2,6 +2,17 @@ Changelog
 =========
 
 
+v0.4.0 (2020-12-18)
+-------------------
+- Switch to github actions CI. [Ramon Wijnands]
+- Automatically determine which build tool to use. [Ramon Wijnands]
+- Add fallback behavior colcon on Python2. [Ramon Wijnands]
+- Add missing colcon dependency. [Ramon Wijnands]
+- Add --colcon argument to support ROS2 workspaces. [Ramon Wijnands]
+- Update setup.bash snippet for install space usage. [Ramon Wijnands]
+- Add check for existence of directory in ws-list. [Ramon Wijnands]
+
+
 v0.3.4 (2020-12-02)
 -------------------
 - Add python version to the --version print. [Ramon Wijnands]
