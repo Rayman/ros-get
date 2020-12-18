@@ -76,8 +76,11 @@ def parse_args(argv):
         default=os.getcwd(),
         help='The directory to create the workspace in. Defaults to the current working directory')
     subparser.add_argument(
-        '--name', help='give a name to the workspace, if not given, the name '
-        'will be inferred by the directory name')
+        '--name',
+        help='give a name to the workspace, if not given, the name will be inferred by the directory name')
+    subparser.add_argument('--build-tool', choices=['catkin_tools', 'colcon'],
+                           help='Create the workspace with a specific build tool. By default, it will try to guess the '
+                                'most appropriate build tool from the workspace given.')
 
     subparser = subparsers.add_parser('ws-switch', help='switch to a workspace')
     subparser.set_defaults(func='switch')
