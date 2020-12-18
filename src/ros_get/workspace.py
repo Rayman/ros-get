@@ -1,5 +1,6 @@
 import logging
 import os
+import shlex
 import subprocess
 import sys
 from argparse import Namespace
@@ -22,7 +23,7 @@ ws_dir = os.path.join(config_dir, 'workspaces')
 clr = ColorMapper().clr
 
 
-def create(rosdistro_index_url, extend_path, dir, name, colcon, verbose):
+def create(rosdistro_index_url, extend_path, dir, name, build_tool, verbose):
     """Creates a new workspace, saves it, and switches to it if it is the first
     workspace.
 
@@ -33,7 +34,6 @@ def create(rosdistro_index_url, extend_path, dir, name, colcon, verbose):
     :param name: Create the workspace with colcon, instead of catkin_tools
     :param verbose: Unused.
     """
-
     # also allow files
     if os.path.isfile(rosdistro_index_url):
         rosdistro_index_url = 'file://%s' % os.path.realpath(rosdistro_index_url)
@@ -54,10 +54,17 @@ def create(rosdistro_index_url, extend_path, dir, name, colcon, verbose):
                      enclosing_workspace)
         return 1
 
-    if colcon:
-        result = create_workspace_with_colcon(extend_path, dir)
+    # try to guess which build tool to use
+    if os.path.exists(os.path.join(extend_path, '.catkin')):
+        build_tool = 'catkin_tools'
     else:
+        build_tool = 'colcon'
+
+    if build_tool == 'catkin_tools':
         result = create_workspace_with_catkin_tools(extend_path, dir)
+    elif build_tool == 'colcon':
+        result = create_workspace_with_colcon(extend_path, dir)
+
     if result:
         return result
 
@@ -235,7 +242,8 @@ def create_workspace_with_catkin_tools(extend_path, dir):
 
 
 def create_workspace_with_colcon(extend_path, dir):
-    cmd = '. %s/setup.sh && colcon build' % extend_path
+    cmd = '. %s && colcon build' % shlex.quote(os.path.join(extend_path, 'setup.sh'))
+    logger.info('run: "%s"', cmd)
     result = subprocess.call(cmd, shell=True, cwd=dir, env={})
     if not result:
         return result
