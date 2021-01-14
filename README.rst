@@ -31,7 +31,7 @@ software by pointing the installation to the development code.
 
    .. code:: sh
 
-       git checkout https://github.com/Rayman/ros-get.git
+       git clone https://github.com/Rayman/ros-get.git
 
 2. Install using ``pip`` with the *editable* option ``-e DIR``.
 
