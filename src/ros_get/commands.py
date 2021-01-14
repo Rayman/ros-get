@@ -19,7 +19,7 @@ target_path = os.path.realpath(os.path.join(ws_file, 'repos'))
 link_dir = os.path.realpath(os.path.join(ws_file, 'src'))
 
 
-def install(pkgs, verbose):
+def install(pkgs, rosdep_check_install, verbose):
     pkgs_done = recursive_update(pkgs, False, verbose)
     pkgs_succeeded = [pkg for pkg in pkgs if pkg in pkgs_done]
     pkgs_skipped = set(pkgs) - pkgs_done
@@ -30,13 +30,13 @@ def install(pkgs, verbose):
 
     if not pkgs_done:
         return 1
-    result = rosdep_install(link_dir)
+    result = rosdep_install(link_dir, rosdep_check_install)
     if pkgs_skipped:
         return 1
     return result
 
 
-def update(restore_versions, verbose):
+def update(restore_versions, rosdep_check_install, verbose):
     # first check if a custom rosdistro has been configured
     get_rosdistro()
 
@@ -51,7 +51,7 @@ def update(restore_versions, verbose):
 
     cleanup_symlinks(pkgs_done)
 
-    exit_code = rosdep_install(link_dir)
+    exit_code = rosdep_install(link_dir, rosdep_check_install)
     if exit_code:
         logger.error('`rosdep install` exited with %d', exit_code)
         return exit_code
