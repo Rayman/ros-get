@@ -22,12 +22,12 @@ def test_fixture(empty_config_home):
 
 
 def test_install(empty_config_home):
-    assert install([], verbose=True) == 1
+    assert install([], rosdep_check_install=False, verbose=True) == 1
 
 
 @pytest.mark.skip()
 def test_update():
-    assert update(restore_versions=False, verbose=True) == 1
+    assert update(restore_versions=False, rosdep_check_install=False, verbose=True) == 1
 
 
 def test_list(empty_config_home):
