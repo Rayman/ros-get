@@ -41,11 +41,15 @@ def parse_args(argv):
     subparser = subparsers.add_parser('install', help='install packages')
     subparser.set_defaults(func='install')
     subparser.add_argument('pkgs', nargs='+', metavar='pkg')
+    subparser.add_argument('--rosdep-check-install', action='store_true',
+                           help='Perform a `rosdep check` instead of a `rosdep install`')
 
     subparser = subparsers.add_parser('update', help='update all packages in the workspace to the latest version')
     subparser.set_defaults(func='update')
     subparser.add_argument('--restore-versions', action='store_true',
                            help='Whether to restore the versions to the versions as defined in the rosdistro database')
+    subparser.add_argument('--rosdep-check-install', action='store_true',
+                           help='Perform a `rosdep check` instead of a `rosdep install`')
 
     subparser = subparsers.add_parser('status', help='check if there are modified files in the workspace')
     subparser.set_defaults(func='status')
