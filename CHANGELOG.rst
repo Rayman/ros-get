@@ -2,6 +2,16 @@ Changelog
 =========
 
 
+v0.5.0 (2022-01-24)
+-------------------
+- Fix tests. [Rein Appeldoorn]
+- Feat: --rosdep-check-install. [Rein Appeldoorn]
+
+  Only verify the `rosdep` dependencies instead of downloading and
+  installing them.
+- Update README.rst. [Rein Appeldoorn]
+
+
 v0.4.0 (2020-12-18)
 -------------------
 - Switch to github actions CI. [Ramon Wijnands]
