@@ -38,30 +38,6 @@ def parse_args(argv):
     subparsers = parser.add_subparsers(dest="command")
     subparsers.required = True
 
-    subparser = subparsers.add_parser('install', help='install packages')
-    subparser.set_defaults(func='install')
-    subparser.add_argument('pkgs', nargs='+', metavar='pkg')
-    subparser.add_argument('--rosdep-check-install', action='store_true',
-                           help='Perform a `rosdep check` instead of a `rosdep install`')
-
-    subparser = subparsers.add_parser('update', help='update all packages in the workspace to the latest version')
-    subparser.set_defaults(func='update')
-    subparser.add_argument('--restore-versions', action='store_true',
-                           help='Whether to restore the versions to the versions as defined in the rosdistro database')
-    subparser.add_argument('--rosdep-check-install', action='store_true',
-                           help='Perform a `rosdep check` instead of a `rosdep install`')
-
-    subparser = subparsers.add_parser('status', help='check if there are modified files in the workspace')
-    subparser.set_defaults(func='status')
-
-    subparser = subparsers.add_parser('list', help='List all available packages')
-    subparser.set_defaults(func='list_packages')
-    subparser.add_argument('--installed', action='store_true', help='Only list installed toplevel packages')
-
-    subparser = subparsers.add_parser('remove', help='remove packages')
-    subparser.set_defaults(func='remove')
-    subparser.add_argument('pkgs', nargs='+', metavar='pkg')
-
     # workspace commands
     subparser = subparsers.add_parser(
         'ws-create',
@@ -147,17 +123,12 @@ def parse_args(argv):
 
 
 def main():
-    from . import (install, update, status, list_packages, remove, create, switch, save, list_workspaces, locate, name,
+    from . import (create, switch, save, list_workspaces, locate, name,
                    rosdistro_url)
 
     func, args = parse_args(sys.argv[1:])
     # execute the function given in 'func'
     func = {
-        'install': install,
-        'update': update,
-        'status': status,
-        'list_packages': list_packages,
-        'remove': remove,
         'create': create,
         'switch': switch,
         'save': save,

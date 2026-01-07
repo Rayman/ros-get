@@ -14,13 +14,13 @@ def test_parse_no_command(capsys):
     assert 'the following arguments are required' in captured.err or 'too few arguments' in captured.err
 
 
-def test_parse_status():
-    func, args = parse_args(['status'])
-    assert func == 'status'
+def test_parse_ws_list():
+    func, args = parse_args(['ws-list'])
+    assert func == 'list_workspaces'
     assert not args.verbose
 
 
-def test_parse_status_verbose():
-    func, args = parse_args(['--verbose', 'status'])
-    assert func == 'status'
+def test_parse_ws_list_verbose():
+    func, args = parse_args(['--verbose', 'ws-list'])
+    assert func == 'list_workspaces'
     assert args.verbose
