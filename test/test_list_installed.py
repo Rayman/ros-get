@@ -1,9 +1,9 @@
 import importlib
 
 import pytest
-import ros_get.workspace
+import ros_ws.workspace
 import xdg
-from ros_get import create, list_workspaces, locate, name, save, switch
+from ros_ws import create, list_workspaces, locate, name, save, switch
 
 
 @pytest.fixture()
@@ -13,12 +13,12 @@ def empty_config_home(tmpdir, monkeypatch):
     """
     monkeypatch.setenv('XDG_CONFIG_HOME', str(tmpdir))
     importlib.reload(xdg)
-    importlib.reload(ros_get.workspace)
+    importlib.reload(ros_ws.workspace)
     return tmpdir
 
 
 def test_fixture(empty_config_home):
-    assert ros_get.workspace.config_dir.startswith('/tmp')
+    assert ros_ws.workspace.config_dir.startswith('/tmp')
 
 
 def test_list(empty_config_home):
@@ -44,7 +44,7 @@ def test_ws_list(empty_config_home):
 
     list_workspaces(verbose=True)
 
-    config = empty_config_home.join('ros-get')
+    config = empty_config_home.join('ros-ws')
     assert config.check(dir=1)
     assert config.join('workspace').check(exists=0)
     assert config.join('workspaces').check(dir=1)

@@ -1,5 +1,5 @@
 import pytest
-from ros_get.__main__ import parse_args
+from ros_ws.__main__ import parse_args
 
 
 def test_parse_no_command(capsys):
@@ -15,19 +15,19 @@ def test_parse_no_command(capsys):
 
 
 def test_parse_ws_list():
-    func, args = parse_args(['ws-list'])
+    func, args = parse_args(['list'])
     assert func == 'list_workspaces'
     assert not args.verbose
 
 
 def test_parse_ws_list_verbose():
-    func, args = parse_args(['--verbose', 'ws-list'])
+    func, args = parse_args(['--verbose', 'list'])
     assert func == 'list_workspaces'
     assert args.verbose
 
 
 def test_parse_ws_create():
-    func, args = parse_args(['ws-create', '/opt/ros/kinetic'])
+    func, args = parse_args(['create', '/opt/ros/kinetic'])
     assert func == 'create'
     assert args.extend_path == '/opt/ros/kinetic'
     assert len(vars(args)) == 4

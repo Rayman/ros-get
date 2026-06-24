@@ -1,13 +1,13 @@
-ros-get |Build Status|
-======================
+ros-ws |Build Status|
+=====================
 
-ros-env is a collection of simple tools for working with ROS source
+ros-ws is a collection of simple tools for working with ROS source
 packages.
 
 Installation
 ------------
 
-The *ros-get* software uses ``pip`` to install itself. If you don't have
+The *ros-ws* software uses ``pip`` to install itself. If you don't have
 it yet, it is available as ``python-pip`` at Debian and Ubuntu. (Install
 using ``sudo apt install python-pip``.)
 
@@ -16,32 +16,32 @@ Installation from PyPI
 
    .. code:: sh
 
-      pip install ros-get
+      pip install ros-ws
 
-For development it is recommended to install ``ros-get`` with ``pip install -e``. This installs a package in editable mode.
+For development it is recommended to install ``ros-ws`` with ``pip install -e``. This installs a package in editable mode.
 
 Installation from source
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you like to both use and hack *ros-get*, you can 'install' the
+If you like to both use and hack *ros-ws*, you can 'install' the
 software by pointing the installation to the development code.
 
-1. Make *ros-get* available locally, eg by download or cloning the
+1. Make *ros-ws* available locally, eg by download or cloning the
    repository, for example
 
    .. code:: sh
 
-       git clone https://github.com/Rayman/ros-get.git
+       git clone https://github.com/Rayman/ros-ws.git
 
 2. Install using ``pip`` with the *editable* option ``-e DIR``.
 
    .. code:: sh
 
-       cd ros-get
+       cd ros-ws
        pip install --user -e .
 
-   The final ``.`` says that ``pip`` should redirect the ``ros-get``
-   command relative to this directory (to ``./src/ros-get``).
+   The final ``.`` says that ``pip`` should redirect the ``ws``
+   command relative to this directory (to ``./src/ros-ws``).
 
 Usage
 -----
@@ -50,9 +50,9 @@ TODO: create a workspace
 
 .. code:: sh
 
-    ros-get install tue_config
-    ros-get remove tue_config
-    ros-get update
+    ws create /opt/ros/humble
+    ws list
+    ws switch myworkspace
 
 Comparison with `tue-env <https://github.com/tue-robotics/tue-env>`__
 ---------------------------------------------------------------------
@@ -70,7 +70,7 @@ Uninstall
 
 .. code:: sh
 
-    pip uninstall ros-get
+    pip uninstall ros-ws
 
-.. |Build Status| image:: https://travis-ci.org/Rayman/ros-get.svg?branch=master
-   :target: https://travis-ci.org/Rayman/ros-get
+.. |Build Status| image:: https://travis-ci.org/Rayman/ros-ws.svg?branch=master
+   :target: https://travis-ci.org/Rayman/ros-ws

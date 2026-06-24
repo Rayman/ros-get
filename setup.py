@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 
 def get_ini_variable(name):
-    with open(os.path.join(os.path.dirname(__file__), 'src', 'ros_get', '__init__.py')) as f:
+    with open(os.path.join(os.path.dirname(__file__), 'src', 'ros_ws', '__init__.py')) as f:
         return re.compile(r".*%s = '(.*?)'" % name, re.S).match(f.read()).group(1)
 
 
@@ -13,7 +13,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as r_file:
     readme = r_file.read()
 
 setup(
-    name='ros_get',
+    name='ros_ws',
     license='MIT',
     version=get_ini_variable('__version__'),
     url=get_ini_variable('__url__'),
@@ -34,4 +34,4 @@ setup(
         'xdg==1.0.7',
     ],
     python_requires='>=3.10',
-    entry_points={'console_scripts': ['ros-get=ros_get.__main__:main']}, )
+    entry_points={'console_scripts': ['ws=ros_ws.__main__:main']}, )
