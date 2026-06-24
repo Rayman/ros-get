@@ -9,8 +9,6 @@ import xdg
 from catkin_tools.metadata import find_enclosing_workspace
 from catkin_tools.terminal_color import ColorMapper
 from catkin_tools.verbs import catkin_config, catkin_build
-from future.moves.urllib.error import URLError
-from future.moves.urllib.request import urlopen
 
 from .utils import mkdir_p, symlink_force, __name__ as utilsname
 
@@ -23,27 +21,16 @@ ws_dir = os.path.join(config_dir, 'workspaces')
 clr = ColorMapper().clr
 
 
-def create(rosdistro_index_url, extend_path, dir, name, build_tool, verbose):
+def create(extend_path, dir, name, build_tool, verbose):
     """Creates a new workspace, saves it, and switches to it if it is the first
     workspace.
 
-    :param rosdistro_index_url: The rosdistro to use
     :param extend_path: Parent workspace to use.
     :param dir: Where to create the workspace
     :param name: Name of the new workspace.
     :param name: Create the workspace with colcon, instead of catkin_tools
     :param verbose: Unused.
     """
-    # also allow files
-    if os.path.isfile(rosdistro_index_url):
-        rosdistro_index_url = 'file://%s' % os.path.realpath(rosdistro_index_url)
-
-    try:
-        urlopen(rosdistro_index_url)
-    except (ValueError, URLError) as e:
-        logger.error(e)
-        return 1
-
     if not os.path.isdir(dir):
         logger.error('target path is not a directory')
         return 1
@@ -69,7 +56,6 @@ def create(rosdistro_index_url, extend_path, dir, name, build_tool, verbose):
         return result
 
     save(dir, name, verbose)
-    save_config(dir, rosdistro_index_url=rosdistro_index_url)
 
 
 def switch(name, verbose):
@@ -167,28 +153,6 @@ def name(verbose):
 
     else:
         print(os.path.relpath(os.readlink(ws_file), 'workspaces'))
-
-
-def rosdistro_url(verbose):
-    ws_file = os.path.join(config_dir, 'workspace', '.ros-get')
-    print(load_config(ws_file, 'rosdistro_index_url'))
-
-
-def save_config(dir, **kwargs):
-    ws_config_dir = os.path.join(dir, '.ros-get')
-    mkdir_p(ws_config_dir)
-
-    for k, v in kwargs.items():
-        with open(os.path.join(ws_config_dir, k), 'w') as f:
-            f.write(v)
-
-
-def load_config(dir, key):
-    ws_config_dir = os.path.join(dir, '.ros-get')
-    mkdir_p(ws_config_dir)
-
-    with open(os.path.join(dir, key)) as f:
-        return f.read()
 
 
 def create_workspace_with_catkin_tools(extend_path, dir):

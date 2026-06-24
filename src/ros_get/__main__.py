@@ -45,9 +45,6 @@ def parse_args(argv):
         description='Create a new catkin workspace where the packages are managed by ros-get')
     subparser.set_defaults(func='create')
     subparser.add_argument(
-        'rosdistro_index_url',
-        help='Custom rosdistro database url. This can be either a web url (http://) or local file url (file://).')
-    subparser.add_argument(
         'extend_path',
         metavar='extend',
         help='Explicitly extend the result-space of another catkin workspace. Example: /opt/ros/kinetic')
@@ -80,9 +77,6 @@ def parse_args(argv):
 
     subparser = subparsers.add_parser('ws-name', help='prints the name of the current workspace')
     subparser.set_defaults(func='name')
-
-    subparser = subparsers.add_parser('ws-rosdistro-url', help='Prints the current rosdistro_index_url')
-    subparser.set_defaults(func='rosdistro_url')
 
     autocomplete(parser)
     args = parser.parse_args(argv)
@@ -123,8 +117,7 @@ def parse_args(argv):
 
 
 def main():
-    from . import (create, switch, save, list_workspaces, locate, name,
-                   rosdistro_url)
+    from . import (create, switch, save, list_workspaces, locate, name)
 
     func, args = parse_args(sys.argv[1:])
     # execute the function given in 'func'
@@ -135,7 +128,6 @@ def main():
         'list_workspaces': list_workspaces,
         'locate': locate,
         'name': name,
-        'rosdistro_url': rosdistro_url,
     }[func]
     return func(**vars(args))
 
