@@ -2,6 +2,21 @@ Changelog
 =========
 
 
+v0.6.0 (2026-06-24)
+-------------------
+- Migrate to pypa/gh-action-pypi-publish. [Ramon Wijnands]
+- Update deploy-pypi. [Ramon Wijnands]
+- Rename package to ros-ws. [Ramon Wijnands]
+- Remove all catkin related code. [Ramon Wijnands]
+- Remove all Dockerfiles. [Ramon Wijnands]
+- Remove Python2 support & update Python versions. [Ramon Wijnands]
+- Remove all unused rosdistro url handling code. [Ramon Wijnands]
+- Remove all recursive package code. [Ramon Wijnands]
+- Fix(): update after some breaking changes in dependencies, fixes #111.
+  [Rokus Ottervanger]
+- Update GitHub actions. [Ramon Wijnands]
+
+
 v0.5.0 (2022-01-24)
 -------------------
 - Fix tests. [Rein Appeldoorn]
