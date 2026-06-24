@@ -40,9 +40,9 @@ def parse_args(argv):
 
     # workspace commands
     subparser = subparsers.add_parser(
-        'ws-create',
+        'create',
         help='create a new workspace',
-        description='Create a new colcon workspace where the packages are managed by ros-get')
+        description='Create a new colcon workspace where the packages are managed by ros-ws')
     subparser.set_defaults(func='create')
     subparser.add_argument(
         'extend_path',
@@ -56,23 +56,23 @@ def parse_args(argv):
         '--name',
         help='give a name to the workspace, if not given, the name will be inferred by the directory name')
 
-    subparser = subparsers.add_parser('ws-switch', help='switch to a workspace')
+    subparser = subparsers.add_parser('switch', help='switch to a workspace')
     subparser.set_defaults(func='switch')
     subparser.add_argument('name')
 
-    subparser = subparsers.add_parser('ws-save', help='Saves the current workspace')
+    subparser = subparsers.add_parser('save', help='Saves the current workspace')
     subparser.set_defaults(func='save')
     subparser.add_argument('dir')
     subparser.add_argument(
         '--name', help='give a name to the workspace, if not given, the name will be inferred by the directory name')
 
-    subparser = subparsers.add_parser('ws-list', help='list all saved workspaces')
+    subparser = subparsers.add_parser('list', help='list all saved workspaces')
     subparser.set_defaults(func='list_workspaces')
 
-    subparser = subparsers.add_parser('ws-locate', help='prints the path to the current workspace')
+    subparser = subparsers.add_parser('locate', help='prints the path to the current workspace')
     subparser.set_defaults(func='locate')
 
-    subparser = subparsers.add_parser('ws-name', help='prints the name of the current workspace')
+    subparser = subparsers.add_parser('name', help='prints the name of the current workspace')
     subparser.set_defaults(func='name')
 
     autocomplete(parser)

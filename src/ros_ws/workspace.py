@@ -10,7 +10,7 @@ from .utils import mkdir_p, symlink_force, __name__ as utilsname
 
 logger = logging.getLogger(__name__)
 
-config_dir = os.path.join(xdg.XDG_CONFIG_HOME, 'ros-get')
+config_dir = os.path.join(xdg.XDG_CONFIG_HOME, 'ros-ws')
 ws_file = os.path.join(config_dir, 'workspace')
 ws_dir = os.path.join(config_dir, 'workspaces')
 
@@ -118,7 +118,7 @@ def locate(verbose):
     :param verbose: Unused.
     """
     if not os.path.islink(ws_file):
-        print('no current workspace found, see "ros-get ws-create --help" how to create one')
+        print('no current workspace found, see "ws create --help" how to create one')
         return 1
 
     else:
@@ -131,7 +131,7 @@ def name(verbose):
     :param verbose: Unused.
     """
     if not os.path.islink(ws_file):
-        print('no current workspace found, see "ros-get ws-create --help" how to create one')
+        print('no current workspace found, see "ws create --help" how to create one')
         return 1
 
     else:

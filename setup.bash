@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-_WS_DIR=$(ros-get ws-locate 2> /dev/null)
+_WS_DIR=$(ws locate 2> /dev/null)
 
-# if ros-get doesn't exist, don't do anything
+# if ws doesn't exist, don't do anything
 test "$?" -ne 0 && return 0
 
 # prefer install space, fallback to devel space
