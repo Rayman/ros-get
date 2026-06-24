@@ -12,5 +12,3 @@ else
 fi
 export ROS_ETC_DIR=/etc/ros
 export ROS_HOME=$_WS_DIR/home
-export ROSDISTRO_INDEX_URL
-ROSDISTRO_INDEX_URL=$(<"$_WS_DIR/.ros-get/rosdistro_index_url")

@@ -24,3 +24,10 @@ def test_parse_ws_list_verbose():
     func, args = parse_args(['--verbose', 'ws-list'])
     assert func == 'list_workspaces'
     assert args.verbose
+
+
+def test_parse_ws_create():
+    func, args = parse_args(['ws-create', '/opt/ros/kinetic'])
+    assert func == 'create'
+    assert args.extend_path == '/opt/ros/kinetic'
+    assert len(vars(args)) == 5
