@@ -2,11 +2,6 @@ import errno
 import logging
 import os
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
 logger = logging.getLogger(__name__)
 
 

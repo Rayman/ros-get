@@ -2,7 +2,6 @@ import logging
 import os
 import shlex
 import subprocess
-import sys
 from argparse import Namespace
 
 import xdg
@@ -216,13 +215,5 @@ def create_workspace_with_colcon(extend_path, dir):
 
     # command failed, let's check if the reason
     if subprocess.call('command -v colcon', shell=True):
-        # in Python3 we should have colcon, so the failure was due to colcon's failure
-        if sys.version_info > (3,):
-            return result
-        else:
-            # in Python2 we can't guarantee a colcon installation, the user has to provide it
-            logger.error("colcon was not found. For Python2 ros-get can't add it as a dependency, so you should "
-                         "install it by yourself")
-            return result
-    else:
-        return result
+        logger.error("colcon was not found. Install colcon-common-extensions and try again.")
+    return result
