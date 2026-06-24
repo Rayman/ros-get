@@ -42,12 +42,12 @@ def parse_args(argv):
     subparser = subparsers.add_parser(
         'ws-create',
         help='create a new workspace',
-        description='Create a new catkin workspace where the packages are managed by ros-get')
+        description='Create a new colcon workspace where the packages are managed by ros-get')
     subparser.set_defaults(func='create')
     subparser.add_argument(
         'extend_path',
         metavar='extend',
-        help='Explicitly extend the result-space of another catkin workspace. Example: /opt/ros/kinetic')
+        help='Explicitly extend the result-space of another workspace. Example: /opt/ros/humble')
     subparser.add_argument(
         '--dir',
         default=os.getcwd(),
@@ -55,9 +55,6 @@ def parse_args(argv):
     subparser.add_argument(
         '--name',
         help='give a name to the workspace, if not given, the name will be inferred by the directory name')
-    subparser.add_argument('--build-tool', choices=['catkin_tools', 'colcon'],
-                           help='Create the workspace with a specific build tool. By default, it will try to guess the '
-                                'most appropriate build tool from the workspace given.')
 
     subparser = subparsers.add_parser('ws-switch', help='switch to a workspace')
     subparser.set_defaults(func='switch')

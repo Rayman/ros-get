@@ -25,8 +25,6 @@ setup(
     packages=find_packages('src'),  # include all packages under src
     install_requires=[
         'argcomplete',
-        'catkin_pkg',
-        'catkin_tools',
         'colcon-common-extensions',
         'colorlog',
         'rosdep',
