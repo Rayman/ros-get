@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import os
 import re
 from setuptools import setup, find_packages
@@ -24,19 +24,16 @@ setup(
     package_dir={'': 'src'},  # tell distutils packages are under src
     packages=find_packages('src'),  # include all packages under src
     install_requires=[
-        "mock < 4; python_version < '3'",
         'argcomplete',
         'catkin_pkg',
         'catkin_tools',
-        "colcon-common-extensions; python_version >= '3'",
+        'colcon-common-extensions',
         'colorlog',
-        'future',
         'rosdep',
         'rosdistro >= 0.7.3',
         'rosinstall_generator',
-        'six>=1.7',  # https://github.com/testing-cabal/mock/issues/257
-        'trollius',  # remove when catkin>0.4.4 is released
         'vcstools',
         'xdg==1.0.7',
     ],
+    python_requires='>=3.10',
     entry_points={'console_scripts': ['ros-get=ros_get.__main__:main']}, )
