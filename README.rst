@@ -47,7 +47,7 @@ Requirements
 - ROS 2 (e.g. jazzy, Iron, Jazzy) installed on the system
 
 Shell Integration
------------------
+~~~~~~~~~~~~~~~~~
 
 To automatically source the active workspace in every new shell, add the
 following snippet to your ``~/.bashrc``:
@@ -62,9 +62,6 @@ Usage
 .. code-block:: text
 
    ws [-h] [-v] [--version] {create,switch,save,list,locate,name} ...
-
-Commands
---------
 
 create
 ~~~~~~
