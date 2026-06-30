@@ -56,6 +56,13 @@ following snippet to your ``~/.bashrc``:
 
    source "$(ws locate)/install/setup.bash"
 
+``ros-ws`` supports tab completion via `argcomplete <https://pypi.org/project/argcomplete/>`_.
+To enable it, add the following to your ``~/.bashrc``:
+
+.. code-block:: bash
+
+   eval "$(register-python-argcomplete ws)"
+
 Usage
 -----
 
